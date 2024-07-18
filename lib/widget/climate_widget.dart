@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ClimateInfoWidget extends StatelessWidget {
   const ClimateInfoWidget({Key? key}) : super(key: key);
@@ -25,29 +26,60 @@ class ClimateInfoWidget extends StatelessWidget {
                     color: Colors.grey[200],
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(Icons.thermostat_outlined, color: Colors.grey[600], size: 20),
+                  child: Icon(Icons.thermostat_outlined,
+                      color: Colors.grey[600], size: 20),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
-            _buildInfoRow(Icons.thermostat, 'Температура', '18,39'),
-            const SizedBox(height: 12),
-            _buildInfoRow(Icons.water_drop_outlined, 'Влажность', '70,30'),
-            const SizedBox(height: 12),
-            _buildInfoRow(Icons.arrow_downward, 'Давление', '761,12'),
           ],
         ),
       ),
     );
   }
+}
 
-  Widget _buildInfoRow(IconData icon, String label, String value) {
+class ClimateValuesWidget extends StatelessWidget {
+  const ClimateValuesWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const SizedBox(height: 16),
+        ClimateValueWidget(iconPath: '', label: 'Температура', value: '18,39'),
+        const SizedBox(height: 12),
+        ClimateValueWidget(iconPath: '', label: 'Влажность', value: '70,30'),
+        const SizedBox(height: 12),
+        ClimateValueWidget(iconPath: '', label: 'Давление', value: '761,12'),
+      ],
+    );
+  }
+}
+
+class ClimateValueWidget extends StatelessWidget {
+  const ClimateValueWidget({
+    super.key,
+    required this.iconPath,
+    required this.label,
+    required this.value,
+  });
+
+  final String iconPath;
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Row(
           children: [
-            Icon(icon, color: Colors.grey[600], size: 20),
+            SvgPicture.asset(
+              iconPath,
+              height: 20.0,
+              width: 20.0,
+            ),
             const SizedBox(width: 8),
             Text(label, style: TextStyle(color: Colors.grey[600])),
           ],
