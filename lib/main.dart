@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:viewer_for_stand_v2/utils/initial/initial.dart';
+import 'package:viewer_for_stand_v2/widget/climate_widget.dart';
+import 'package:viewer_for_stand_v2/widget/electrical_widget.dart';
 import 'package:viewer_for_stand_v2/widget/enable_remote_control_widget.dart';
 import 'package:viewer_for_stand_v2/widget/ifc_viewer_widget.dart';
 import 'package:viewer_for_stand_v2/widget/office_space_widget.dart';
+import 'package:viewer_for_stand_v2/widget/security_widget.dart';
 
 
 
@@ -128,66 +131,13 @@ class MainPage extends StatelessWidget {
               child: IfcViewerWidget(initialFile: initialFile,initialUrlRequest: initialUrlRequest,),
             ),
             Flexible(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    EnableRemoteControlWidget(
-                      icRemote: (isChecked) async {
-                        // context
-                        //     .read<ViewerDeviceControlRepository>()
-                        //     .switchRemoteControl(isChecked);
-                      },
-                    ),
-                    const Divider(
-                      height: 20,
-                      thickness: 2,
-                      indent: 0,
-                      endIndent: 0,
-                      color: Colors.deepPurple,
-                    ),
-                    OpenSpaceControlWidget(
-                      name: 'Пространство',
-                      onCurtainsDown: () async {
-                        // context
-                        //     .read<ViewerDeviceControlRepository>()
-                        //     .downCurtainsSpace();
-                      },
-                      onCurtainsUp: () async {
-                        // context
-                        //     .read<ViewerDeviceControlRepository>()
-                        //     .upCurtainsSpace();
-                      },
-                      onLightingSwitch: (state) async {
-                        // context
-                        //     .read<ViewerDeviceControlRepository>()
-                        //     .switchLightSpace(state);
-                      },
-                    ),
-                    const SizedBox(
-                      height: 36,
-                    ),
-                    OpenSpaceControlWidget(
-                      name: 'Кабинет',
-                      onCurtainsDown: () async {
-                        // context
-                        //     .read<ViewerDeviceControlRepository>()
-                        //     .downCurtainsCabinet();
-                      },
-                      onCurtainsUp: () async {
-                        // context
-                        //     .read<ViewerDeviceControlRepository>()
-                        //     .upCurtainsCabinet();
-                      },
-                      onLightingSwitch: (state) async {
-                        // context
-                        //     .read<ViewerDeviceControlRepository>()
-                        //     .switchLightCabinet(state);
-                      },
-                    ),
-                  ],
-                ),
+              flex: 5,
+              child: Column(
+                children: [
+                  SecuritySettingsWidget(),
+                  ElectricitySupplyWidget(),
+                  ClimateInfoWidget(),
+                ],
               ),
               // fit: FlexFit.loose,
             ),
