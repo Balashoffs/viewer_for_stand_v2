@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:viewer_for_stand_v2/utils/initial/initial.dart';
 import 'package:viewer_for_stand_v2/widget/climate_widget.dart';
+import 'package:viewer_for_stand_v2/widget/control_card/control_cards.dart';
 import 'package:viewer_for_stand_v2/widget/electrical_widget.dart';
-import 'package:viewer_for_stand_v2/widget/enable_remote_control_widget.dart';
 import 'package:viewer_for_stand_v2/widget/ifc_viewer_widget.dart';
-import 'package:viewer_for_stand_v2/widget/office_space_widget.dart';
 import 'package:viewer_for_stand_v2/widget/security_widget.dart';
-
-
-
+import 'package:viewer_for_stand_v2/widget/test_buttons.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
- await initWebServer();
+  await initWebServer();
 
   runApp(const MyApp());
 }
@@ -71,7 +68,6 @@ class _MyHomePageState extends State<MyHomePage> {
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -81,46 +77,18 @@ class MainPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Flexible(
-              flex: 2,
+              flex: 3,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
-                    EnableRemoteControlWidget(
-                      icRemote: (isChecked) async {
-                      },
+                    OpenSpaceControl2Widget(
+                      spaceName: 'Пространство 1',
+                      onCurtainsSwitch: (p0) {},
+                      onLightingSwitch: (p0) {},
+                      spaceIconPath: 'assets/svg/booking_on.svg',
                     ),
-                    const Divider(
-                      height: 20,
-                      thickness: 2,
-                      indent: 0,
-                      endIndent: 0,
-                      color: Colors.deepPurple,
-                    ),
-                    OpenSpaceControlWidget(
-                      name: 'Пространство',
-                      onCurtainsDown: () async {
-                      },
-                      onCurtainsUp: () async {
-                      },
-                      onLightingSwitch: (state) async {
-                      },
-                    ),
-                    const SizedBox(
-                      height: 36,
-                    ),
-                    OpenSpaceControlWidget(
-                      name: 'Кабинет',
-                      onCurtainsDown: () async {
-
-                      },
-                      onCurtainsUp: () async {
-
-                      },
-                      onLightingSwitch: (state) async {
-
-                      },
-                    ),
+                    ClimateInfoWidget(),
                   ],
                 ),
               ),
@@ -128,15 +96,19 @@ class MainPage extends StatelessWidget {
             ),
             Flexible(
               flex: 12,
-              child: IfcViewerWidget(initialFile: initialFile,initialUrlRequest: initialUrlRequest,),
+              child: IfcViewerWidget(
+                initialFile: initialFile,
+                initialUrlRequest: initialUrlRequest,
+              ),
             ),
             Flexible(
-              flex: 5,
+              flex: 3,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SecuritySettingsWidget(),
                   ElectricitySupplyWidget(),
-                  ClimateInfoWidget(),
+                  TestWidget(),
                 ],
               ),
               // fit: FlexFit.loose,

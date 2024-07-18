@@ -20,17 +20,11 @@ class ClimateInfoWidget extends StatelessWidget {
                   'Климат',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(Icons.thermostat_outlined,
-                      color: Colors.grey[600], size: 20),
-                ),
+                SvgPicture.asset('assets/svg/climate.svg', width: 48.0, height: 48.0,),
+
               ],
             ),
+            ClimateValuesWidget(),
           ],
         ),
       ),
@@ -46,11 +40,11 @@ class ClimateValuesWidget extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(height: 16),
-        ClimateValueWidget(iconPath: '', label: 'Температура', value: '18,39'),
+        ClimateValueWidget(iconPath: 'assets/svg/temp.svg', label: 'Температура', value: '18,39'),
         const SizedBox(height: 12),
-        ClimateValueWidget(iconPath: '', label: 'Влажность', value: '70,30'),
+        ClimateValueWidget(iconPath: 'assets/svg/humi.svg', label: 'Влажность', value: '70,30'),
         const SizedBox(height: 12),
-        ClimateValueWidget(iconPath: '', label: 'Давление', value: '761,12'),
+        ClimateValueWidget(iconPath: 'assets/svg/press.svg', label: 'Давление', value: '761,12'),
       ],
     );
   }
