@@ -1,30 +1,51 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:viewer_for_stand_v2/models/marker_svg_icon.dart';
+import 'package:viewer_for_stand_v2/models/position_3d.dart';
+import 'package:viewer_for_stand_v2/models/room_marker.dart';
 
-import 'package:viewer_for_stand_v2/main.dart';
+void main() async {
+  test('Read json with point', () async {
+    File file1 = File('./assets/jsons/rooms_В_Координация_Этаж 3.json');
+    File file2 = File('./assets/jsons/rooms_types.json');
 
-void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    String json1 = await file1.readAsString();
+    String json2 = await file2.readAsString();
+    Map<String, dynamic> map1 = jsonDecode(json1);
+    Map<String, dynamic> map2 = jsonDecode(json2);
+    List<dynamic> collection1 = map1["collection"] as List<dynamic>;
+    List<RoomMarker> rms = collection1
+        .map((e) => e as Map<String, dynamic>)
+        .map((e) {
+          String name = e["Name"];
+          if (map2.containsKey(name)) {
+            int id = e["ElementId"];
+            String number = e["Number"];
+            List<double> points = (e["MarkerPoint"] as List<dynamic>)
+                .map((e) => e as double)
+                .toList();
+            int type = map2[name];
+            Position3D p = Position3D(
+                x: points[0] / 1000, y: points[2] / 1000, z: points[1] / 1000);
+            return RoomMarker(
+              roomRevitId: id,
+              position3d: p,
+              roomName: name,
+              roomNumber: number,
+              roomType: type,
+              markerSvgIcon: MarkerSvgIcon(srcOff: '', srcOn: ''),
+            );
+          }
+          return null;
+        })
+        .nonNulls
+        .toList();
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    List<Map<String, dynamic>> mapOut = rms.map((e) => e.toJson()).toList();
+    String jsonOutput = jsonEncode(mapOut);
+    File fileOutput = File('jsonOutput.json');
+    fileOutput.writeAsString(jsonOutput);
   });
 }

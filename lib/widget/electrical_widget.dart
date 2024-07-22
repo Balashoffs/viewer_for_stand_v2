@@ -5,7 +5,7 @@ class ElectricitySupplyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return  SizedBox(
       height: 160, // Fixed height for the card
       child: Card(
         margin: const EdgeInsets.all(16.0),

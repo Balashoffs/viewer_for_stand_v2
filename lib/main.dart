@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:viewer_for_stand_v2/utils/initial/initial.dart';
 import 'package:viewer_for_stand_v2/widget/climate_widget.dart';
 import 'package:viewer_for_stand_v2/widget/electrical_widget.dart';
 import 'package:viewer_for_stand_v2/widget/enable_remote_control_widget.dart';
-import 'package:viewer_for_stand_v2/widget/ifc_viewer_widget.dart';
+import 'package:viewer_for_stand_v2/widget/ifc_viewer_frame/ifc_viewer_widget.dart';
+import 'package:viewer_for_stand_v2/widget/ifc_viewer_frame/repository/viewer_repository.dart';
 import 'package:viewer_for_stand_v2/widget/office_space_widget.dart';
 import 'package:viewer_for_stand_v2/widget/security_widget.dart';
-
-
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
- await initWebServer();
+  await initWebServer();
 
   runApp(const MyApp());
 }
@@ -55,9 +53,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
+    return SafeArea(
       child: Scaffold(
-        body: MainPage(),
+        body: RepositoryProvider<ViewerRepository>(
+          create: (context) => ViewerRepository()..init(),
+          child: MainPage(),
+        ),
       ),
     );
   }
@@ -70,7 +71,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
-
 
   @override
   Widget build(BuildContext context) {
@@ -87,8 +87,7 @@ class MainPage extends StatelessWidget {
                 child: Column(
                   children: [
                     EnableRemoteControlWidget(
-                      icRemote: (isChecked) async {
-                      },
+                      icRemote: (isChecked) async {},
                     ),
                     const Divider(
                       height: 20,
@@ -99,27 +98,18 @@ class MainPage extends StatelessWidget {
                     ),
                     OpenSpaceControlWidget(
                       name: 'Пространство',
-                      onCurtainsDown: () async {
-                      },
-                      onCurtainsUp: () async {
-                      },
-                      onLightingSwitch: (state) async {
-                      },
+                      onCurtainsDown: () async {},
+                      onCurtainsUp: () async {},
+                      onLightingSwitch: (state) async {},
                     ),
                     const SizedBox(
                       height: 36,
                     ),
                     OpenSpaceControlWidget(
                       name: 'Кабинет',
-                      onCurtainsDown: () async {
-
-                      },
-                      onCurtainsUp: () async {
-
-                      },
-                      onLightingSwitch: (state) async {
-
-                      },
+                      onCurtainsDown: () async {},
+                      onCurtainsUp: () async {},
+                      onLightingSwitch: (state) async {},
                     ),
                   ],
                 ),
@@ -128,7 +118,12 @@ class MainPage extends StatelessWidget {
             ),
             Flexible(
               flex: 12,
-              child: IfcViewerWidget(initialFile: initialFile,initialUrlRequest: initialUrlRequest,),
+              child: IfcViewerWidget(
+                initial: initial,
+                onPostMessage: context.read<ViewerRepository>().postStream,
+                onReceiveMessage:
+                    context.read<ViewerRepository>().getSinkStream,
+              ),
             ),
             Flexible(
               flex: 5,
