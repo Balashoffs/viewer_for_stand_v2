@@ -217,7 +217,7 @@ class RestSpaceControl2Widget extends StatelessWidget {
                 Row(
                   children: [
                     SvgPicture.asset(
-                      'assets/svg/power.svg',
+                      'assets/svg/light_on.svg',
                       width: 64.0,
                       height: 64.0,
                     ),

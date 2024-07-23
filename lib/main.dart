@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:viewer_for_stand_v2/widget/climate_widget.dart';
+import 'package:viewer_for_stand_v2/widget/control_card/control_cards.dart';
 import 'package:viewer_for_stand_v2/widget/electrical_widget.dart';
+import 'package:viewer_for_stand_v2/widget/ifc_viewer_frame/ifc_viewer_widget.dart';
+import 'package:viewer_for_stand_v2/widget/ifc_viewer_frame/repository/viewer_repository.dart';
 import 'package:viewer_for_stand_v2/widget/security_widget.dart';
+import 'package:viewer_for_stand_v2/widget/test_buttons.dart';
 
+import 'cubit/control_card_cubit/control_card_cubit.dart';
+import 'model/card_control_type.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
- await initWebServer();
+  await initWebServer();
 
   runApp(const MyApp());
 }
@@ -96,7 +103,7 @@ class MainPage extends StatelessWidget {
                                   spaceName: 'Пространство 1',
                                   onCurtainsSwitch: (p0) {},
                                   onLightingSwitch: (p0) {},
-                                  spaceIconPath: 'assets/svg/booking_on.svg',
+                                  spaceIconPath: 'assets/svg/room_type_icons/1_working_space_on.svg',
                                 ),
                                 ClimateInfoWidget(),
                               ],
@@ -113,7 +120,8 @@ class MainPage extends StatelessWidget {
                               children: [
                                 MeetingControl2Widget(
                                   spaceName: 'Переговорная 1',
-                                  spaceIconPath: 'assets/svg/booking_on.svg', onBookingSwitch: (bool ) {  },
+                                  spaceIconPath: 'assets/svg/room_type_icons/2_meeting_room_on.svg',
+                                  onBookingSwitch: (bool) {},
                                 ),
                                 ClimateInfoWidget(),
                               ],
@@ -128,12 +136,11 @@ class MainPage extends StatelessWidget {
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
                               children: [
-                                Flexible(
-                                  child: RestSpaceControl2Widget(
-                                    spaceName: 'Кухня',
-                                    spaceIconPath: 'assets/svg/booking_on.svg',
-                                    onBookingSwitch: (bool) {},
-                                  ),
+                                RestSpaceControl2Widget(
+                                  spaceName: 'Кухня',
+                                  spaceIconPath:
+                                      'assets/svg/room_type_icons/3_kitchen_on.svg',
+                                  onBookingSwitch: (bool) {},
                                 ),
                                 ClimateInfoWidget(),
                               ],
