@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:viewer_for_stand_v2/cubit/control_card_cubit/control_card_cubit.dart';
+import 'package:viewer_for_stand_v2/model/device.dart';
 
 class TestWidget extends StatelessWidget {
   const TestWidget({Key? key}) : super(key: key);
@@ -28,7 +31,9 @@ class TestWidget extends StatelessWidget {
                       style: TextStyle(color: Colors.grey),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        context.read<ControlCardCubit>().selectDevice(Device(roomId: 123, roomType: 'workroom'));
+                      },
                       icon: Icon(Icons.room),
                     ),
                   ],
@@ -47,7 +52,9 @@ class TestWidget extends StatelessWidget {
                       style: TextStyle(color: Colors.grey),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        context.read<ControlCardCubit>().selectDevice(Device(roomId: 321, roomType: 'meetingroom'));
+                      },
                       icon: Icon(Icons.meeting_room),
                     ),
                   ],
@@ -66,7 +73,7 @@ class TestWidget extends StatelessWidget {
                       style: TextStyle(color: Colors.grey),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {context.read<ControlCardCubit>().selectDevice(Device(roomId: 234, roomType: 'restroom'));},
                       icon: Icon(Icons.kitchen),
                     ),
                   ],

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:viewer_for_stand_v2/cubit/control_card_cubit/control_card_cubit.dart';
+import 'package:viewer_for_stand_v2/model/card_control_type.dart';
 import 'package:viewer_for_stand_v2/utils/initial/initial.dart';
 import 'package:viewer_for_stand_v2/widget/climate_widget.dart';
 import 'package:viewer_for_stand_v2/widget/control_card/control_cards.dart';
@@ -52,9 +55,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
+    return SafeArea(
       child: Scaffold(
-        body: MainPage(),
+        body: BlocProvider<ControlCardCubit>(
+          create: (context) => ControlCardCubit(),
+          child: MainPage(),
+        ),
       ),
     );
   }
@@ -76,23 +82,74 @@ class MainPage extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Flexible(
-              flex: 3,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    OpenSpaceControl2Widget(
-                      spaceName: 'Пространство 1',
-                      onCurtainsSwitch: (p0) {},
-                      onLightingSwitch: (p0) {},
-                      spaceIconPath: 'assets/svg/booking_on.svg',
-                    ),
-                    ClimateInfoWidget(),
-                  ],
-                ),
-              ),
-              // fit: FlexFit.loose,
+            BlocBuilder<ControlCardCubit, ControlCardState>(
+              builder: (context, state) {
+                return state.when(
+                  initial: () => SizedBox.shrink(),
+                  switchControlCard: (type, roomId) {
+                    switch (type) {
+                      case CardControlType.workroom:
+                        return Flexible(
+                          flex: 3,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                OpenSpaceControl2Widget(
+                                  spaceName: 'Пространство 1',
+                                  onCurtainsSwitch: (p0) {},
+                                  onLightingSwitch: (p0) {},
+                                  spaceIconPath: 'assets/svg/booking_on.svg',
+                                ),
+                                ClimateInfoWidget(),
+                              ],
+                            ),
+                          ),
+                          // fit: FlexFit.loose,
+                        );
+                      case CardControlType.meetingroom:
+                        return Flexible(
+                          flex: 3,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                MeetingControl2Widget(
+                                  spaceName: 'Переговорная 1',
+                                  spaceIconPath: 'assets/svg/booking_on.svg', onBookingSwitch: (bool ) {  },
+                                ),
+                                ClimateInfoWidget(),
+                              ],
+                            ),
+                          ),
+                          // fit: FlexFit.loose,
+                        );
+                      case CardControlType.restroom:
+                        return Flexible(
+                          flex: 3,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Flexible(
+                                  child: RestSpaceControl2Widget(
+                                    spaceName: 'Кухня',
+                                    spaceIconPath: 'assets/svg/booking_on.svg',
+                                    onBookingSwitch: (bool) {},
+                                  ),
+                                ),
+                                ClimateInfoWidget(),
+                              ],
+                            ),
+                          ),
+                          // fit: FlexFit.loose,
+                        );
+                      default:
+                        return const SizedBox.shrink();
+                    }
+                  },
+                );
+              },
             ),
             Flexible(
               flex: 12,
