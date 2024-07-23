@@ -17,7 +17,7 @@ enum MessageTypeMV {
   postConfigMV('post_config_mv'),
 
   ///Модель во вьювере загружена
-  postLoadModelVM('post_load_model_mv'),
+  postModelLoadedVM('post_model_loaded_vm'),
 
   ///Передать информацию о выбранном маркере на моделе во вьювере
   postSelectMarkVM('post_select_mark_vm');

@@ -40,9 +40,11 @@ class ViewerRepository {
     print('incoming message: ${incoming}');
     MessageTypeMV? incomingType = MessageTypeMV.values.where((element) => element.api == incoming['type']).firstOrNull;
     if (incomingType != null) {
-      if (incomingType case MessageTypeMV.postLoadModelVM) {
+      if (incomingType case MessageTypeMV.postModelLoadedVM) {
         String json =  await rootBundle.loadString('assets/jsons/jsonOutput.json');
         _messageMVPuller.postMessage({'config':json}, MessageTypeMV.postConfigMV);
+      }else if(incomingType case MessageTypeMV.postSelectMarkVM){
+        String body = incoming['body'];
       }
     }
   }
