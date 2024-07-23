@@ -32,7 +32,7 @@ class SecuritySettingsWidget extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Container(
-              height: 150,
+              height: 256,
               decoration: BoxDecoration(
                 color: Colors.grey[300],
                 borderRadius: BorderRadius.circular(8),

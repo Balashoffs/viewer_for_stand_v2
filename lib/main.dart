@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:viewer_for_stand_v2/widget/climate_widget.dart';
 import 'package:viewer_for_stand_v2/widget/electrical_widget.dart';
-import 'package:viewer_for_stand_v2/widget/enable_remote_control_widget.dart';
-import 'package:viewer_for_stand_v2/widget/ifc_viewer_frame/ifc_viewer_widget.dart';
-import 'package:viewer_for_stand_v2/widget/ifc_viewer_frame/repository/viewer_repository.dart';
-import 'package:viewer_for_stand_v2/widget/office_space_widget.dart';
 import 'package:viewer_for_stand_v2/widget/security_widget.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await initWebServer();
+ await initWebServer();
 
   runApp(const MyApp());
 }
@@ -57,7 +53,10 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Scaffold(
         body: RepositoryProvider<ViewerRepository>(
           create: (context) => ViewerRepository()..init(),
-          child: MainPage(),
+          child: BlocProvider<ControlCardCubit>(
+            create: (context) => ControlCardCubit(),
+            child: MainPage(),
+          ),
         ),
       ),
     );
@@ -80,41 +79,74 @@ class MainPage extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Flexible(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    EnableRemoteControlWidget(
-                      icRemote: (isChecked) async {},
-                    ),
-                    const Divider(
-                      height: 20,
-                      thickness: 2,
-                      indent: 0,
-                      endIndent: 0,
-                      color: Colors.deepPurple,
-                    ),
-                    OpenSpaceControlWidget(
-                      name: 'Пространство',
-                      onCurtainsDown: () async {},
-                      onCurtainsUp: () async {},
-                      onLightingSwitch: (state) async {},
-                    ),
-                    const SizedBox(
-                      height: 36,
-                    ),
-                    OpenSpaceControlWidget(
-                      name: 'Кабинет',
-                      onCurtainsDown: () async {},
-                      onCurtainsUp: () async {},
-                      onLightingSwitch: (state) async {},
-                    ),
-                  ],
-                ),
-              ),
-              // fit: FlexFit.loose,
+            BlocBuilder<ControlCardCubit, ControlCardState>(
+              builder: (context, state) {
+                return state.when(
+                  initial: () => SizedBox.shrink(),
+                  switchControlCard: (type, roomId) {
+                    switch (type) {
+                      case CardControlType.workroom:
+                        return Flexible(
+                          flex: 3,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                OpenSpaceControl2Widget(
+                                  spaceName: 'Пространство 1',
+                                  onCurtainsSwitch: (p0) {},
+                                  onLightingSwitch: (p0) {},
+                                  spaceIconPath: 'assets/svg/booking_on.svg',
+                                ),
+                                ClimateInfoWidget(),
+                              ],
+                            ),
+                          ),
+                          // fit: FlexFit.loose,
+                        );
+                      case CardControlType.meetingroom:
+                        return Flexible(
+                          flex: 3,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                MeetingControl2Widget(
+                                  spaceName: 'Переговорная 1',
+                                  spaceIconPath: 'assets/svg/booking_on.svg', onBookingSwitch: (bool ) {  },
+                                ),
+                                ClimateInfoWidget(),
+                              ],
+                            ),
+                          ),
+                          // fit: FlexFit.loose,
+                        );
+                      case CardControlType.restroom:
+                        return Flexible(
+                          flex: 3,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Flexible(
+                                  child: RestSpaceControl2Widget(
+                                    spaceName: 'Кухня',
+                                    spaceIconPath: 'assets/svg/booking_on.svg',
+                                    onBookingSwitch: (bool) {},
+                                  ),
+                                ),
+                                ClimateInfoWidget(),
+                              ],
+                            ),
+                          ),
+                          // fit: FlexFit.loose,
+                        );
+                      default:
+                        return const SizedBox.shrink();
+                    }
+                  },
+                );
+              },
             ),
             Flexible(
               flex: 12,
@@ -126,12 +158,13 @@ class MainPage extends StatelessWidget {
               ),
             ),
             Flexible(
-              flex: 5,
+              flex: 3,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SecuritySettingsWidget(),
                   ElectricitySupplyWidget(),
-                  ClimateInfoWidget(),
+                  TestWidget(),
                 ],
               ),
               // fit: FlexFit.loose,

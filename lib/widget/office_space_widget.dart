@@ -4,8 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'buttons/curtains_buttons.dart';
 import 'buttons/lighting_buttons.dart';
 
-
-
 class OpenSpaceControlWidget extends StatelessWidget {
   const OpenSpaceControlWidget({
     super.key,
@@ -68,3 +66,5 @@ class OpenSpaceControlWidget extends StatelessWidget {
     );
   }
 }
+
+
