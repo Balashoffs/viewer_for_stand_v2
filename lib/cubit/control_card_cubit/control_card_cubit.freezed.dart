@@ -19,41 +19,38 @@ mixin _$ControlCardState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(CardControlType type, int roomId, String name)
-        switchControlCard,
+    required TResult Function(Widget widget) showControlCard,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function(CardControlType type, int roomId, String name)?
-        switchControlCard,
+    TResult? Function(Widget widget)? showControlCard,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(CardControlType type, int roomId, String name)?
-        switchControlCard,
+    TResult Function(Widget widget)? showControlCard,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
-    required TResult Function(_SwitchControlCard value) switchControlCard,
+    required TResult Function(_showControlCard value) showControlCard,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
-    TResult? Function(_SwitchControlCard value)? switchControlCard,
+    TResult? Function(_showControlCard value)? showControlCard,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
-    TResult Function(_SwitchControlCard value)? switchControlCard,
+    TResult Function(_showControlCard value)? showControlCard,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -116,8 +113,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(CardControlType type, int roomId, String name)
-        switchControlCard,
+    required TResult Function(Widget widget) showControlCard,
   }) {
     return initial();
   }
@@ -126,8 +122,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function(CardControlType type, int roomId, String name)?
-        switchControlCard,
+    TResult? Function(Widget widget)? showControlCard,
   }) {
     return initial?.call();
   }
@@ -136,8 +131,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(CardControlType type, int roomId, String name)?
-        switchControlCard,
+    TResult Function(Widget widget)? showControlCard,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -150,7 +144,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
-    required TResult Function(_SwitchControlCard value) switchControlCard,
+    required TResult Function(_showControlCard value) showControlCard,
   }) {
     return initial(this);
   }
@@ -159,7 +153,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
-    TResult? Function(_SwitchControlCard value)? switchControlCard,
+    TResult? Function(_showControlCard value)? showControlCard,
   }) {
     return initial?.call(this);
   }
@@ -168,7 +162,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
-    TResult Function(_SwitchControlCard value)? switchControlCard,
+    TResult Function(_showControlCard value)? showControlCard,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -183,113 +177,94 @@ abstract class _Initial implements ControlCardState {
 }
 
 /// @nodoc
-abstract class _$$SwitchControlCardImplCopyWith<$Res> {
-  factory _$$SwitchControlCardImplCopyWith(_$SwitchControlCardImpl value,
-          $Res Function(_$SwitchControlCardImpl) then) =
-      __$$SwitchControlCardImplCopyWithImpl<$Res>;
+abstract class _$$showControlCardImplCopyWith<$Res> {
+  factory _$$showControlCardImplCopyWith(_$showControlCardImpl value,
+          $Res Function(_$showControlCardImpl) then) =
+      __$$showControlCardImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({CardControlType type, int roomId, String name});
+  $Res call({Widget widget});
 }
 
 /// @nodoc
-class __$$SwitchControlCardImplCopyWithImpl<$Res>
-    extends _$ControlCardStateCopyWithImpl<$Res, _$SwitchControlCardImpl>
-    implements _$$SwitchControlCardImplCopyWith<$Res> {
-  __$$SwitchControlCardImplCopyWithImpl(_$SwitchControlCardImpl _value,
-      $Res Function(_$SwitchControlCardImpl) _then)
+class __$$showControlCardImplCopyWithImpl<$Res>
+    extends _$ControlCardStateCopyWithImpl<$Res, _$showControlCardImpl>
+    implements _$$showControlCardImplCopyWith<$Res> {
+  __$$showControlCardImplCopyWithImpl(
+      _$showControlCardImpl _value, $Res Function(_$showControlCardImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? type = null,
-    Object? roomId = null,
-    Object? name = null,
+    Object? widget = null,
   }) {
-    return _then(_$SwitchControlCardImpl(
-      null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as CardControlType,
-      null == roomId
-          ? _value.roomId
-          : roomId // ignore: cast_nullable_to_non_nullable
-              as int,
-      null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
+    return _then(_$showControlCardImpl(
+      null == widget
+          ? _value.widget
+          : widget // ignore: cast_nullable_to_non_nullable
+              as Widget,
     ));
   }
 }
 
 /// @nodoc
 
-class _$SwitchControlCardImpl implements _SwitchControlCard {
-  const _$SwitchControlCardImpl(this.type, this.roomId, this.name);
+class _$showControlCardImpl implements _showControlCard {
+  const _$showControlCardImpl(this.widget);
 
   @override
-  final CardControlType type;
-  @override
-  final int roomId;
-  @override
-  final String name;
+  final Widget widget;
 
   @override
   String toString() {
-    return 'ControlCardState.switchControlCard(type: $type, roomId: $roomId, name: $name)';
+    return 'ControlCardState.showControlCard(widget: $widget)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SwitchControlCardImpl &&
-            (identical(other.type, type) || other.type == type) &&
-            (identical(other.roomId, roomId) || other.roomId == roomId) &&
-            (identical(other.name, name) || other.name == name));
+            other is _$showControlCardImpl &&
+            (identical(other.widget, widget) || other.widget == widget));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, type, roomId, name);
+  int get hashCode => Object.hash(runtimeType, widget);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SwitchControlCardImplCopyWith<_$SwitchControlCardImpl> get copyWith =>
-      __$$SwitchControlCardImplCopyWithImpl<_$SwitchControlCardImpl>(
+  _$$showControlCardImplCopyWith<_$showControlCardImpl> get copyWith =>
+      __$$showControlCardImplCopyWithImpl<_$showControlCardImpl>(
           this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(CardControlType type, int roomId, String name)
-        switchControlCard,
+    required TResult Function(Widget widget) showControlCard,
   }) {
-    return switchControlCard(type, roomId, name);
+    return showControlCard(widget);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function(CardControlType type, int roomId, String name)?
-        switchControlCard,
+    TResult? Function(Widget widget)? showControlCard,
   }) {
-    return switchControlCard?.call(type, roomId, name);
+    return showControlCard?.call(widget);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(CardControlType type, int roomId, String name)?
-        switchControlCard,
+    TResult Function(Widget widget)? showControlCard,
     required TResult orElse(),
   }) {
-    if (switchControlCard != null) {
-      return switchControlCard(type, roomId, name);
+    if (showControlCard != null) {
+      return showControlCard(widget);
     }
     return orElse();
   }
@@ -298,43 +273,39 @@ class _$SwitchControlCardImpl implements _SwitchControlCard {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
-    required TResult Function(_SwitchControlCard value) switchControlCard,
+    required TResult Function(_showControlCard value) showControlCard,
   }) {
-    return switchControlCard(this);
+    return showControlCard(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
-    TResult? Function(_SwitchControlCard value)? switchControlCard,
+    TResult? Function(_showControlCard value)? showControlCard,
   }) {
-    return switchControlCard?.call(this);
+    return showControlCard?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
-    TResult Function(_SwitchControlCard value)? switchControlCard,
+    TResult Function(_showControlCard value)? showControlCard,
     required TResult orElse(),
   }) {
-    if (switchControlCard != null) {
-      return switchControlCard(this);
+    if (showControlCard != null) {
+      return showControlCard(this);
     }
     return orElse();
   }
 }
 
-abstract class _SwitchControlCard implements ControlCardState {
-  const factory _SwitchControlCard(
-          final CardControlType type, final int roomId, final String name) =
-      _$SwitchControlCardImpl;
+abstract class _showControlCard implements ControlCardState {
+  const factory _showControlCard(final Widget widget) = _$showControlCardImpl;
 
-  CardControlType get type;
-  int get roomId;
-  String get name;
+  Widget get widget;
   @JsonKey(ignore: true)
-  _$$SwitchControlCardImplCopyWith<_$SwitchControlCardImpl> get copyWith =>
+  _$$showControlCardImplCopyWith<_$showControlCardImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
