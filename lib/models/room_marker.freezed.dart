@@ -24,7 +24,7 @@ mixin _$RoomMarker {
   int get roomType => throw _privateConstructorUsedError;
   String get roomName => throw _privateConstructorUsedError;
   String get roomNumber => throw _privateConstructorUsedError;
-  Position3D get position3d => throw _privateConstructorUsedError;
+  Position3D get position3D => throw _privateConstructorUsedError;
   MarkerSvgIcon get markerSvgIcon => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -44,10 +44,10 @@ abstract class $RoomMarkerCopyWith<$Res> {
       int roomType,
       String roomName,
       String roomNumber,
-      Position3D position3d,
+      Position3D position3D,
       MarkerSvgIcon markerSvgIcon});
 
-  $Position3DCopyWith<$Res> get position3d;
+  $Position3DCopyWith<$Res> get position3D;
   $MarkerSvgIconCopyWith<$Res> get markerSvgIcon;
 }
 
@@ -68,7 +68,7 @@ class _$RoomMarkerCopyWithImpl<$Res, $Val extends RoomMarker>
     Object? roomType = null,
     Object? roomName = null,
     Object? roomNumber = null,
-    Object? position3d = null,
+    Object? position3D = null,
     Object? markerSvgIcon = null,
   }) {
     return _then(_value.copyWith(
@@ -88,9 +88,9 @@ class _$RoomMarkerCopyWithImpl<$Res, $Val extends RoomMarker>
           ? _value.roomNumber
           : roomNumber // ignore: cast_nullable_to_non_nullable
               as String,
-      position3d: null == position3d
-          ? _value.position3d
-          : position3d // ignore: cast_nullable_to_non_nullable
+      position3D: null == position3D
+          ? _value.position3D
+          : position3D // ignore: cast_nullable_to_non_nullable
               as Position3D,
       markerSvgIcon: null == markerSvgIcon
           ? _value.markerSvgIcon
@@ -101,9 +101,9 @@ class _$RoomMarkerCopyWithImpl<$Res, $Val extends RoomMarker>
 
   @override
   @pragma('vm:prefer-inline')
-  $Position3DCopyWith<$Res> get position3d {
-    return $Position3DCopyWith<$Res>(_value.position3d, (value) {
-      return _then(_value.copyWith(position3d: value) as $Val);
+  $Position3DCopyWith<$Res> get position3D {
+    return $Position3DCopyWith<$Res>(_value.position3D, (value) {
+      return _then(_value.copyWith(position3D: value) as $Val);
     });
   }
 
@@ -129,11 +129,11 @@ abstract class _$$RoomMarkerImplCopyWith<$Res>
       int roomType,
       String roomName,
       String roomNumber,
-      Position3D position3d,
+      Position3D position3D,
       MarkerSvgIcon markerSvgIcon});
 
   @override
-  $Position3DCopyWith<$Res> get position3d;
+  $Position3DCopyWith<$Res> get position3D;
   @override
   $MarkerSvgIconCopyWith<$Res> get markerSvgIcon;
 }
@@ -153,7 +153,7 @@ class __$$RoomMarkerImplCopyWithImpl<$Res>
     Object? roomType = null,
     Object? roomName = null,
     Object? roomNumber = null,
-    Object? position3d = null,
+    Object? position3D = null,
     Object? markerSvgIcon = null,
   }) {
     return _then(_$RoomMarkerImpl(
@@ -173,9 +173,9 @@ class __$$RoomMarkerImplCopyWithImpl<$Res>
           ? _value.roomNumber
           : roomNumber // ignore: cast_nullable_to_non_nullable
               as String,
-      position3d: null == position3d
-          ? _value.position3d
-          : position3d // ignore: cast_nullable_to_non_nullable
+      position3D: null == position3D
+          ? _value.position3D
+          : position3D // ignore: cast_nullable_to_non_nullable
               as Position3D,
       markerSvgIcon: null == markerSvgIcon
           ? _value.markerSvgIcon
@@ -193,7 +193,7 @@ class _$RoomMarkerImpl implements _RoomMarker {
       required this.roomType,
       required this.roomName,
       required this.roomNumber,
-      required this.position3d,
+      required this.position3D,
       required this.markerSvgIcon});
 
   factory _$RoomMarkerImpl.fromJson(Map<String, dynamic> json) =>
@@ -208,13 +208,13 @@ class _$RoomMarkerImpl implements _RoomMarker {
   @override
   final String roomNumber;
   @override
-  final Position3D position3d;
+  final Position3D position3D;
   @override
   final MarkerSvgIcon markerSvgIcon;
 
   @override
   String toString() {
-    return 'RoomMarker(roomRevitId: $roomRevitId, roomType: $roomType, roomName: $roomName, roomNumber: $roomNumber, position3d: $position3d, markerSvgIcon: $markerSvgIcon)';
+    return 'RoomMarker(roomRevitId: $roomRevitId, roomType: $roomType, roomName: $roomName, roomNumber: $roomNumber, position3D: $position3D, markerSvgIcon: $markerSvgIcon)';
   }
 
   @override
@@ -230,8 +230,8 @@ class _$RoomMarkerImpl implements _RoomMarker {
                 other.roomName == roomName) &&
             (identical(other.roomNumber, roomNumber) ||
                 other.roomNumber == roomNumber) &&
-            (identical(other.position3d, position3d) ||
-                other.position3d == position3d) &&
+            (identical(other.position3D, position3D) ||
+                other.position3D == position3D) &&
             (identical(other.markerSvgIcon, markerSvgIcon) ||
                 other.markerSvgIcon == markerSvgIcon));
   }
@@ -239,7 +239,7 @@ class _$RoomMarkerImpl implements _RoomMarker {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, roomRevitId, roomType, roomName,
-      roomNumber, position3d, markerSvgIcon);
+      roomNumber, position3D, markerSvgIcon);
 
   @JsonKey(ignore: true)
   @override
@@ -261,7 +261,7 @@ abstract class _RoomMarker implements RoomMarker {
       required final int roomType,
       required final String roomName,
       required final String roomNumber,
-      required final Position3D position3d,
+      required final Position3D position3D,
       required final MarkerSvgIcon markerSvgIcon}) = _$RoomMarkerImpl;
 
   factory _RoomMarker.fromJson(Map<String, dynamic> json) =
@@ -276,7 +276,7 @@ abstract class _RoomMarker implements RoomMarker {
   @override
   String get roomNumber;
   @override
-  Position3D get position3d;
+  Position3D get position3D;
   @override
   MarkerSvgIcon get markerSvgIcon;
   @override

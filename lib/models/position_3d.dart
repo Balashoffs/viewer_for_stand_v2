@@ -12,5 +12,5 @@ class Position3D with _$Position3D{
     required double z,
   }) = _Position3D;
 
-  factory Position3D.fromJson(Map<String, Object?> json) => _$Position3DFromJson(json);
+  factory Position3D.fromJson(Map<String, dynamic> json) => _$Position3DFromJson(json);
 }

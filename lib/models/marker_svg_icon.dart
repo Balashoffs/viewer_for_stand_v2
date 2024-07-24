@@ -11,5 +11,5 @@ class MarkerSvgIcon with _$MarkerSvgIcon{
     required String srcOff,
   }) = _MarkerSvgIcon;
 
-  factory MarkerSvgIcon.fromJson(Map<String, Object?> json) => _$MarkerSvgIconFromJson(json);
+  factory MarkerSvgIcon.fromJson(Map<String, dynamic> json) => _$MarkerSvgIconFromJson(json);
 }

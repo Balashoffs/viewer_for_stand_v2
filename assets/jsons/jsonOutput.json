@@ -12,7 +12,7 @@
     },
     "roomName": "Кухня",
     "roomNumber": "3.23",
-    "type": 3
+    "roomType": 3
   },
   {
     "roomRevitId": 2438635,
@@ -27,7 +27,7 @@
     },
     "roomName": "Спортзал",
     "roomNumber": "3.16",
-    "type": 3
+    "roomType": 3
   },
   {
     "roomRevitId": 2436637,
@@ -42,7 +42,7 @@
     },
     "roomName": "Лекторий",
     "roomNumber": "3.3",
-    "type": 1
+    "roomType": 1
   },
   {
     "roomRevitId": 2436636,
@@ -57,7 +57,7 @@
     },
     "roomName": "Лекторий",
     "roomNumber": "3.4",
-    "type": 1
+    "roomType": 1
   },
   {
     "roomRevitId": 3159124,
@@ -72,7 +72,7 @@
     },
     "roomName": "Офисное пространство",
     "roomNumber": "3.5",
-    "type": 1
+    "roomType": 1
   },
   {
     "roomRevitId": 3932996,
@@ -87,7 +87,7 @@
     },
     "roomName": "Переговорная",
     "roomNumber": "3.7",
-    "type": 2
+    "roomType": 2
   },
   {
     "roomRevitId": 2435339,
@@ -102,7 +102,7 @@
     },
     "roomName": "Офисное пространство",
     "roomNumber": "3.6",
-    "type": 1
+    "roomType": 1
   },
   {
     "roomRevitId": 2408630,
@@ -147,7 +147,7 @@
     },
     "roomName": "Переговорная",
     "roomNumber": "3.8",
-    "type": 2
+    "roomType": 2
   },
   {
     "roomRevitId": 2408632,
@@ -162,7 +162,7 @@
     },
     "roomName": "Переговорная",
     "roomNumber": "3.9",
-    "type": 2
+    "roomType": 2
   },
   {
     "roomRevitId": 2408633,
@@ -177,7 +177,7 @@
     },
     "roomName": "Переговорная",
     "roomNumber": "3.10",
-    "type": 2
+    "roomType": 2
   },
   {
     "roomRevitId": 2420826,
@@ -192,7 +192,7 @@
     },
     "roomName": "Офисное пространство",
     "roomNumber": "3.11",
-    "type": 1
+    "roomType": 1
   },
   {
     "roomRevitId": 2420824,
@@ -207,7 +207,7 @@
     },
     "roomName": "Офисное пространство",
     "roomNumber": "3.14",
-    "type": 1
+    "roomType": 1
   },
   {
     "roomRevitId": 2420825,
@@ -222,7 +222,7 @@
     },
     "roomName": "Офисное пространство",
     "roomNumber": "3.12",
-    "type": 1
+    "roomType": 1
   },
   {
     "roomRevitId": 2420827,
@@ -237,7 +237,7 @@
     },
     "roomName": "Кофе-поинт",
     "roomNumber": "3.13",
-    "type": 3
+    "roomType": 3
   },
   {
     "roomRevitId": 3956222,
@@ -252,7 +252,7 @@
     },
     "roomName": "Переговорная зона",
     "roomNumber": "3.25",
-    "type": 2
+    "roomType": 2
   },
   {
     "roomRevitId": 3956224,
@@ -267,7 +267,7 @@
     },
     "roomName": "Переговорная зона",
     "roomNumber": "3.27",
-    "type": 2
+    "roomType": 2
   },
   {
     "roomRevitId": 2438633,
@@ -282,7 +282,7 @@
     },
     "roomName": "Душевая",
     "roomNumber": "3.18",
-    "type": 3
+    "roomType": 3
   },
   {
     "roomRevitId": 2491495,
@@ -297,7 +297,7 @@
     },
     "roomName": "Душевая",
     "roomNumber": "3.19",
-    "type": 3
+    "roomType": 3
   },
   {
     "roomRevitId": 2420829,
@@ -312,6 +312,6 @@
     },
     "roomName": "Гардеробная",
     "roomNumber": "3.1",
-    "type": 3
+    "roomType": 3
   }
 ]

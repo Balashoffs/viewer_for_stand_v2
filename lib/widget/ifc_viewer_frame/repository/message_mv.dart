@@ -20,9 +20,14 @@ enum MessageTypeMV {
   postModelLoadedVM('post_model_loaded_vm'),
 
   ///Передать информацию о выбранном маркере на моделе во вьювере
-  postSelectMarkVM('post_select_mark_vm');
+  postSelectMarkVM('post_select_mark_vm'),
 
+  undef('undef');
   const MessageTypeMV(this.api);
 
   final String api;
+
+  static MessageTypeMV findBy(String name){
+    return MessageTypeMV.values.where((element) => element.api == name).firstOrNull ?? MessageTypeMV.undef;
+  }
 }

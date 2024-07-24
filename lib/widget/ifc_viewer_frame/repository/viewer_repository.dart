@@ -14,15 +14,21 @@ class ViewerRepository {
 
   late MessageMVPuller _messageMVPuller;
 
-  final StreamController<MessageAsMap> _postController = StreamController();
-  final StreamController<MessageAsMap> _getController = StreamController();
+  final StreamController<MessageAsMap> _postViewerController = StreamController();
+  final StreamController<MessageAsMap> _getViewerController = StreamController();
 
-  Stream<MessageAsMap> get postStream => _postController.stream;
-  StreamSink<MessageAsMap> get getSinkStream => _getController.sink;
+  Stream<MessageAsMap> get postViewerStream => _postViewerController.stream;
+  StreamSink<MessageAsMap> get getViewerSinkStream => _getViewerController.sink;
 
-  void init() {
-    _messageMVPuller = MessageMVPuller(sink: _postController.sink);
-    _getController.stream.listen(
+  final StreamController<MessageAsMap> _postCardController = StreamController();
+  final StreamController<MessageAsMap> _getCardController = StreamController();
+
+  Stream<MessageAsMap> get postCardStream => _postCardController.stream;
+  StreamSink<MessageAsMap> get getCardSinkStream => _getCardController.sink;
+
+  void init() async{
+    _messageMVPuller = MessageMVPuller(sink: _postViewerController.sink);
+    _getViewerController.stream.listen(
       messageHandler,
       onDone: () {
       },
@@ -31,8 +37,10 @@ class ViewerRepository {
   }
 
   void close() {
-    _postController.close();
-    _getController.close();
+    _postViewerController.close();
+    _getViewerController.close();
+    _postViewerController.close();
+    _getCardController.close();
   }
 
   void messageHandler(event) async {
@@ -44,7 +52,7 @@ class ViewerRepository {
         String json =  await rootBundle.loadString('assets/jsons/jsonOutput.json');
         _messageMVPuller.postMessage({'config':json}, MessageTypeMV.postConfigMV);
       }else if(incomingType case MessageTypeMV.postSelectMarkVM){
-        String body = incoming['body'];
+        _postCardController.sink.add(incoming);
       }
     }
   }

@@ -32,7 +32,7 @@ class TestWidget extends StatelessWidget {
                     ),
                     IconButton(
                       onPressed: () {
-                        context.read<ControlCardCubit>().selectDevice(Device(roomId: 123, roomType: 'workroom'));
+                        context.read<ControlCardCubit>().selectDevice(Device(roomId: 123, roomType: 1, roomName: '', ));
                       },
                       icon: Icon(Icons.room),
                     ),
@@ -53,7 +53,7 @@ class TestWidget extends StatelessWidget {
                     ),
                     IconButton(
                       onPressed: () {
-                        context.read<ControlCardCubit>().selectDevice(Device(roomId: 321, roomType: 'meetingroom'));
+                        context.read<ControlCardCubit>().selectDevice(Device(roomId: 321, roomType: 2, roomName: ''));
                       },
                       icon: Icon(Icons.meeting_room),
                     ),
@@ -73,7 +73,7 @@ class TestWidget extends StatelessWidget {
                       style: TextStyle(color: Colors.grey),
                     ),
                     IconButton(
-                      onPressed: () {context.read<ControlCardCubit>().selectDevice(Device(roomId: 234, roomType: 'restroom'));},
+                      onPressed: () {context.read<ControlCardCubit>().selectDevice(Device(roomId: 234, roomType: 3, roomName: ''));},
                       icon: Icon(Icons.kitchen),
                     ),
                   ],

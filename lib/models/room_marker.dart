@@ -14,12 +14,12 @@ class RoomMarker with _$RoomMarker {
     required int roomType,
     required String roomName,
     required String roomNumber,
-    required Position3D position3d,
+    required Position3D position3D,
     required MarkerSvgIcon markerSvgIcon,
   }) = _RoomMarker;
 
 
-  factory RoomMarker.fromJson(Map<String, Object?> json) =>
+  factory RoomMarker.fromJson(Map<String, dynamic> json) =>
       _$RoomMarkerFromJson(json);
 }
 

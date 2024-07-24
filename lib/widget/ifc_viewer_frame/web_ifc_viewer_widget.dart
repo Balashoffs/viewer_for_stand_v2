@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -56,7 +57,7 @@ class _IfcViewerWidgetState extends State<IfcViewerWidget> {
         if (event is html.MessageEvent) {
           html.MessageEvent messageEvent = event;
           widget.onReceiveMessage
-              ?.add(Map<String, dynamic>.from(messageEvent.data));
+              ?.add(Map<String, Object?>.from(messageEvent.data));
         }
       });
     });

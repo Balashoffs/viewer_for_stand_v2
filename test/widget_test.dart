@@ -31,7 +31,7 @@ void main() async {
                 x: points[0] / 1000, y: points[2] / 1000, z: points[1] / 1000);
             return RoomMarker(
               roomRevitId: id,
-              position3d: p,
+              position3D: p,
               roomName: name,
               roomNumber: number,
               roomType: type,

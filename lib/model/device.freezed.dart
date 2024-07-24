@@ -21,7 +21,9 @@ Device _$DeviceFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Device {
   int get roomId => throw _privateConstructorUsedError;
-  String get roomType => throw _privateConstructorUsedError;
+  int get roomType => throw _privateConstructorUsedError;
+  String get roomName => throw _privateConstructorUsedError;
+  bool get state => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -33,7 +35,7 @@ abstract class $DeviceCopyWith<$Res> {
   factory $DeviceCopyWith(Device value, $Res Function(Device) then) =
       _$DeviceCopyWithImpl<$Res, Device>;
   @useResult
-  $Res call({int roomId, String roomType});
+  $Res call({int roomId, int roomType, String roomName, bool state});
 }
 
 /// @nodoc
@@ -51,6 +53,8 @@ class _$DeviceCopyWithImpl<$Res, $Val extends Device>
   $Res call({
     Object? roomId = null,
     Object? roomType = null,
+    Object? roomName = null,
+    Object? state = null,
   }) {
     return _then(_value.copyWith(
       roomId: null == roomId
@@ -60,7 +64,15 @@ class _$DeviceCopyWithImpl<$Res, $Val extends Device>
       roomType: null == roomType
           ? _value.roomType
           : roomType // ignore: cast_nullable_to_non_nullable
+              as int,
+      roomName: null == roomName
+          ? _value.roomName
+          : roomName // ignore: cast_nullable_to_non_nullable
               as String,
+      state: null == state
+          ? _value.state
+          : state // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -72,7 +84,7 @@ abstract class _$$DeviceImplCopyWith<$Res> implements $DeviceCopyWith<$Res> {
       __$$DeviceImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int roomId, String roomType});
+  $Res call({int roomId, int roomType, String roomName, bool state});
 }
 
 /// @nodoc
@@ -88,6 +100,8 @@ class __$$DeviceImplCopyWithImpl<$Res>
   $Res call({
     Object? roomId = null,
     Object? roomType = null,
+    Object? roomName = null,
+    Object? state = null,
   }) {
     return _then(_$DeviceImpl(
       roomId: null == roomId
@@ -97,7 +111,15 @@ class __$$DeviceImplCopyWithImpl<$Res>
       roomType: null == roomType
           ? _value.roomType
           : roomType // ignore: cast_nullable_to_non_nullable
+              as int,
+      roomName: null == roomName
+          ? _value.roomName
+          : roomName // ignore: cast_nullable_to_non_nullable
               as String,
+      state: null == state
+          ? _value.state
+          : state // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -105,7 +127,11 @@ class __$$DeviceImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$DeviceImpl implements _Device {
-  const _$DeviceImpl({required this.roomId, required this.roomType});
+  const _$DeviceImpl(
+      {required this.roomId,
+      required this.roomType,
+      required this.roomName,
+      this.state = false});
 
   factory _$DeviceImpl.fromJson(Map<String, dynamic> json) =>
       _$$DeviceImplFromJson(json);
@@ -113,11 +139,16 @@ class _$DeviceImpl implements _Device {
   @override
   final int roomId;
   @override
-  final String roomType;
+  final int roomType;
+  @override
+  final String roomName;
+  @override
+  @JsonKey()
+  final bool state;
 
   @override
   String toString() {
-    return 'Device(roomId: $roomId, roomType: $roomType)';
+    return 'Device(roomId: $roomId, roomType: $roomType, roomName: $roomName, state: $state)';
   }
 
   @override
@@ -127,12 +158,16 @@ class _$DeviceImpl implements _Device {
             other is _$DeviceImpl &&
             (identical(other.roomId, roomId) || other.roomId == roomId) &&
             (identical(other.roomType, roomType) ||
-                other.roomType == roomType));
+                other.roomType == roomType) &&
+            (identical(other.roomName, roomName) ||
+                other.roomName == roomName) &&
+            (identical(other.state, state) || other.state == state));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, roomId, roomType);
+  int get hashCode =>
+      Object.hash(runtimeType, roomId, roomType, roomName, state);
 
   @JsonKey(ignore: true)
   @override
@@ -151,14 +186,20 @@ class _$DeviceImpl implements _Device {
 abstract class _Device implements Device {
   const factory _Device(
       {required final int roomId,
-      required final String roomType}) = _$DeviceImpl;
+      required final int roomType,
+      required final String roomName,
+      final bool state}) = _$DeviceImpl;
 
   factory _Device.fromJson(Map<String, dynamic> json) = _$DeviceImpl.fromJson;
 
   @override
   int get roomId;
   @override
-  String get roomType;
+  int get roomType;
+  @override
+  String get roomName;
+  @override
+  bool get state;
   @override
   @JsonKey(ignore: true)
   _$$DeviceImplCopyWith<_$DeviceImpl> get copyWith =>

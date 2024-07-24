@@ -46,22 +46,23 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // late ViewerDeviceControlRepository _deviceControlRepository;
+  late ViewerRepository? _viewerRepository;
 
   @override
   void initState() {
     super.initState();
-    // _deviceControlRepository = ViewerDeviceControlRepository();
+    _viewerRepository = ViewerRepository()..init();
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: RepositoryProvider<ViewerRepository>(
-          create: (context) => ViewerRepository()..init(),
+        body: RepositoryProvider.value(
+          value: _viewerRepository,
           child: BlocProvider<ControlCardCubit>(
-            create: (context) => ControlCardCubit(),
+            create: (context) =>
+                ControlCardCubit(viewerRepository: _viewerRepository!),
             child: MainPage(),
           ),
         ),
@@ -89,8 +90,18 @@ class MainPage extends StatelessWidget {
             BlocBuilder<ControlCardCubit, ControlCardState>(
               builder: (context, state) {
                 return state.when(
-                  initial: () => SizedBox.shrink(),
-                  switchControlCard: (type, roomId) {
+                  initial: () => Flexible(
+                    flex: 3,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SecuritySettingsWidget(),
+                        ElectricitySupplyWidget(),
+                      ],
+                    ),
+                    // fit: FlexFit.loose,
+                  ),
+                  switchControlCard: (type, roomId, name) {
                     switch (type) {
                       case CardControlType.workroom:
                         return Flexible(
@@ -100,10 +111,11 @@ class MainPage extends StatelessWidget {
                             child: Column(
                               children: [
                                 OpenSpaceControl2Widget(
-                                  spaceName: 'Пространство 1',
+                                  spaceName: name,
                                   onCurtainsSwitch: (p0) {},
                                   onLightingSwitch: (p0) {},
-                                  spaceIconPath: 'assets/svg/room_type_icons/1_working_space_on.svg',
+                                  spaceIconPath:
+                                      'assets/svg/room_type_icons/1_working_space_on.svg',
                                 ),
                                 ClimateInfoWidget(),
                               ],
@@ -119,8 +131,9 @@ class MainPage extends StatelessWidget {
                             child: Column(
                               children: [
                                 MeetingControl2Widget(
-                                  spaceName: 'Переговорная 1',
-                                  spaceIconPath: 'assets/svg/room_type_icons/2_meeting_room_on.svg',
+                                  spaceName: name,
+                                  spaceIconPath:
+                                      'assets/svg/room_type_icons/2_meeting_room_on.svg',
                                   onBookingSwitch: (bool) {},
                                 ),
                                 ClimateInfoWidget(),
@@ -137,7 +150,7 @@ class MainPage extends StatelessWidget {
                             child: Column(
                               children: [
                                 RestSpaceControl2Widget(
-                                  spaceName: 'Кухня',
+                                  spaceName: name,
                                   spaceIconPath:
                                       'assets/svg/room_type_icons/3_kitchen_on.svg',
                                   onBookingSwitch: (bool) {},
@@ -149,7 +162,17 @@ class MainPage extends StatelessWidget {
                           // fit: FlexFit.loose,
                         );
                       default:
-                        return const SizedBox.shrink();
+                        return Flexible(
+                          flex: 3,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SecuritySettingsWidget(),
+                              ElectricitySupplyWidget(),
+                            ],
+                          ),
+                          // fit: FlexFit.loose,
+                        );
                     }
                   },
                 );
@@ -159,22 +182,11 @@ class MainPage extends StatelessWidget {
               flex: 12,
               child: IfcViewerWidget(
                 initial: initial,
-                onPostMessage: context.read<ViewerRepository>().postStream,
+                onPostMessage:
+                    context.read<ViewerRepository>().postViewerStream,
                 onReceiveMessage:
-                    context.read<ViewerRepository>().getSinkStream,
+                    context.read<ViewerRepository>().getViewerSinkStream,
               ),
-            ),
-            Flexible(
-              flex: 3,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SecuritySettingsWidget(),
-                  ElectricitySupplyWidget(),
-                  TestWidget(),
-                ],
-              ),
-              // fit: FlexFit.loose,
             ),
           ],
         ),

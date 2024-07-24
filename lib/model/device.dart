@@ -6,7 +6,9 @@ part 'device.g.dart';
 class Device with _$Device{
   const factory Device({
     required int roomId,
-    required String roomType,
+    required int roomType,
+    required String roomName,
+    @Default(false) bool state,
   }) = _Device;
 
   factory Device.fromJson(Map<String, dynamic> json) => _$DeviceFromJson(json);

@@ -12,8 +12,8 @@ _$RoomMarkerImpl _$$RoomMarkerImplFromJson(Map<String, dynamic> json) =>
       roomType: (json['roomType'] as num).toInt(),
       roomName: json['roomName'] as String,
       roomNumber: json['roomNumber'] as String,
-      position3d:
-          Position3D.fromJson(json['position3d'] as Map<String, dynamic>),
+      position3D:
+          Position3D.fromJson(json['position3D'] as Map<String, dynamic>),
       markerSvgIcon:
           MarkerSvgIcon.fromJson(json['markerSvgIcon'] as Map<String, dynamic>),
     );
@@ -24,6 +24,6 @@ Map<String, dynamic> _$$RoomMarkerImplToJson(_$RoomMarkerImpl instance) =>
       'roomType': instance.roomType,
       'roomName': instance.roomName,
       'roomNumber': instance.roomNumber,
-      'position3d': instance.position3d,
+      'position3D': instance.position3D,
       'markerSvgIcon': instance.markerSvgIcon,
     };

@@ -19,20 +19,22 @@ mixin _$ControlCardState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(CardControlType type, int roomId)
+    required TResult Function(CardControlType type, int roomId, String name)
         switchControlCard,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function(CardControlType type, int roomId)? switchControlCard,
+    TResult? Function(CardControlType type, int roomId, String name)?
+        switchControlCard,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(CardControlType type, int roomId)? switchControlCard,
+    TResult Function(CardControlType type, int roomId, String name)?
+        switchControlCard,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -114,7 +116,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(CardControlType type, int roomId)
+    required TResult Function(CardControlType type, int roomId, String name)
         switchControlCard,
   }) {
     return initial();
@@ -124,7 +126,8 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function(CardControlType type, int roomId)? switchControlCard,
+    TResult? Function(CardControlType type, int roomId, String name)?
+        switchControlCard,
   }) {
     return initial?.call();
   }
@@ -133,7 +136,8 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(CardControlType type, int roomId)? switchControlCard,
+    TResult Function(CardControlType type, int roomId, String name)?
+        switchControlCard,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -184,7 +188,7 @@ abstract class _$$SwitchControlCardImplCopyWith<$Res> {
           $Res Function(_$SwitchControlCardImpl) then) =
       __$$SwitchControlCardImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({CardControlType type, int roomId});
+  $Res call({CardControlType type, int roomId, String name});
 }
 
 /// @nodoc
@@ -200,6 +204,7 @@ class __$$SwitchControlCardImplCopyWithImpl<$Res>
   $Res call({
     Object? type = null,
     Object? roomId = null,
+    Object? name = null,
   }) {
     return _then(_$SwitchControlCardImpl(
       null == type
@@ -210,6 +215,10 @@ class __$$SwitchControlCardImplCopyWithImpl<$Res>
           ? _value.roomId
           : roomId // ignore: cast_nullable_to_non_nullable
               as int,
+      null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -217,16 +226,18 @@ class __$$SwitchControlCardImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$SwitchControlCardImpl implements _SwitchControlCard {
-  const _$SwitchControlCardImpl(this.type, this.roomId);
+  const _$SwitchControlCardImpl(this.type, this.roomId, this.name);
 
   @override
   final CardControlType type;
   @override
   final int roomId;
+  @override
+  final String name;
 
   @override
   String toString() {
-    return 'ControlCardState.switchControlCard(type: $type, roomId: $roomId)';
+    return 'ControlCardState.switchControlCard(type: $type, roomId: $roomId, name: $name)';
   }
 
   @override
@@ -235,11 +246,12 @@ class _$SwitchControlCardImpl implements _SwitchControlCard {
         (other.runtimeType == runtimeType &&
             other is _$SwitchControlCardImpl &&
             (identical(other.type, type) || other.type == type) &&
-            (identical(other.roomId, roomId) || other.roomId == roomId));
+            (identical(other.roomId, roomId) || other.roomId == roomId) &&
+            (identical(other.name, name) || other.name == name));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, type, roomId);
+  int get hashCode => Object.hash(runtimeType, type, roomId, name);
 
   @JsonKey(ignore: true)
   @override
@@ -252,30 +264,32 @@ class _$SwitchControlCardImpl implements _SwitchControlCard {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(CardControlType type, int roomId)
+    required TResult Function(CardControlType type, int roomId, String name)
         switchControlCard,
   }) {
-    return switchControlCard(type, roomId);
+    return switchControlCard(type, roomId, name);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function(CardControlType type, int roomId)? switchControlCard,
+    TResult? Function(CardControlType type, int roomId, String name)?
+        switchControlCard,
   }) {
-    return switchControlCard?.call(type, roomId);
+    return switchControlCard?.call(type, roomId, name);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(CardControlType type, int roomId)? switchControlCard,
+    TResult Function(CardControlType type, int roomId, String name)?
+        switchControlCard,
     required TResult orElse(),
   }) {
     if (switchControlCard != null) {
-      return switchControlCard(type, roomId);
+      return switchControlCard(type, roomId, name);
     }
     return orElse();
   }
@@ -314,10 +328,12 @@ class _$SwitchControlCardImpl implements _SwitchControlCard {
 
 abstract class _SwitchControlCard implements ControlCardState {
   const factory _SwitchControlCard(
-      final CardControlType type, final int roomId) = _$SwitchControlCardImpl;
+          final CardControlType type, final int roomId, final String name) =
+      _$SwitchControlCardImpl;
 
   CardControlType get type;
   int get roomId;
+  String get name;
   @JsonKey(ignore: true)
   _$$SwitchControlCardImplCopyWith<_$SwitchControlCardImpl> get copyWith =>
       throw _privateConstructorUsedError;
