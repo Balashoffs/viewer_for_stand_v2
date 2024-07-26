@@ -1,8 +1,10 @@
 enum CardControlType{
   undef(-1),
   workroom(1),
+  meetingroom(2),
   restroom(3),
-  meetingroom(2);
+  power(4),
+  camer(5);
 
   const CardControlType(this.pos);
 

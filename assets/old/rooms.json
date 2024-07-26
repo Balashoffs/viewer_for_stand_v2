@@ -1,0 +1,151 @@
+[
+  {
+    "roomId": 2420828,
+    "topic": "kitchen_3_23",
+    "name": "Кухня",
+    "number": "3.23",
+    "type": 3
+  },
+  {
+    "roomId": 2438635,
+    "name": "Спортзал",
+    "number": "3.16",
+    "topic": "gym_3_16",
+    "type": 3
+  },
+  {
+    "roomId": 2436637,
+    "name": "Лекторий",
+    "number": "3.3",
+    "topic": "lectory_3_3",
+    "type": 1
+  },
+  {
+    "roomId": 2436636,
+    "name": "Лекторий",
+    "number": "3.4",
+    "topic": "lectory_3_4",
+    "type": 1
+
+  },
+  {
+    "roomId": 3159124,
+    "name": "Офисное пространство",
+    "number": "3.5",
+    "topic": "office_room_3_5",
+    "type": 1
+
+  },
+  {
+    "roomId": 3932996,
+    "name": "Переговорная",
+    "number": "3.7",
+    "topic": "meeting_room_3_7",
+    "type": 2
+  },
+  {
+    "roomId": 2435339,
+    "name": "Офисное пространство",
+    "number": "3.6",
+    "topic": "office_room_3_6",
+    "type": 1
+  },
+  {
+    "roomId": 2408630,
+    "name": "Офисное пространство",
+    "number": "3.2.1",
+    "topic": "office_room_3_2_1",
+    "type": 1
+  },
+  {
+    "roomId": 2408630,
+    "name": "Офисное пространство",
+    "number": "3.2.2",
+    "topic": "office_room_3_2_2",
+    "type": 1
+  },
+  {
+    "roomId": 2408631,
+    "name": "Переговорная:3.8",
+    "number": "3.8",
+    "topic": "meeting_room_3_8",
+    "type": 2
+  },
+  {
+    "roomId": 2408632,
+    "name": "Переговорная:3.9",
+    "number": "3.9",
+    "topic": "meeting_room_3_9",
+    "type": 2
+  },
+  {
+    "roomId": 2408633,
+    "name": "Переговорная",
+    "number": "3.10",
+    "topic": "meeting_room_3_10",
+    "type": 2
+  },
+  {
+    "roomId": 2420826,
+    "name": "Офисное пространство",
+    "number": "3.11",
+    "topic": "office_room_3_11",
+    "type": 1
+  },
+  {
+    "roomId": 2420824,
+    "name": "Офисное пространство",
+    "number": "3.14",
+    "topic": "office_room_3_14",
+    "type": 1
+  },
+  {
+    "roomId": 2420825,
+    "name": "Офисное пространство",
+    "number": "3.12",
+    "topic": "office_room_3_12",
+    "type": 1
+  },
+  {
+    "roomId": 2420827,
+    "name": "Кофе-поинт",
+    "number": "3.13",
+    "topic": "office_room_3_13",
+    "type": 3
+  },
+  {
+    "roomId": 3956222,
+    "name": "Переговорная зона",
+    "number": "3.25",
+    "topic": "meeting_room_3_25",
+    "type": 2
+  },
+  {
+    "roomId": 3956224,
+    "name": "Переговорная зона",
+    "number": "3.27",
+    "topic": "meeting_room_3_27",
+    "type": 2
+  },
+  {
+    "roomId": 2438633,
+    "name": "Душевая",
+    "number": "3.18",
+    "topic": "meeting_room_3_18",
+    "type": 2
+  },
+  {
+    "roomId": 2491495,
+    "name": "Душевая",
+    "number": "3.19",
+    "topic": "meeting_room_3_19",
+    "type": 2
+  },
+  {
+    "roomId": 2420829,
+    "name": "Гардеробная:3.1",
+    "number": "3.25",
+    "topic": "suit_room_3_25",
+    "type": 3
+  }
+]

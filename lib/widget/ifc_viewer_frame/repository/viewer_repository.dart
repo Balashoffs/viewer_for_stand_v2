@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter/services.dart';
-import 'package:viewer_for_stand_v2/models/room_marker.dart';
+import 'package:viewer_for_stand_v2/models/room/room_marker.dart';
+import 'package:viewer_for_stand_v2/models/room/room_marker_with_id.dart';
+import 'package:viewer_for_stand_v2/repository/room_repository.dart';
 
 import 'message_mv.dart';
 
@@ -13,6 +14,9 @@ typedef BlobsCallback = Function(List<Map<String, dynamic>>);
 class ViewerRepository {
 
   late MessageMVPuller _messageMVPuller;
+  final RoomRepository _roomRepository ;
+
+  ViewerRepository(RoomRepository roomRepository):_roomRepository = roomRepository;
 
   final StreamController<MessageAsMap> _postViewerController = StreamController();
   final StreamController<MessageAsMap> _getViewerController = StreamController();
@@ -26,7 +30,7 @@ class ViewerRepository {
   Stream<MessageAsMap> get postCardStream => _postCardController.stream;
   StreamSink<MessageAsMap> get getCardSinkStream => _getCardController.sink;
 
-  void init() async{
+  Future<void> init() async{
     _messageMVPuller = MessageMVPuller(sink: _postViewerController.sink);
     _getViewerController.stream.listen(
       messageHandler,
@@ -45,11 +49,11 @@ class ViewerRepository {
 
   void messageHandler(event) async {
     MessageAsMap incoming = event;
-    print('incoming message: ${incoming}');
     MessageTypeMV? incomingType = MessageTypeMV.values.where((element) => element.api == incoming['type']).firstOrNull;
     if (incomingType != null) {
       if (incomingType case MessageTypeMV.postModelLoadedVM) {
-        String json =  await rootBundle.loadString('assets/jsons/jsonOutput.json');
+        List<RoomMarkerWithId> markers = _roomRepository.getMarkers();
+        String json = jsonEncode(markers);
         _messageMVPuller.postMessage({'config':json}, MessageTypeMV.postConfigMV);
       }else if(incomingType case MessageTypeMV.postSelectMarkVM){
         _postCardController.sink.add(incoming);

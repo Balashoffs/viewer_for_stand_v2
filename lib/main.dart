@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:viewer_for_stand_v2/widget/climate_widget.dart';
-import 'package:viewer_for_stand_v2/widget/control_card/control_cards.dart';
-import 'package:viewer_for_stand_v2/widget/electrical_widget.dart';
+import 'package:viewer_for_stand_v2/cubit/control_card_cubit/control_card_cubit.dart';
+import 'package:viewer_for_stand_v2/repository/room_repository.dart';
 import 'package:viewer_for_stand_v2/widget/ifc_viewer_frame/ifc_viewer_widget.dart';
 import 'package:viewer_for_stand_v2/widget/ifc_viewer_frame/repository/viewer_repository.dart';
-import 'package:viewer_for_stand_v2/widget/security_widget.dart';
-import 'package:viewer_for_stand_v2/widget/test_buttons.dart';
-
-import 'cubit/control_card_cubit/control_card_cubit.dart';
-import 'model/card_control_type.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +19,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    print('MyApp build');
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -47,22 +42,29 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late ViewerRepository? _viewerRepository;
+  late RoomRepository _roomRepository;
 
   @override
   void initState() {
     super.initState();
-    _viewerRepository = ViewerRepository()..init();
+    _roomRepository = RoomRepository();
+    _viewerRepository = ViewerRepository(_roomRepository);
+    _roomRepository.loadFromAsset().then((value) => _viewerRepository?.init());
   }
 
   @override
   Widget build(BuildContext context) {
+    final Size size= MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
         body: RepositoryProvider.value(
           value: _viewerRepository,
           child: BlocProvider<ControlCardCubit>(
-            create: (context) =>
-                ControlCardCubit(viewerRepository: _viewerRepository!),
+            create: (context) => ControlCardCubit(
+              viewerRepository: _viewerRepository!,
+              roomRepository: _roomRepository,
+              size: size,
+            ),
             child: MainPage(),
           ),
         ),
@@ -90,7 +92,7 @@ class MainPage extends StatelessWidget {
             BlocBuilder<ControlCardCubit, ControlCardState>(
               builder: (context, state) {
                 return state.when(
-                  initial: () => const Flexible(flex: 5, child: Center(child: CircularProgressIndicator(),)),
+                  initial: () => SizedBox(),
                   showControlCard: (widget) => Flexible(flex: 5, child: widget),
                 );
               },
