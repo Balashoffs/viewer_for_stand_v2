@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:viewer_for_stand_v2/cubit/control_card_cubit/control_card_cubit.dart';
+import 'package:viewer_for_stand_v2/cubit/update_card_data/update_card_data_cubit.dart';
 import 'package:viewer_for_stand_v2/repository/room_repository.dart';
 import 'package:viewer_for_stand_v2/service/card_control_service/card_control_service.dart';
 import 'package:viewer_for_stand_v2/service/mqtt/mqtt_repository.dart';
@@ -62,12 +63,23 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Scaffold(
         body: RepositoryProvider.value(
           value: _viewerRepository,
-          child: BlocProvider<ControlCardCubit>(
-            create: (context) => ControlCardCubit(
-              viewerRepository: _viewerRepository!,
-              roomRepository: _roomRepository,
-              cardControlService: CardControlService(mqttRepository: _mqttRepository)
-            ),
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider<ControlCardCubit>(
+                create: (context) {
+                  return ControlCardCubit(
+                      viewerRepository: _viewerRepository!,
+                      roomRepository: _roomRepository,
+                      cardControlService:
+                          CardControlService(mqttRepository: _mqttRepository));
+                },
+              ),
+              BlocProvider<UpdateCardDataCubit>(
+                create: (context) {
+                  return UpdateCardDataCubit(mqttRepository: _mqttRepository);
+                },
+              )
+            ],
             child: MainPage(),
           ),
         ),
