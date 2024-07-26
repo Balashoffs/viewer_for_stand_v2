@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:viewer_for_stand_v2/cubit/update_card_data/update_card_data_cubit.dart';
+import 'package:viewer_for_stand_v2/widget/custom/custom.dart';
+import 'package:viewer_for_stand_v2/widget/text_style.dart';
 
 class ClimateInfoWidget extends StatelessWidget {
-  const ClimateInfoWidget({Key? key}) : super(key: key);
+  const ClimateInfoWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,17 +16,10 @@ class ClimateInfoWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Климат',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                SvgPicture.asset('assets/svg/climate.svg', width: 48.0, height: 48.0,),
-
-              ],
-            ),
+            LabelCustomWidget(
+                iconPath: 'assets/svg/climate.svg',
+                label: 'Климат',
+                style: cardHeadTextStyle),
             ClimateValuesWidget(),
           ],
         ),
@@ -37,48 +33,55 @@ class ClimateValuesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: 16),
-        ClimateValueWidget(iconPath: 'assets/svg/temp.svg', label: 'Температура', value: '18,39'),
-        const SizedBox(height: 12),
-        ClimateValueWidget(iconPath: 'assets/svg/humi.svg', label: 'Влажность', value: '70,30'),
-        const SizedBox(height: 12),
-        ClimateValueWidget(iconPath: 'assets/svg/press.svg', label: 'Давление', value: '761,12'),
-      ],
-    );
-  }
-}
-
-class ClimateValueWidget extends StatelessWidget {
-  const ClimateValueWidget({
-    super.key,
-    required this.iconPath,
-    required this.label,
-    required this.value,
-  });
-
-  final String iconPath;
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
+        Column(
           children: [
-            SvgPicture.asset(
-              iconPath,
-              height: 20.0,
-              width: 20.0,
+            LabelCustomWidget(
+              iconPath: 'assets/svg/temp.svg',
+              label: 'Температура',
+              style: cardLabelTextStyle,
             ),
-            const SizedBox(width: 8),
-            Text(label, style: TextStyle(color: Colors.grey[600])),
+            LabelCustomWidget(
+              iconPath: 'assets/svg/humi.svg',
+              label: 'Влажность',
+              style: cardLabelTextStyle,
+            ),
+            LabelCustomWidget(
+              iconPath: 'assets/svg/press.svg',
+              label: 'Давление',
+              style: cardLabelTextStyle,
+            ),
+            LabelCustomWidget(
+              iconPath: 'assets/svg/press.svg',
+              label: 'Содержание eCO2',
+              style: cardLabelTextStyle,
+            ),
+            LabelCustomWidget(
+              iconPath: 'assets/svg/press.svg',
+              label: 'Содержание TVOC',
+              style: cardLabelTextStyle,
+            ),
           ],
         ),
-        Text(value, style: const TextStyle(fontWeight: FontWeight.bold)),
+        BlocBuilder<UpdateCardDataCubit, UpdateCardDataState>(
+          builder: (context, state) {
+            return state.maybeWhen(
+              orElse: () => SizedBox(),
+              fillClimateCard: (climateMeter) {
+                return Column(
+                  children: [
+                    ValueCustomWidget(value: '${climateMeter.temperature}'),
+                    ValueCustomWidget(value: '${climateMeter.humidity}'),
+                    ValueCustomWidget(value: '${climateMeter.pressure}'),
+                    ValueCustomWidget(value: '${climateMeter.co2}'),
+                    ValueCustomWidget(value: '${climateMeter.tvoc}'),
+                  ],
+                );
+              },
+            );
+          },
+        )
       ],
     );
   }

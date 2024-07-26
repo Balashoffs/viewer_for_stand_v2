@@ -6,7 +6,7 @@ part 'climate.g.dart';
 @freezed
 class ClimateMeter with _$ClimateMeter {
   const factory ClimateMeter({
-    required String name,
+    @Default('')String name,
     required double temperature,
     required double humidity,
     required double pressure,

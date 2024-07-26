@@ -4,10 +4,10 @@ import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:viewer_for_stand_v2/models/viewer_mqqt_message.dart';
 
-class ViewerMqttClient{
+class CustomMqttClient{
   final MqttServerClient _client;
   final MqttClientPayloadBuilder _messageBuilder;
-  ViewerMqttClient(String host, int port): _client = MqttServerClient.withPort(host, '', port), _messageBuilder = MqttClientPayloadBuilder();
+  CustomMqttClient(String host, int port): _client = MqttServerClient.withPort(host, '', port), _messageBuilder = MqttClientPayloadBuilder();
 
   late Function(MqttConnectionState connectionState) _callback;
 

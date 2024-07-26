@@ -3,22 +3,23 @@ import 'dart:developer';
 
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:viewer_for_stand_v2/models/viewer_mqqt_message.dart';
-import 'package:viewer_for_stand_v2/service/mqtt/viewer_mqtt_client.dart';
+import 'package:viewer_for_stand_v2/service/mqtt/custom_mqtt_client.dart';
 
-class ViewerMqttService {
-  final ViewerMqttClient _viewerMqttClient;
+class MqttRepository {
+  final CustomMqttClient _mqttClient;
 
   late StreamController<ActionMessage> _streamController;
 
   Stream<ActionMessage> get stream => _streamController.stream;
 
   StreamSink<ActionMessage> get sink => _streamController.sink;
+  bool initFlag = false;
 
-  ViewerMqttService(String host, int port)
-      : _viewerMqttClient = ViewerMqttClient(host, port);
+  MqttRepository(String host, int port)
+      : _mqttClient = CustomMqttClient(host, port);
 
   Future<void> init() async {
-    _viewerMqttClient.connectionStateCallBack = (state) {
+    _mqttClient.connectionStateCallBack = (state) {
       switch (state) {
         case MqttConnectionState.disconnecting:
         case MqttConnectionState.disconnected:
@@ -33,23 +34,23 @@ class ViewerMqttService {
           break;
       }
     };
-    _viewerMqttClient.connect();
+    _mqttClient.connect().then((value) => initFlag = true);
   }
 
   void _onPublishMessage(ActionMessage message) {
     log('${message}');
-    _viewerMqttClient.publish(message);
+    _mqttClient.publish(message);
   }
 
-  void subscribe(String topic){
-    _viewerMqttClient.subscribe(topic);
+  void subscribe(String topic) {
+    _mqttClient.subscribe(topic);
   }
 
-  void unSubscribe(String topic){
-    _viewerMqttClient.unSubscribe(topic);
+  void unSubscribe(String topic) {
+    _mqttClient.unSubscribe(topic);
   }
 
   Future<void> close() async {
-    _viewerMqttClient.close();
+    _mqttClient.close();
   }
 }

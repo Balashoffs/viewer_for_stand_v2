@@ -108,12 +108,13 @@ class __$$LightControlImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$LightControlImpl implements _LightControl {
-  const _$LightControlImpl({required this.name, required this.state});
+  const _$LightControlImpl({this.name = '', required this.state});
 
   factory _$LightControlImpl.fromJson(Map<String, dynamic> json) =>
       _$$LightControlImplFromJson(json);
 
   @override
+  @JsonKey()
   final String name;
   @override
   final bool state;
@@ -151,9 +152,8 @@ class _$LightControlImpl implements _LightControl {
 }
 
 abstract class _LightControl implements LightControl {
-  const factory _LightControl(
-      {required final String name,
-      required final bool state}) = _$LightControlImpl;
+  const factory _LightControl({final String name, required final bool state}) =
+      _$LightControlImpl;
 
   factory _LightControl.fromJson(Map<String, dynamic> json) =
       _$LightControlImpl.fromJson;

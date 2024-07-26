@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:viewer_for_stand_v2/cubit/control_card_cubit/control_card_cubit.dart';
 import 'package:viewer_for_stand_v2/repository/room_repository.dart';
+import 'package:viewer_for_stand_v2/service/card_control_service/card_control_service.dart';
+import 'package:viewer_for_stand_v2/service/mqtt/mqtt_repository.dart';
 import 'package:viewer_for_stand_v2/widget/ifc_viewer_frame/ifc_viewer_widget.dart';
 import 'package:viewer_for_stand_v2/widget/ifc_viewer_frame/repository/viewer_repository.dart';
 
@@ -43,12 +45,14 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   late ViewerRepository? _viewerRepository;
   late RoomRepository _roomRepository;
+  late MqttRepository _mqttRepository;
 
   @override
   void initState() {
     super.initState();
     _roomRepository = RoomRepository();
     _viewerRepository = ViewerRepository(_roomRepository);
+    _mqttRepository = MqttRepository('host', 0);
     _roomRepository.loadFromAsset().then((value) => _viewerRepository?.init());
   }
 
@@ -62,6 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
             create: (context) => ControlCardCubit(
               viewerRepository: _viewerRepository!,
               roomRepository: _roomRepository,
+              cardControlService: CardControlService(mqttRepository: _mqttRepository)
             ),
             child: MainPage(),
           ),

@@ -165,7 +165,7 @@ class __$$EnergyMeterImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$EnergyMeterImpl implements _EnergyMeter {
   const _$EnergyMeterImpl(
-      {required this.name,
+      {this.name = '',
       required this.power,
       required this.voltage,
       required this.current,
@@ -176,6 +176,7 @@ class _$EnergyMeterImpl implements _EnergyMeter {
       _$$EnergyMeterImplFromJson(json);
 
   @override
+  @JsonKey()
   final String name;
   @override
   final double power;
@@ -229,7 +230,7 @@ class _$EnergyMeterImpl implements _EnergyMeter {
 
 abstract class _EnergyMeter implements EnergyMeter {
   const factory _EnergyMeter(
-      {required final String name,
+      {final String name,
       required final double power,
       required final double voltage,
       required final double current,

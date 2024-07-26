@@ -4,7 +4,7 @@ enum CardControlType{
   meetingroom(2),
   restroom(3),
   power(4),
-  camer(5);
+  camera(5);
 
   const CardControlType(this.pos);
 

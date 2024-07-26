@@ -165,7 +165,7 @@ class __$$ClimateMeterImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ClimateMeterImpl implements _ClimateMeter {
   const _$ClimateMeterImpl(
-      {required this.name,
+      {this.name = '',
       required this.temperature,
       required this.humidity,
       required this.pressure,
@@ -176,6 +176,7 @@ class _$ClimateMeterImpl implements _ClimateMeter {
       _$$ClimateMeterImplFromJson(json);
 
   @override
+  @JsonKey()
   final String name;
   @override
   final double temperature;
@@ -230,7 +231,7 @@ class _$ClimateMeterImpl implements _ClimateMeter {
 
 abstract class _ClimateMeter implements ClimateMeter {
   const factory _ClimateMeter(
-      {required final String name,
+      {final String name,
       required final double temperature,
       required final double humidity,
       required final double pressure,

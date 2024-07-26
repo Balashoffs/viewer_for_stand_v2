@@ -108,12 +108,13 @@ class __$$CurtainsControlImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$CurtainsControlImpl implements _CurtainsControl {
-  const _$CurtainsControlImpl({required this.name, required this.direction});
+  const _$CurtainsControlImpl({this.name = '', required this.direction});
 
   factory _$CurtainsControlImpl.fromJson(Map<String, dynamic> json) =>
       _$$CurtainsControlImplFromJson(json);
 
   @override
+  @JsonKey()
   final String name;
   @override
   final int direction;
@@ -154,7 +155,7 @@ class _$CurtainsControlImpl implements _CurtainsControl {
 
 abstract class _CurtainsControl implements CurtainsControl {
   const factory _CurtainsControl(
-      {required final String name,
+      {final String name,
       required final int direction}) = _$CurtainsControlImpl;
 
   factory _CurtainsControl.fromJson(Map<String, dynamic> json) =

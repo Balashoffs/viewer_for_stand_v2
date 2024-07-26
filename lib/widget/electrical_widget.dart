@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:viewer_for_stand_v2/widget/custom/custom.dart';
+import 'package:viewer_for_stand_v2/widget/text_style.dart';
 
-class ElectricitySupplyWidget extends StatelessWidget {
-  const ElectricitySupplyWidget({Key? key}) : super(key: key);
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:viewer_for_stand_v2/cubit/update_card_data/update_card_data_cubit.dart';
+
+class EnergyMeterCardWidget extends StatelessWidget {
+  const EnergyMeterCardWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,49 +15,78 @@ class ElectricitySupplyWidget extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Электроснабжение',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                SvgPicture.asset('assets/svg/electrosity.svg', width: 48.0, height: 48.0,),
-              ],
+            LabelCustomWidget(
+              iconPath: 'assets/svg/electrosity.svg',
+              label: 'Электроснабжение',
+              style: cardHeadTextStyle,
             ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    SvgPicture.asset('assets/svg/power.svg', width: 20.0, height: 20.0,),
-                    const SizedBox(width: 8),
-                    const Text('Мощность', style: TextStyle(color: Colors.grey)),
-                  ],
-                ),
-                const Text('13,34', style: TextStyle(fontWeight: FontWeight.bold)),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    SvgPicture.asset('assets/svg/voltage.svg', width: 20.0, height: 20.0,),
-                    const SizedBox(width: 8),
-                    const Text('Напряжение', style: TextStyle(color: Colors.grey)),
-                  ],
-                ),
-                const Text('547,13', style: TextStyle(fontWeight: FontWeight.bold)),
-              ],
-            ),
+            const EnergyMeterDataWidget(),
           ],
         ),
       ),
     );
   }
 }
+
+class EnergyMeterDataWidget extends StatelessWidget {
+  const EnergyMeterDataWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Column(
+          children: [
+            LabelCustomWidget(
+              iconPath: 'assets/svg/power.svg',
+              label: 'Мощность, W',
+              style: cardLabelTextStyle,
+            ),
+            LabelCustomWidget(
+              iconPath: 'assets/svg/voltage.svg',
+              label: 'Напряжение, V',
+              style: cardLabelTextStyle,
+            ),
+            LabelCustomWidget(
+              iconPath: 'assets/svg/voltage.svg',
+              label: 'Ток, A',
+              style: cardLabelTextStyle,
+            ),
+            LabelCustomWidget(
+              iconPath: 'assets/svg/voltage.svg',
+              label: 'Коэфициент мощности, cosQ',
+              style: cardLabelTextStyle,
+            ),
+            LabelCustomWidget(
+              iconPath: 'assets/svg/voltage.svg',
+              label: 'частота, Hz',
+              style: cardLabelTextStyle,
+            ),
+          ],
+        ),
+        BlocBuilder<UpdateCardDataCubit, UpdateCardDataState>(
+          builder: (context, state) {
+            return state.maybeWhen(
+              orElse: () => SizedBox(),
+              fillPower: (energyMeter) {
+                return Column(
+                  children: [
+                    ValueCustomWidget(value: '${energyMeter.power}'),
+                    ValueCustomWidget(value: '${energyMeter.voltage}'),
+                    ValueCustomWidget(value: '${energyMeter.current}'),
+                    ValueCustomWidget(value: '${energyMeter.powerFactor}'),
+                    ValueCustomWidget(value: '${energyMeter.voltageFrequency}'),
+                  ],
+                );
+              },
+            );
+          },
+        )
+      ],
+    );
+  }
+}
+
+

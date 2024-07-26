@@ -12,7 +12,7 @@ part 'curtains.g.dart';
 @freezed
 class CurtainsControl with _$CurtainsControl {
   const factory CurtainsControl({
-    required String name,
+    @Default('')String name,
     required int direction,
   }) = _CurtainsControl;
 

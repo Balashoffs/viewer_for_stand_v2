@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:viewer_for_stand_v2/widget/custom/custom.dart';
+import 'package:viewer_for_stand_v2/widget/text_style.dart';
 
 import 'buttons/curtains_buttons.dart';
 import 'buttons/lighting_buttons.dart';
@@ -22,46 +24,27 @@ class OpenSpaceControlWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            name,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontFamily: 'NunitoSans-Bold',
-              color: Colors.deepPurple,
-              fontSize: 18,
+        LabelCustomWidget(iconPath: 'assets/svg/curtains.svg', label: 'Шторы', style: cardHeadTextStyle),
+        ButtonBar(
+          alignment: MainAxisAlignment.center,
+          children: <Widget>[
+            CurtainsButton(
+              icon: const Icon(Icons.arrow_upward),
+              onPressed: onCurtainsUp,
             ),
-          ),
-        ),
-        Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: SvgPicture.asset('assets/svg/curtains.svg'),
-            ),
-            ButtonBar(
-              alignment: MainAxisAlignment.center,
-              children: <Widget>[
-                CurtainsButton(
-                  icon: const Icon(Icons.arrow_upward),
-                  onPressed: onCurtainsUp,
-                ),
-                CurtainsButton(
-                  icon: const Icon(Icons.arrow_downward),
-                  onPressed: onCurtainsDown,
-                ),
-              ],
-            ),
-            SvgPicture.asset(
-              'assets/svg/lighting.svg',
-              fit: BoxFit.fitWidth,
-            ),
-            LightingButton(
-              onChanged: onLightingSwitch,
+            CurtainsButton(
+              icon: const Icon(Icons.arrow_downward),
+              onPressed: onCurtainsDown,
             ),
           ],
-        )
+        ),
+        SvgPicture.asset(
+          'assets/svg/lighting.svg',
+          fit: BoxFit.fitWidth,
+        ),
+        LightingButton(
+          onChanged: onLightingSwitch,
+        ),
       ],
     );
   }

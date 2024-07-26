@@ -8,7 +8,7 @@ part of 'light.dart';
 
 _$LightControlImpl _$$LightControlImplFromJson(Map<String, dynamic> json) =>
     _$LightControlImpl(
-      name: json['name'] as String,
+      name: json['name'] as String? ?? '',
       state: json['state'] as bool,
     );
 
