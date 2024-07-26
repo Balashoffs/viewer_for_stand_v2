@@ -21,17 +21,14 @@ class ControlCardCubit extends Cubit<ControlCardState> {
   ControlCardCubit({
     required ViewerRepository viewerRepository,
     required RoomRepository roomRepository,
-    required Size size,
   })  : _viewerRepository = viewerRepository,
         _roomRepository = roomRepository,
-        _size = size,
         super(const ControlCardState.initial()) {
     _viewerRepository.postCardStream.listen(_streamHandler);
   }
 
   final ViewerRepository _viewerRepository;
   final RoomRepository _roomRepository;
-  final Size _size;
 
   int _lastRoomId = -1;
 

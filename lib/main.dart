@@ -54,7 +54,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final Size size= MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
         body: RepositoryProvider.value(
@@ -63,7 +62,6 @@ class _MyHomePageState extends State<MyHomePage> {
             create: (context) => ControlCardCubit(
               viewerRepository: _viewerRepository!,
               roomRepository: _roomRepository,
-              size: size,
             ),
             child: MainPage(),
           ),

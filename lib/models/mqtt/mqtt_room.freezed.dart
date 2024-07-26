@@ -265,12 +265,6 @@ class _$MqttRoomImpl implements _MqttRoom {
       this,
     );
   }
-
-  @override
-  String getFullName() {
-    // TODO: implement getFullName
-    throw UnimplementedError();
-  }
 }
 
 abstract class _MqttRoom implements MqttRoom {
