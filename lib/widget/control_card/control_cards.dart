@@ -223,10 +223,10 @@ class RestSpaceControl2Widget extends StatelessWidget {
                   children: [
                     SvgPicture.asset(
                       'assets/svg/light_on.svg',
-                      width: 64.0,
-                      height: 64.0,
+                      width: 48.0,
+                      height: 48.0,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 12),
                     const Text(
                       'Освещение',
                       style: const TextStyle(
@@ -240,6 +240,47 @@ class RestSpaceControl2Widget extends StatelessWidget {
                 ),
                 CustomToggleSwitch(
                   onChanged: onBookingSwitch,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ElectricalControl2Widget extends StatelessWidget {
+  const ElectricalControl2Widget({
+    super.key,
+    required this.spaceName,
+    required this.spaceIconPath,
+  });
+
+  final String spaceName;
+  final String spaceIconPath;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.all(16.0),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  spaceName,
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                SvgPicture.asset(
+                  spaceIconPath,
+                  width: 32.0,
+                  height: 32.0,
                 ),
               ],
             ),

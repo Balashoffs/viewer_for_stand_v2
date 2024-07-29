@@ -19,32 +19,34 @@ import 'package:viewer_for_stand_v2/widget/security_widget.dart';
 typedef ControlFunc = Function(String deviceId, Map<String, dynamic>);
 
 class CardControlService {
-  final MqttRepository _mqttRepository;
+  final MqttRepository? _mqttRepository;
   late final CardControlBuilder _cardControlBuilder;
   MqttRoom? _mqttRoom;
 
-  CardControlService({required MqttRepository mqttRepository})
+  CardControlService({required MqttRepository? mqttRepository})
       : _mqttRepository = mqttRepository {
     _cardControlBuilder = CardControlBuilder(controlService: controlService);
   }
 
   Future<void> disableCardControlWidget() async {
     _mqttRoom?.devices.map((e) => e.topic).forEach((topic) {
-      _mqttRepository.unSubscribe(topic);
+      _mqttRepository?.unSubscribe(topic);
     });
     _mqttRoom = null;
   }
 
   Future<Widget> createNewCardControlWidget(MqttRoom mqr) async {
-    if (!_mqttRepository.initFlag) {
-      await _mqttRepository.init();
+    if (_mqttRepository != null) {
+      if (!_mqttRepository.initFlag) {
+        await _mqttRepository.init();
+      }
     }
-    if (_mqttRoom != null) {
+    if (_mqttRoom?.roomId == mqr.roomId) {
       await disableCardControlWidget();
     }
     _mqttRoom = mqr;
     _mqttRoom?.devices.map((e) => e.topic).forEach((topic) {
-      _mqttRepository.subscribe(topic);
+      _mqttRepository?.subscribe(topic);
     });
 
     return _cardControlBuilder.buildControlCard(room: _mqttRoom);
@@ -60,7 +62,7 @@ class CardControlService {
         String topic = buildTopic(_mqttRoom!.topic, deviceTopic);
         CustomMqttMessage actionMessage =
             CustomMqttMessage(topic: topic, value: message);
-        _mqttRepository.sink.add(actionMessage);
+        _mqttRepository?.sink.add(actionMessage);
       }
     }
   }
@@ -77,7 +79,7 @@ class CardControlBuilder {
   }) {
     if (room != null) {
       RoomType type = RoomType.findByPos(room.type);
-      String roomName = '${room.name} (${room.number})';
+      String roomName = room.number.isNotEmpty ? '${room.name} (${room.number})' : room.name;
       switch (type) {
         case RoomType.workroom:
           return FlexibleWidgetContainer(children: [
@@ -85,13 +87,13 @@ class CardControlBuilder {
               spaceName: roomName,
               onCurtainsSwitch: (p0) {
                 String? topic = findByType(room, DeviceType.curtains);
-                if(topic != null){
+                if (topic != null) {
                   _controlFunc(topic, CurtainsControl(direction: p0).toJson());
                 }
               },
               onLightingSwitch: (p0) {
                 String? topic = findByType(room, DeviceType.light);
-                if(topic != null){
+                if (topic != null) {
                   _controlFunc(topic, LightControl(isOn: p0).toJson());
                 }
               },
@@ -122,19 +124,32 @@ class CardControlBuilder {
             RestSpaceControl2Widget(
               spaceName: roomName,
               spaceIconPath: 'assets/svg/room_type_icons/3_kitchen_on.svg',
-              onBookingSwitch: (bool) {
-                _controlFunc('', {});
+              onBookingSwitch: (p0) {
+                String? topic = findByType(room, DeviceType.light);
+                if (topic != null) {
+                  _controlFunc(topic, LightControl(isOn: p0).toJson());
+                }
               },
             ),
             ClimateInfoWidget(),
           ]);
         case RoomType.power:
-          return const FlexibleWidgetContainer(
-            children: [EnergyMeterCardWidget()],
+          return FlexibleWidgetContainer(
+            children: [
+              ElectricalControl2Widget(
+                spaceName: roomName,
+                spaceIconPath: 'assets/svg/electrosity.svg',
+              ),
+              EnergyMeterCardWidget()
+            ],
           );
         case RoomType.camera:
-          return const FlexibleWidgetContainer(
+          return  FlexibleWidgetContainer(
             children: [
+              ElectricalControl2Widget(
+                spaceName: roomName,
+                spaceIconPath: 'assets/svg/camera.svg',
+              ),
               SecuritySettingsWidget(),
             ],
           );

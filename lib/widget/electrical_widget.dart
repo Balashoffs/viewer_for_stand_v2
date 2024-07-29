@@ -17,7 +17,7 @@ class EnergyMeterCardWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            LabelCustomWidget(
+            HeadLabelCustomWidget(
               iconPath: 'assets/svg/electrosity.svg',
               label: 'Электроснабжение',
               style: cardHeadTextStyle,
@@ -38,31 +38,42 @@ class EnergyMeterDataWidget extends StatelessWidget {
     return Row(
       children: [
         Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             LabelCustomWidget(
               iconPath: 'assets/svg/power.svg',
               label: 'Мощность, W',
               style: cardLabelTextStyle,
+              width: 24,
+              height: 24,
             ),
             LabelCustomWidget(
               iconPath: 'assets/svg/voltage.svg',
               label: 'Напряжение, V',
               style: cardLabelTextStyle,
+              width: 24,
+              height: 24,
             ),
             LabelCustomWidget(
               iconPath: 'assets/svg/voltage.svg',
               label: 'Ток, A',
               style: cardLabelTextStyle,
+              width: 24,
+              height: 24,
             ),
             LabelCustomWidget(
               iconPath: 'assets/svg/voltage.svg',
               label: 'Коэфициент мощности, cosQ',
               style: cardLabelTextStyle,
+              width: 24,
+              height: 24,
             ),
             LabelCustomWidget(
               iconPath: 'assets/svg/voltage.svg',
-              label: 'частота, Hz',
+              label: 'Частота, Hz',
               style: cardLabelTextStyle,
+              width: 24,
+              height: 24,
             ),
           ],
         ),

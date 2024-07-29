@@ -11,6 +11,9 @@ class ValueCustomWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Text(value, style: const TextStyle(fontWeight: FontWeight.bold));
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: Text(value, style: const TextStyle(fontWeight: FontWeight.bold)),
+    );
   }
 }

@@ -1,17 +1,6 @@
-<svg width="70" height="70" viewBox="0 0 94 94" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g filter="url(#filter0_d_204_3587)">
-        <rect x="19" y="19" width="56" height="56" rx="28" fill="#674DB2"/>
-        <path d="M58.3859 41.4978C58.2008 41.4037 57.9933 41.3626 57.7863 41.3791C57.5793 41.3957 57.3809 41.4692 57.2131 41.5916L54.875 43.2903V41.75C54.875 41.2527 54.6775 40.7758 54.3258 40.4242C53.9742 40.0725 53.4973 39.875 53 39.875H38C37.5027 39.875 37.0258 40.0725 36.6742 40.4242C36.3225 40.7758 36.125 41.2527 36.125 41.75V52.25C36.125 52.7473 36.3225 53.2242 36.6742 53.5758C37.0258 53.9275 37.5027 54.125 38 54.125H53C53.4973 54.125 53.9742 53.9275 54.3258 53.5758C54.6775 53.2242 54.875 52.7473 54.875 52.25V50.7097L57.2131 52.4103C57.381 52.5324 57.5794 52.6058 57.7863 52.6221C57.9933 52.6385 58.2007 52.5973 58.3857 52.503C58.5706 52.4088 58.7259 52.2652 58.8344 52.0882C58.9428 51.9112 59.0001 51.7076 59 51.5V42.5C59 42.2926 58.9426 42.0892 58.8343 41.9123C58.7259 41.7355 58.5707 41.592 58.3859 41.4978ZM52.625 51.875H38.375V42.125H52.625V51.875ZM56.75 49.2903L54.875 47.9272V46.0728L56.75 44.7097V49.2903Z" fill="white"/>
-    </g>
-    <defs>
-        <filter id="filter0_d_204_3587" x="0.9" y="0.9" width="92.2" height="92.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-            <feOffset/>
-            <feGaussianBlur stdDeviation="9.05"/>
-            <feColorMatrix type="matrix" values="0 0 0 0 0.44 0 0 0 0 0 0 0 0 0 1 0 0 0 0.43 0"/>
-            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_204_3587"/>
-            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_204_3587" result="shape"/>
-        </filter>
-    </defs>
+<svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10.4998 16.6667H13.4998C15.9998 16.6667 17.4998 14.8667 17.4998 12.6667V7.57666C17.4998 6.52666 16.6398 5.66666 15.5898 5.66666H8.41982C7.36982 5.66666 6.50982 6.52666 6.50982 7.57666V12.6667C6.49982 14.8667 7.99981 16.6667 10.4998 16.6667Z" stroke="#5C5C5C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M9.5 2.66666V5.66666" stroke="#5C5C5C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M14.5 2.66666V5.66666" stroke="#5C5C5C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M12 22.6667V16.6667" stroke="#5C5C5C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

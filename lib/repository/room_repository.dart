@@ -10,14 +10,13 @@ import 'package:viewer_for_stand_v2/widget/ifc_viewer_frame/repository/viewer_re
 
 class RoomRepository extends RoomMarkerRepository{
   final StreamController<MqttRoom> _postRoomController = StreamController.broadcast();
-  final StreamController<MqttRoom> _getRoomController = StreamController.broadcast();
 
   Stream<MqttRoom> get getPostRoomStream => _postRoomController.stream;
-  StreamSink<MqttRoom> get getPostSinkStream => _getRoomController.sink;
 
   int _lastRoomId = -1;
+  int get lastRoomId => _lastRoomId;
 
-  bool get currentRoomNull => _lastRoomId == -1;
+
 
   void postRoomMarkId(MessageAsMap incoming) async{
     Map<String, Object> message = Map.from(incoming);
@@ -33,7 +32,6 @@ class RoomRepository extends RoomMarkerRepository{
 
 
   void close(){
-    _getRoomController.close();
     _postRoomController.close();
   }
 
@@ -42,14 +40,13 @@ class RoomRepository extends RoomMarkerRepository{
   Future<void> selectingRoom(int roomId) async {
     MqttRoom? mqr = getRoom(roomId);
     if (mqr != null) {
-      if (_lastRoomId == roomId) {
+      if(_lastRoomId == roomId){
         _lastRoomId = -1;
-      } else {
+      }else{
         _lastRoomId = roomId;
       }
-      getPostSinkStream.add(mqr);
+      _postRoomController.add(mqr);
     }
-
   }
 
 }
