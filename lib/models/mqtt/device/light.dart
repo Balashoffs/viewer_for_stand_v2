@@ -7,7 +7,7 @@ part 'light.g.dart';
 class LightControl with _$LightControl {
   const factory LightControl({
      @Default('')String name,
-    required bool state,
+    required bool isOn,
   }) = _LightControl;
 
   factory LightControl.fromJson(Map<String, dynamic> json) => _$LightControlFromJson(json);

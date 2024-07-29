@@ -21,7 +21,7 @@ LightControl _$LightControlFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$LightControl {
   String get name => throw _privateConstructorUsedError;
-  bool get state => throw _privateConstructorUsedError;
+  bool get isOn => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +35,7 @@ abstract class $LightControlCopyWith<$Res> {
           LightControl value, $Res Function(LightControl) then) =
       _$LightControlCopyWithImpl<$Res, LightControl>;
   @useResult
-  $Res call({String name, bool state});
+  $Res call({String name, bool isOn});
 }
 
 /// @nodoc
@@ -52,16 +52,16 @@ class _$LightControlCopyWithImpl<$Res, $Val extends LightControl>
   @override
   $Res call({
     Object? name = null,
-    Object? state = null,
+    Object? isOn = null,
   }) {
     return _then(_value.copyWith(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      state: null == state
-          ? _value.state
-          : state // ignore: cast_nullable_to_non_nullable
+      isOn: null == isOn
+          ? _value.isOn
+          : isOn // ignore: cast_nullable_to_non_nullable
               as bool,
     ) as $Val);
   }
@@ -75,7 +75,7 @@ abstract class _$$LightControlImplCopyWith<$Res>
       __$$LightControlImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, bool state});
+  $Res call({String name, bool isOn});
 }
 
 /// @nodoc
@@ -90,16 +90,16 @@ class __$$LightControlImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? name = null,
-    Object? state = null,
+    Object? isOn = null,
   }) {
     return _then(_$LightControlImpl(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      state: null == state
-          ? _value.state
-          : state // ignore: cast_nullable_to_non_nullable
+      isOn: null == isOn
+          ? _value.isOn
+          : isOn // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
@@ -108,7 +108,7 @@ class __$$LightControlImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$LightControlImpl implements _LightControl {
-  const _$LightControlImpl({this.name = '', required this.state});
+  const _$LightControlImpl({this.name = '', required this.isOn});
 
   factory _$LightControlImpl.fromJson(Map<String, dynamic> json) =>
       _$$LightControlImplFromJson(json);
@@ -117,11 +117,11 @@ class _$LightControlImpl implements _LightControl {
   @JsonKey()
   final String name;
   @override
-  final bool state;
+  final bool isOn;
 
   @override
   String toString() {
-    return 'LightControl(name: $name, state: $state)';
+    return 'LightControl(name: $name, isOn: $isOn)';
   }
 
   @override
@@ -130,12 +130,12 @@ class _$LightControlImpl implements _LightControl {
         (other.runtimeType == runtimeType &&
             other is _$LightControlImpl &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.state, state) || other.state == state));
+            (identical(other.isOn, isOn) || other.isOn == isOn));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, name, state);
+  int get hashCode => Object.hash(runtimeType, name, isOn);
 
   @JsonKey(ignore: true)
   @override
@@ -152,7 +152,7 @@ class _$LightControlImpl implements _LightControl {
 }
 
 abstract class _LightControl implements LightControl {
-  const factory _LightControl({final String name, required final bool state}) =
+  const factory _LightControl({final String name, required final bool isOn}) =
       _$LightControlImpl;
 
   factory _LightControl.fromJson(Map<String, dynamic> json) =
@@ -161,7 +161,7 @@ abstract class _LightControl implements LightControl {
   @override
   String get name;
   @override
-  bool get state;
+  bool get isOn;
   @override
   @JsonKey(ignore: true)
   _$$LightControlImplCopyWith<_$LightControlImpl> get copyWith =>

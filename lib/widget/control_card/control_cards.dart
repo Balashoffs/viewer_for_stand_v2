@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:viewer_for_stand_v2/widget/buttons/lighting_buttons.dart';
 
+typedef OnLightingSwitch = Function( bool);
+typedef OnCurtainsSwitch = Function( int);
+
 class OpenSpaceControl2Widget extends StatelessWidget {
   const OpenSpaceControl2Widget({
     super.key,
@@ -13,8 +16,8 @@ class OpenSpaceControl2Widget extends StatelessWidget {
 
   final String spaceName;
   final String spaceIconPath;
-  final Function(bool) onLightingSwitch;
-  final Function(bool) onCurtainsSwitch;
+  final OnLightingSwitch onLightingSwitch;
+  final OnCurtainsSwitch onCurtainsSwitch;
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +67,9 @@ class OpenSpaceControl2Widget extends StatelessWidget {
                   ],
                 ),
                 CustomToggleSwitch(
-                  onChanged: onCurtainsSwitch,
+                  onChanged: (p0) {
+                    onCurtainsSwitch(p0 == true ? 1 : -1) ;
+                  },
                 ),
               ],
             ),

@@ -166,11 +166,11 @@ class __$$ClimateMeterImplCopyWithImpl<$Res>
 class _$ClimateMeterImpl implements _ClimateMeter {
   const _$ClimateMeterImpl(
       {this.name = '',
-      required this.temperature,
-      required this.humidity,
-      required this.pressure,
-      required this.co2,
-      required this.tvoc});
+      this.temperature = -1.0,
+      this.humidity = -1.0,
+      this.pressure = -1.0,
+      this.co2 = -1.0,
+      this.tvoc = -1.0});
 
   factory _$ClimateMeterImpl.fromJson(Map<String, dynamic> json) =>
       _$$ClimateMeterImplFromJson(json);
@@ -179,14 +179,19 @@ class _$ClimateMeterImpl implements _ClimateMeter {
   @JsonKey()
   final String name;
   @override
+  @JsonKey()
   final double temperature;
   @override
+  @JsonKey()
   final double humidity;
   @override
+  @JsonKey()
   final double pressure;
   @override
+  @JsonKey()
   final double co2;
   @override
+  @JsonKey()
   final double tvoc;
 
   @override
@@ -232,11 +237,11 @@ class _$ClimateMeterImpl implements _ClimateMeter {
 abstract class _ClimateMeter implements ClimateMeter {
   const factory _ClimateMeter(
       {final String name,
-      required final double temperature,
-      required final double humidity,
-      required final double pressure,
-      required final double co2,
-      required final double tvoc}) = _$ClimateMeterImpl;
+      final double temperature,
+      final double humidity,
+      final double pressure,
+      final double co2,
+      final double tvoc}) = _$ClimateMeterImpl;
 
   factory _ClimateMeter.fromJson(Map<String, dynamic> json) =
       _$ClimateMeterImpl.fromJson;

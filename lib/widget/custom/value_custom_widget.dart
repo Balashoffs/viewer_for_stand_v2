@@ -10,6 +10,7 @@ class ValueCustomWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Text(value, style: const TextStyle(fontWeight: FontWeight.bold));
   }
 }

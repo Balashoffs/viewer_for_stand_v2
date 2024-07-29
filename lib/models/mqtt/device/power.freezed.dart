@@ -166,11 +166,11 @@ class __$$EnergyMeterImplCopyWithImpl<$Res>
 class _$EnergyMeterImpl implements _EnergyMeter {
   const _$EnergyMeterImpl(
       {this.name = '',
-      required this.power,
-      required this.voltage,
-      required this.current,
-      required this.powerFactor,
-      required this.voltageFrequency});
+      this.power = -1.0,
+      this.voltage = -1.0,
+      this.current = -1.0,
+      this.powerFactor = -1.0,
+      this.voltageFrequency = -1.0});
 
   factory _$EnergyMeterImpl.fromJson(Map<String, dynamic> json) =>
       _$$EnergyMeterImplFromJson(json);
@@ -179,14 +179,19 @@ class _$EnergyMeterImpl implements _EnergyMeter {
   @JsonKey()
   final String name;
   @override
+  @JsonKey()
   final double power;
   @override
+  @JsonKey()
   final double voltage;
   @override
+  @JsonKey()
   final double current;
   @override
+  @JsonKey()
   final double powerFactor;
   @override
+  @JsonKey()
   final double voltageFrequency;
 
   @override
@@ -231,11 +236,11 @@ class _$EnergyMeterImpl implements _EnergyMeter {
 abstract class _EnergyMeter implements EnergyMeter {
   const factory _EnergyMeter(
       {final String name,
-      required final double power,
-      required final double voltage,
-      required final double current,
-      required final double powerFactor,
-      required final double voltageFrequency}) = _$EnergyMeterImpl;
+      final double power,
+      final double voltage,
+      final double current,
+      final double powerFactor,
+      final double voltageFrequency}) = _$EnergyMeterImpl;
 
   factory _EnergyMeter.fromJson(Map<String, dynamic> json) =
       _$EnergyMeterImpl.fromJson;

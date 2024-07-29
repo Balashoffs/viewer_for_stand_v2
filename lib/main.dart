@@ -68,15 +68,19 @@ class _MyHomePageState extends State<MyHomePage> {
               BlocProvider<ControlCardCubit>(
                 create: (context) {
                   return ControlCardCubit(
-                      viewerRepository: _viewerRepository!,
-                      roomRepository: _roomRepository,
-                      cardControlService:
-                          CardControlService(mqttRepository: _mqttRepository));
+                    roomRepository: _roomRepository,
+                    cardControlService: CardControlService(
+                      mqttRepository: _mqttRepository,
+                    ),
+                  );
                 },
               ),
               BlocProvider<UpdateCardDataCubit>(
                 create: (context) {
-                  return UpdateCardDataCubit(mqttRepository: _mqttRepository);
+                  return UpdateCardDataCubit(
+                    mqttRepository: _mqttRepository,
+                    roomRepository: _roomRepository,
+                  );
                 },
               )
             ],

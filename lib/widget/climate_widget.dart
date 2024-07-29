@@ -71,11 +71,21 @@ class ClimateValuesWidget extends StatelessWidget {
               fillClimateCard: (climateMeter) {
                 return Column(
                   children: [
-                    ValueCustomWidget(value: '${climateMeter.temperature}'),
-                    ValueCustomWidget(value: '${climateMeter.humidity}'),
-                    ValueCustomWidget(value: '${climateMeter.pressure}'),
-                    ValueCustomWidget(value: '${climateMeter.co2}'),
-                    ValueCustomWidget(value: '${climateMeter.tvoc}'),
+                    ValueCustomWidget(
+                      value: checkOnEmpty(climateMeter.temperature),
+                    ),
+                    ValueCustomWidget(
+                      value: checkOnEmpty(climateMeter.humidity),
+                    ),
+                    ValueCustomWidget(
+                      value: checkOnEmpty(climateMeter.pressure),
+                    ),
+                    ValueCustomWidget(
+                      value: checkOnEmpty(climateMeter.co2),
+                    ),
+                    ValueCustomWidget(
+                      value: checkOnEmpty(climateMeter.tvoc),
+                    ),
                   ],
                 );
               },
@@ -84,5 +94,12 @@ class ClimateValuesWidget extends StatelessWidget {
         )
       ],
     );
+  }
+
+  String checkOnEmpty(double value) {
+    if (value.compareTo(-1.0) == 0) {
+      return '??';
+    }
+    return '$value';
   }
 }

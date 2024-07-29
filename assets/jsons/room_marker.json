@@ -7,13 +7,11 @@
     "type": 1,
     "devices": [
       {
-        "uuid": "ed6cf729-3eff-4b78-80e9-3f5bc2ce438f",
-        "topic": "lectory_3_3/light_switch",
+        "topic": "light_switch",
         "type": "light"
       },
       {
-        "uuid": "59674093-6dac-43cb-8279-5c324e1c6726",
-        "topic": "lectory_3_3/climate",
+        "topic": "climate_data",
         "type": "climate"
       }
     ],
@@ -37,24 +35,16 @@
     "type": 1,
     "devices": [
       {
-        "uuid": "2a973a71-9321-4a5b-b96d-35bbc600325c",
-        "topic": "lectory_3_4/curtains_switch",
+        "topic": "curtains_switch",
         "type": "curtains"
       },
       {
-        "uuid": "bc380a3e-768a-4559-9422-36a31d071028",
-        "topic": "lectory_3_4/light_switch",
+        "topic": "light_switch",
         "type": "light"
       },
       {
-        "uuid": "556e3a70-6f31-4301-a69e-e9c75042c213",
-        "topic": "lectory_3_4/climate",
+        "topic": "climate_data",
         "type": "climate"
-      },
-      {
-        "uuid": "d5c1ac6e-1e13-425e-af7b-0f49cc80eac0",
-        "topic": "lectory_3_4/curtains_switch",
-        "type": "curtains"
       }
     ],
     "roomMarker": {
@@ -77,13 +67,12 @@
     "type": 1,
     "devices": [
       {
-        "uuid": "7ef6cb92-3016-4c19-9c29-a51b097e160f",
-        "topic": "office_room_3_5/curtains_switch",
+        "topic": "curtains_switch",
         "type": "curtains"
       },
       {
         "uuid": "7590757c-26da-40c4-9082-9692e1d5d6f7",
-        "topic": "office_room_3_5/climate",
+        "topic": "climate_data",
         "type": "climate"
       },
       {

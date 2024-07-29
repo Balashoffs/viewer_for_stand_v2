@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
-import 'package:viewer_for_stand_v2/models/viewer_mqqt_message.dart';
+import 'package:viewer_for_stand_v2/models/custom_mqtt_message.dart';
 
 class CustomMqttClient{
   final MqttServerClient _client;
@@ -87,7 +87,7 @@ class CustomMqttClient{
   }
 
 
-  Future<void> publish(ActionMessage message)async{
+  Future<void> publish(CustomMqttMessage message)async{
     _messageBuilder.clear();
     _messageBuilder.addString(message.value);
     String topic = message.topic;

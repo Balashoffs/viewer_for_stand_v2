@@ -1,11 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:viewer_for_stand_v2/model/card_control_type.dart';
+import 'package:viewer_for_stand_v2/models/device/device_type.dart';
+import 'package:viewer_for_stand_v2/models/mqtt/device/curtains.dart';
+import 'package:viewer_for_stand_v2/models/mqtt/device/light.dart';
+import 'package:viewer_for_stand_v2/models/room/room_type.dart';
 import 'package:viewer_for_stand_v2/models/mqtt/mqtt_device.dart';
 import 'package:viewer_for_stand_v2/models/mqtt/mqtt_room.dart';
-import 'package:viewer_for_stand_v2/models/viewer_mqqt_message.dart';
+import 'package:viewer_for_stand_v2/models/custom_mqtt_message.dart';
 import 'package:viewer_for_stand_v2/service/mqtt/mqtt_repository.dart';
+import 'package:viewer_for_stand_v2/util/mqqt_topic_convertor.dart';
 import 'package:viewer_for_stand_v2/widget/climate_widget.dart';
 import 'package:viewer_for_stand_v2/widget/control_card/control_cards.dart';
 import 'package:viewer_for_stand_v2/widget/custom/flexible_widget_container.dart';
@@ -42,23 +46,20 @@ class CardControlService {
     _mqttRoom?.devices.map((e) => e.topic).forEach((topic) {
       _mqttRepository.subscribe(topic);
     });
-    CardControlType type = CardControlType.findByPos(mqr.type);
-    return _cardControlBuilder.buildControlCard(
-      roomId: mqr.roomId,
-      type: type,
-      roomName: '${mqr.name} (${mqr.number})',
-    );
+
+    return _cardControlBuilder.buildControlCard(room: _mqttRoom);
   }
 
-  void controlService(String deviceId, Map<String, dynamic> action) {
+  void controlService(String deviceTopic, Map<String, dynamic> action) {
     if (_mqttRoom != null) {
       String message = jsonEncode(action);
       MqttDevice? mqttDevice = _mqttRoom?.devices
-          .where((element) => element.uuid == deviceId)
+          .where((element) => element.type == deviceTopic)
           .firstOrNull;
       if (mqttDevice != null) {
-        ActionMessage actionMessage =
-            ActionMessage(topic: deviceId, value: message);
+        String topic = buildTopic(_mqttRoom!.topic, deviceTopic);
+        CustomMqttMessage actionMessage =
+            CustomMqttMessage(topic: topic, value: message);
         _mqttRepository.sink.add(actionMessage);
       }
     }
@@ -72,42 +73,51 @@ class CardControlBuilder {
       : _controlFunc = controlService;
 
   Widget buildControlCard({
-    required CardControlType type,
-    required int roomId,
-    required String roomName,
+    required MqttRoom? room,
   }) {
-    {
+    if (room != null) {
+      RoomType type = RoomType.findByPos(room.type);
+      String roomName = '${room.name} (${room.number})';
       switch (type) {
-        case CardControlType.workroom:
+        case RoomType.workroom:
           return FlexibleWidgetContainer(children: [
             OpenSpaceControl2Widget(
               spaceName: roomName,
               onCurtainsSwitch: (p0) {
-                _controlFunc('', {});
+                String? topic = findByType(room, DeviceType.curtains);
+                if(topic != null){
+                  _controlFunc(topic, CurtainsControl(direction: p0).toJson());
+                }
               },
               onLightingSwitch: (p0) {
-                _controlFunc('', {});
+                String? topic = findByType(room, DeviceType.light);
+                if(topic != null){
+                  _controlFunc(topic, LightControl(isOn: p0).toJson());
+                }
               },
               spaceIconPath:
                   'assets/svg/room_type_icons/1_working_space_on.svg',
             ),
-            ClimateInfoWidget(),
+            const ClimateInfoWidget(),
           ]);
-        case CardControlType.meetingroom:
+        case RoomType.meetingroom:
           return FlexibleWidgetContainer(
             children: [
               MeetingControl2Widget(
                 spaceName: roomName,
                 onBookingSwitch: (p0) {
-                  _controlFunc('', {});
+                  String? topic = findByType(room, DeviceType.light);
+                  if (topic != null) {
+                    _controlFunc(topic, LightControl(isOn: p0).toJson());
+                  }
                 },
                 spaceIconPath:
                     'assets/svg/room_type_icons/1_working_space_on.svg',
               ),
-              ClimateInfoWidget(),
+              const ClimateInfoWidget(),
             ],
           );
-        case CardControlType.restroom:
+        case RoomType.restroom:
           return FlexibleWidgetContainer(children: [
             RestSpaceControl2Widget(
               spaceName: roomName,
@@ -118,19 +128,20 @@ class CardControlBuilder {
             ),
             ClimateInfoWidget(),
           ]);
-        case CardControlType.power:
+        case RoomType.power:
           return const FlexibleWidgetContainer(
             children: [EnergyMeterCardWidget()],
           );
-        case CardControlType.camera:
+        case RoomType.camera:
           return const FlexibleWidgetContainer(
             children: [
               SecuritySettingsWidget(),
             ],
           );
         default:
-          return SizedBox.shrink();
+          break;
       }
     }
+    return SizedBox.shrink();
   }
 }

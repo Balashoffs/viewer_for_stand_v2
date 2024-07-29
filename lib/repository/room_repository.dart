@@ -1,20 +1,69 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:viewer_for_stand_v2/models/mqtt/mqtt_device.dart';
 import 'package:viewer_for_stand_v2/models/mqtt/mqtt_room.dart';
 import 'package:viewer_for_stand_v2/models/room/room_marker_with_id.dart';
+import 'package:viewer_for_stand_v2/widget/ifc_viewer_frame/repository/message_mv.dart';
+import 'package:viewer_for_stand_v2/widget/ifc_viewer_frame/repository/viewer_repository.dart';
 
-class RoomRepository {
+class RoomRepository extends RoomMarkerRepository{
+  final StreamController<MqttRoom> _postRoomController = StreamController.broadcast();
+  final StreamController<MqttRoom> _getRoomController = StreamController.broadcast();
+
+  Stream<MqttRoom> get getPostRoomStream => _postRoomController.stream;
+  StreamSink<MqttRoom> get getPostSinkStream => _getRoomController.sink;
+
+  int _lastRoomId = -1;
+
+  bool get currentRoomNull => _lastRoomId == -1;
+
+  void postRoomMarkId(MessageAsMap incoming) async{
+    Map<String, Object> message = Map.from(incoming);
+    MessageTypeMV type = MessageTypeMV.findBy(message['type'] as String);
+    if (type == MessageTypeMV.postSelectMarkVM) {
+      String json = message['body'] as String;
+      int roomId = jsonDecode(json)['roomId'] ?? -1;
+      if (roomId != -1) {
+        await selectingRoom(roomId);
+      }
+    }
+  }
+
+
+  void close(){
+    _getRoomController.close();
+    _postRoomController.close();
+  }
+
+
+
+  Future<void> selectingRoom(int roomId) async {
+    MqttRoom? mqr = getRoom(roomId);
+    if (mqr != null) {
+      if (_lastRoomId == roomId) {
+        _lastRoomId = -1;
+      } else {
+        _lastRoomId = roomId;
+      }
+      getPostSinkStream.add(mqr);
+    }
+
+  }
+
+}
+
+class RoomMarkerRepository{
   final Map<int, MqttRoom> _rooms = {};
   final Map<int, List<MqttDevice>> _devices = {};
 
   Future<void> loadFromAsset() async {
     String json = await rootBundle.loadString('assets/jsons/rooms.json');
     var foundRooms = jsonDecode(json).map((map) {
-      MqttRoom mqtr = MqttRoom.fromJson(map);
-      print(mqtr);
-      return mqtr;
+      MqttRoom mqttRoom = MqttRoom.fromJson(map);
+      print(mqttRoom);
+      return mqttRoom;
     }).toList();
     for (var element in foundRooms) {
       _rooms[element.roomId] = element;
@@ -26,11 +75,11 @@ class RoomRepository {
     return _rooms.values
         .map(
           (e) => RoomMarkerWithId(
-            position3D: e.roomMarker!.position3D,
-            markerSvgIcon: e.roomMarker!.markerSvgIcon,
-            roomId: e.roomId,
-          ),
-        )
+        position3D: e.roomMarker!.position3D,
+        markerSvgIcon: e.roomMarker!.markerSvgIcon,
+        roomId: e.roomId,
+      ),
+    )
         .nonNulls
         .toList();
   }

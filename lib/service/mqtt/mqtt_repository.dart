@@ -2,17 +2,17 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:mqtt_client/mqtt_client.dart';
-import 'package:viewer_for_stand_v2/models/viewer_mqqt_message.dart';
+import 'package:viewer_for_stand_v2/models/custom_mqtt_message.dart';
 import 'package:viewer_for_stand_v2/service/mqtt/custom_mqtt_client.dart';
 
 class MqttRepository {
   final CustomMqttClient _mqttClient;
 
-  late StreamController<ActionMessage> _streamController;
+  late StreamController<CustomMqttMessage> _streamController;
 
-  Stream<ActionMessage> get stream => _streamController.stream;
+  Stream<CustomMqttMessage> get stream => _streamController.stream;
 
-  StreamSink<ActionMessage> get sink => _streamController.sink;
+  StreamSink<CustomMqttMessage> get sink => _streamController.sink;
   bool initFlag = false;
 
   MqttRepository(String host, int port)
@@ -37,7 +37,7 @@ class MqttRepository {
     _mqttClient.connect().then((value) => initFlag = true);
   }
 
-  void _onPublishMessage(ActionMessage message) {
+  void _onPublishMessage(CustomMqttMessage message) {
     log('${message}');
     _mqttClient.publish(message);
   }

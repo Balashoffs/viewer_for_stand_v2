@@ -20,7 +20,6 @@ MqttDevice _$MqttDeviceFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$MqttDevice {
-  String get uuid => throw _privateConstructorUsedError;
   String get topic => throw _privateConstructorUsedError;
   String get type => throw _privateConstructorUsedError;
 
@@ -36,7 +35,7 @@ abstract class $MqttDeviceCopyWith<$Res> {
           MqttDevice value, $Res Function(MqttDevice) then) =
       _$MqttDeviceCopyWithImpl<$Res, MqttDevice>;
   @useResult
-  $Res call({String uuid, String topic, String type});
+  $Res call({String topic, String type});
 }
 
 /// @nodoc
@@ -52,15 +51,10 @@ class _$MqttDeviceCopyWithImpl<$Res, $Val extends MqttDevice>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? uuid = null,
     Object? topic = null,
     Object? type = null,
   }) {
     return _then(_value.copyWith(
-      uuid: null == uuid
-          ? _value.uuid
-          : uuid // ignore: cast_nullable_to_non_nullable
-              as String,
       topic: null == topic
           ? _value.topic
           : topic // ignore: cast_nullable_to_non_nullable
@@ -81,7 +75,7 @@ abstract class _$$MqttDeviceImplCopyWith<$Res>
       __$$MqttDeviceImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String uuid, String topic, String type});
+  $Res call({String topic, String type});
 }
 
 /// @nodoc
@@ -95,15 +89,10 @@ class __$$MqttDeviceImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? uuid = null,
     Object? topic = null,
     Object? type = null,
   }) {
     return _then(_$MqttDeviceImpl(
-      uuid: null == uuid
-          ? _value.uuid
-          : uuid // ignore: cast_nullable_to_non_nullable
-              as String,
       topic: null == topic
           ? _value.topic
           : topic // ignore: cast_nullable_to_non_nullable
@@ -119,14 +108,11 @@ class __$$MqttDeviceImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$MqttDeviceImpl implements _MqttDevice {
-  const _$MqttDeviceImpl(
-      {required this.uuid, required this.topic, required this.type});
+  const _$MqttDeviceImpl({required this.topic, required this.type});
 
   factory _$MqttDeviceImpl.fromJson(Map<String, dynamic> json) =>
       _$$MqttDeviceImplFromJson(json);
 
-  @override
-  final String uuid;
   @override
   final String topic;
   @override
@@ -134,7 +120,7 @@ class _$MqttDeviceImpl implements _MqttDevice {
 
   @override
   String toString() {
-    return 'MqttDevice(uuid: $uuid, topic: $topic, type: $type)';
+    return 'MqttDevice(topic: $topic, type: $type)';
   }
 
   @override
@@ -142,14 +128,13 @@ class _$MqttDeviceImpl implements _MqttDevice {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$MqttDeviceImpl &&
-            (identical(other.uuid, uuid) || other.uuid == uuid) &&
             (identical(other.topic, topic) || other.topic == topic) &&
             (identical(other.type, type) || other.type == type));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, uuid, topic, type);
+  int get hashCode => Object.hash(runtimeType, topic, type);
 
   @JsonKey(ignore: true)
   @override
@@ -167,15 +152,12 @@ class _$MqttDeviceImpl implements _MqttDevice {
 
 abstract class _MqttDevice implements MqttDevice {
   const factory _MqttDevice(
-      {required final String uuid,
-      required final String topic,
+      {required final String topic,
       required final String type}) = _$MqttDeviceImpl;
 
   factory _MqttDevice.fromJson(Map<String, dynamic> json) =
       _$MqttDeviceImpl.fromJson;
 
-  @override
-  String get uuid;
   @override
   String get topic;
   @override

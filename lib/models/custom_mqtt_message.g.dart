@@ -1,19 +1,21 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'mqtt_device.dart';
+part of 'custom_mqtt_message.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$MqttDeviceImpl _$$MqttDeviceImplFromJson(Map<String, dynamic> json) =>
-    _$MqttDeviceImpl(
+_$CustomMqttMessageImpl _$$CustomMqttMessageImplFromJson(
+        Map<String, dynamic> json) =>
+    _$CustomMqttMessageImpl(
       topic: json['topic'] as String,
-      type: json['type'] as String,
+      value: json['value'] as String,
     );
 
-Map<String, dynamic> _$$MqttDeviceImplToJson(_$MqttDeviceImpl instance) =>
+Map<String, dynamic> _$$CustomMqttMessageImplToJson(
+        _$CustomMqttMessageImpl instance) =>
     <String, dynamic>{
       'topic': instance.topic,
-      'type': instance.type,
+      'value': instance.value,
     };

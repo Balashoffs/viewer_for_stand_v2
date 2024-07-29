@@ -9,11 +9,11 @@ part of 'light.dart';
 _$LightControlImpl _$$LightControlImplFromJson(Map<String, dynamic> json) =>
     _$LightControlImpl(
       name: json['name'] as String? ?? '',
-      state: json['state'] as bool,
+      isOn: json['isOn'] as bool,
     );
 
 Map<String, dynamic> _$$LightControlImplToJson(_$LightControlImpl instance) =>
     <String, dynamic>{
       'name': instance.name,
-      'state': instance.state,
+      'isOn': instance.isOn,
     };

@@ -7,11 +7,11 @@ part 'power.g.dart';
 class EnergyMeter with _$EnergyMeter {
   const factory EnergyMeter({
     @Default('')String name,
-    required double power,
-    required double voltage,
-    required double current,
-    required double powerFactor,
-    required double voltageFrequency,
+    @Default(-1.0) double power,
+    @Default(-1.0) double voltage,
+    @Default(-1.0) double current,
+    @Default(-1.0) double powerFactor,
+    @Default(-1.0) double voltageFrequency,
   }) = _EnergyMeter;
 
   factory EnergyMeter.fromJson(Map<String, dynamic> json) => _$EnergyMeterFromJson(json);
