@@ -15,6 +15,7 @@ import 'package:viewer_for_stand_v2/widget/ifc_viewer_frame/repository/viewer_re
 import 'package:viewer_for_stand_v2/widget/security_widget.dart';
 
 part 'control_card_state.dart';
+
 part 'control_card_cubit.freezed.dart';
 
 class ControlCardCubit extends Cubit<ControlCardState> {
@@ -32,8 +33,8 @@ class ControlCardCubit extends Cubit<ControlCardState> {
     _roomRepository.getPostRoomStream.listen(_handleRoomEvent);
   }
 
-  void _handleRoomEvent(MqttRoom room) async{
-    if (_roomRepository.currentRoomNull) {
+  void _handleRoomEvent(MqttRoom room) async {
+    if (_roomRepository.lastRoomId == -1) {
       emit(const ControlCardState.initial());
       _cardControlService.disableCardControlWidget();
     } else {

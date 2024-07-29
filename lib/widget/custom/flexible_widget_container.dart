@@ -12,15 +12,11 @@ class FlexibleWidgetContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      flex: flex,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: children,
-        ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: children,
       ),
-      // fit: FlexFit.loose,
     );
   }
 }

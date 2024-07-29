@@ -1,18 +1,24 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:viewer_for_stand_v2/models/custom_mqtt_message.dart';
-import 'package:viewer_for_stand_v2/service/mqtt/custom_mqtt_client.dart';
+import 'package:viewer_for_stand_v2/models/device/device_type.dart';
+import 'package:viewer_for_stand_v2/service/mqtt/stand_mqtt_client.dart';
 
 class MqttRepository {
   final CustomMqttClient _mqttClient;
 
-  late StreamController<CustomMqttMessage> _streamController;
+  late StreamController<PublishMqttMessage> _publishStreamController;
+  Stream<PublishMqttMessage> get publishStream => _publishStreamController.stream;
+  StreamSink<PublishMqttMessage> get publishSink => _publishStreamController.sink;
 
-  Stream<CustomMqttMessage> get stream => _streamController.stream;
 
-  StreamSink<CustomMqttMessage> get sink => _streamController.sink;
+  late StreamController<PollMqttMessage> _pollStreamController;
+  Stream<PollMqttMessage> get pollStream => _pollStreamController.stream;
+  StreamSink<PollMqttMessage> get pollSink => _pollStreamController.sink;
+
   bool initFlag = false;
 
   MqttRepository(String host, int port)
@@ -24,22 +30,39 @@ class MqttRepository {
         case MqttConnectionState.disconnecting:
         case MqttConnectionState.disconnected:
         case MqttConnectionState.faulted:
-          _streamController.close();
+          _publishStreamController.close();
           break;
         case MqttConnectionState.connecting:
-          _streamController = StreamController();
+          _publishStreamController = StreamController();
+          _pollStreamController = StreamController();
+          _mqttClient.messageCallBack = _onIncomingMessage;
           break;
         case MqttConnectionState.connected:
-          stream.listen(_onPublishMessage);
+          publishStream.listen(_onPublishMessage);
           break;
       }
     };
-    _mqttClient.connect().then((value) => initFlag = true);
+    await _mqttClient
+        .connect()
+        .then((value) => initFlag = true);
   }
 
-  void _onPublishMessage(CustomMqttMessage message) {
+  void _onPublishMessage(PublishMqttMessage message) {
     log('${message}');
     _mqttClient.publish(message);
+  }
+
+  void _onIncomingMessage(String message) {
+    Map<String, dynamic> map = jsonDecode(message);
+    if(map.containsKey('name')){
+      String name = map['name'];
+      int index = name.lastIndexOf('/') + 1;
+      name = name.substring(index).split('_')[0];
+      DeviceType deviceType = DeviceType.findBy(name);
+      final pmm = PollMqttMessage(type: deviceType, map: map);
+      print(pmm);
+      pollSink.add(pmm);
+    }
   }
 
   void subscribe(String topic) {

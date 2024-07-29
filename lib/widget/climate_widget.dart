@@ -16,10 +16,11 @@ class ClimateInfoWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            LabelCustomWidget(
-                iconPath: 'assets/svg/climate.svg',
-                label: 'Климат',
-                style: cardHeadTextStyle),
+            HeadLabelCustomWidget(
+              iconPath: 'assets/svg/climate.svg',
+              label: 'Климат',
+              style: cardHeadTextStyle,
+            ),
             ClimateValuesWidget(),
           ],
         ),
@@ -34,33 +35,45 @@ class ClimateValuesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             LabelCustomWidget(
               iconPath: 'assets/svg/temp.svg',
               label: 'Температура',
               style: cardLabelTextStyle,
+              width: 24,
+              height: 24,
             ),
             LabelCustomWidget(
               iconPath: 'assets/svg/humi.svg',
               label: 'Влажность',
               style: cardLabelTextStyle,
+              width: 24,
+              height: 24,
             ),
             LabelCustomWidget(
               iconPath: 'assets/svg/press.svg',
               label: 'Давление',
               style: cardLabelTextStyle,
+              width: 24,
+              height: 24,
             ),
             LabelCustomWidget(
               iconPath: 'assets/svg/press.svg',
               label: 'Содержание eCO2',
               style: cardLabelTextStyle,
+              width: 24,
+              height: 24,
             ),
             LabelCustomWidget(
               iconPath: 'assets/svg/press.svg',
               label: 'Содержание TVOC',
               style: cardLabelTextStyle,
+              width: 24,
+              height: 24,
             ),
           ],
         ),
@@ -70,6 +83,7 @@ class ClimateValuesWidget extends StatelessWidget {
               orElse: () => SizedBox(),
               fillClimateCard: (climateMeter) {
                 return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ValueCustomWidget(
                       value: checkOnEmpty(climateMeter.temperature),

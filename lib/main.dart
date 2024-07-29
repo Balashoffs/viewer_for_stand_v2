@@ -46,15 +46,16 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   late ViewerRepository? _viewerRepository;
   late RoomRepository _roomRepository;
-  late MqttRepository _mqttRepository;
+  late MqttRepository? _mqttRepository;
 
   @override
   void initState() {
     super.initState();
     _roomRepository = RoomRepository();
     _viewerRepository = ViewerRepository(_roomRepository);
-    _mqttRepository = MqttRepository('host', 0);
-    _roomRepository.loadFromAsset().then((value) => _viewerRepository?.init());
+    // _mqttRepository = MqttRepository('ws://192.168.88.189', 1884);
+    _mqttRepository = MqttRepository('ws://127.0.0.1', 8080);
+    _roomRepository.loadFromAsset().then((value) => _viewerRepository?.init().then((value) => _mqttRepository?.init()));
   }
 
   @override
