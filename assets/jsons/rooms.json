@@ -93,6 +93,10 @@
       {
         "topic": "climate_data",
         "type": "climate"
+      },
+      {
+        "topic": "curtains_switch",
+        "type": "curtains"
       }
     ],
     "roomMarker": {
@@ -215,7 +219,7 @@
         "type": "climate"
       },
       {
-        "topic": "office_room_3_6/light_switch",
+        "topic": "light_switch",
         "type": "light"
       }
     ],

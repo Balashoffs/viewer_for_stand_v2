@@ -92,7 +92,6 @@ class CustomMqttClient {
       final recMess = element.payload as MqttPublishMessage;
       String messageAsString =
           MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
-      print('messageAsString: $messageAsString');
 
       _onIncomingMessage(messageAsString);
     });

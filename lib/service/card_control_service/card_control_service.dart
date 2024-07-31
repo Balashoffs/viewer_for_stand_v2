@@ -17,7 +17,7 @@ import 'package:viewer_for_stand_v2/widget/custom/flexible_widget_container.dart
 import 'package:viewer_for_stand_v2/widget/electrical_widget.dart';
 import 'package:viewer_for_stand_v2/widget/security_widget.dart';
 
-typedef ControlFunc = Function(String deviceId, Map<String, dynamic>);
+typedef ControlFunc = Function(DeviceType type, Map<String, dynamic>);
 
 class CardControlService {
   final StreamSink? _mqttPushMessageSink;
@@ -29,20 +29,23 @@ class CardControlService {
     _cardControlBuilder = CardControlBuilder(controlService: controlService);
   }
 
-
   Future<Widget> createNewCardControlWidget(MqttRoom mqr) async {
     _mqttRoom = mqr;
     return _cardControlBuilder.buildControlCard(room: _mqttRoom);
   }
 
-  void controlService(String deviceTopic, Map<String, dynamic> action) {
+  void controlService(DeviceType deviceType, Map<String, dynamic> action) {
     if (_mqttRoom != null) {
       String message = jsonEncode(action);
       MqttDevice? mqttDevice = _mqttRoom?.devices
-          .where((element) => element.type == deviceTopic)
+          .where((element) => element.type == deviceType.name)
           .firstOrNull;
+
       if (mqttDevice != null) {
-        String topic = buildTopic( deviceTopic, roomTopic: _mqttRoom!.topic);
+        String topic = buildTopic(
+          mqttDevice.topic,
+          roomTopic: _mqttRoom!.topic,
+        );
         PublishMqttMessage actionMessage =
             PublishMqttMessage(topic: topic, value: message);
         print('Build message for publishing: $actionMessage');
@@ -63,39 +66,40 @@ class CardControlBuilder {
   }) {
     if (room != null) {
       RoomType type = RoomType.findByPos(room.type);
-      String roomName = room.number.isNotEmpty ? '${room.name} (${room.number})' : room.name;
+      String roomName =
+          room.number.isNotEmpty ? '${room.name} (${room.number})' : room.name;
       switch (type) {
         case RoomType.workroom:
-          return FlexibleWidgetContainer(children: [
-            OpenSpaceControl2Widget(
-              spaceName: roomName,
-              onCurtainsSwitch: (p0) {
-                String? topic = findByType(room, DeviceType.curtains);
-                if (topic != null) {
-                  _controlFunc(topic, CurtainsControl(direction: p0).toJson());
-                }
-              },
-              onLightingSwitch: (p0) {
-                String? topic = findByType(room, DeviceType.light);
-                if (topic != null) {
-                  _controlFunc(topic, LightControl(isOn: p0).toJson());
-                }
-              },
-              spaceIconPath:
-                  'assets/svg/room_type_icons/1_working_space_on.svg',
-            ),
-            const ClimateInfoWidget(),
-          ]);
+          return FlexibleWidgetContainer(
+            children: [
+              OpenSpaceControl2Widget(
+                spaceName: roomName,
+                onCurtainsSwitch: (p0) {
+                  _controlFunc(
+                    DeviceType.curtains,
+                    CurtainsControl(direction: p0).toJson(),
+                  );
+                },
+                onLightingSwitch: (p0) {
+                  _controlFunc(
+                    DeviceType.light,
+                    LightControl(isOn: p0).toJson(),
+                  );
+                },
+                spaceIconPath:
+                    'assets/svg/room_type_icons/1_working_space_on.svg',
+              ),
+              const ClimateInfoWidget(),
+            ],
+          );
         case RoomType.meetingroom:
           return FlexibleWidgetContainer(
             children: [
               MeetingControl2Widget(
                 spaceName: roomName,
                 onBookingSwitch: (p0) {
-                  String? topic = findByType(room, DeviceType.light);
-                  if (topic != null) {
-                    _controlFunc(topic, LightControl(isOn: p0).toJson());
-                  }
+                  _controlFunc(
+                      DeviceType.light, LightControl(isOn: p0).toJson());
                 },
                 spaceIconPath:
                     'assets/svg/room_type_icons/1_working_space_on.svg',
@@ -104,19 +108,19 @@ class CardControlBuilder {
             ],
           );
         case RoomType.restroom:
-          return FlexibleWidgetContainer(children: [
-            RestSpaceControl2Widget(
-              spaceName: roomName,
-              spaceIconPath: 'assets/svg/room_type_icons/3_kitchen_on.svg',
-              onBookingSwitch: (p0) {
-                String? topic = findByType(room, DeviceType.light);
-                if (topic != null) {
-                  _controlFunc(topic, LightControl(isOn: p0).toJson());
-                }
-              },
-            ),
-            ClimateInfoWidget(),
-          ]);
+          return FlexibleWidgetContainer(
+            children: [
+              RestSpaceControl2Widget(
+                spaceName: roomName,
+                spaceIconPath: 'assets/svg/room_type_icons/3_kitchen_on.svg',
+                onBookingSwitch: (p0) {
+                  _controlFunc(
+                      DeviceType.light, LightControl(isOn: p0).toJson());
+                },
+              ),
+              ClimateInfoWidget(),
+            ],
+          );
         case RoomType.power:
           return FlexibleWidgetContainer(
             children: [
@@ -124,11 +128,11 @@ class CardControlBuilder {
                 spaceName: roomName,
                 spaceIconPath: 'assets/svg/electrosity.svg',
               ),
-              EnergyMeterCardWidget()
+              EnergyMeterCardWidget(),
             ],
           );
         case RoomType.camera:
-          return  FlexibleWidgetContainer(
+          return FlexibleWidgetContainer(
             children: [
               ElectricalControl2Widget(
                 spaceName: roomName,

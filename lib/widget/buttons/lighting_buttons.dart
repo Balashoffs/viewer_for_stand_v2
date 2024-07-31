@@ -85,14 +85,22 @@ class _CustomToggleSwitchState extends State<CustomToggleSwitch> {
 
   @override
   Widget build(BuildContext context) {
-    return Switch(
-      // This bool value toggles the switch.
-      value: light,
-      activeColor: Color.fromRGBO(103, 77, 178, 1.0),
-      onChanged: (bool value) {
-        light = value;
-        setState(() {});
-        widget.onChanged(value);
+    return GestureDetector(
+      child: Switch(
+        // This bool value toggles the switch.
+        value: light,
+        activeColor: Color.fromRGBO(103, 77, 178, 1.0),
+        onChanged: (bool value) {
+          setState(() {
+            light = value;
+            print('switch: $value');
+            widget.onChanged.call(value);
+          });
+        },
+      ),
+      onTap: () {
+        print('onTap: $light');
+        widget.onChanged.call(light);
       },
     );
   }

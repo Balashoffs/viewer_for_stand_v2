@@ -24,11 +24,13 @@ String? findByType(MqttRoom room, DeviceType type) {
     return element.type == type.name;
   }).firstOrNull;
   if (device != null) {
-   device.topic;
+    device.topic;
   }
   return null;
 }
 
-String buildTopic(String deviceTopic, { String roomTopic = ''}) {
-  return roomTopic.isEmpty ? '$rootTopic/$deviceTopic' : '$rootTopic/$roomTopic/$deviceTopic';
+String buildTopic(String deviceTopic, {String roomTopic = ''}) {
+  return roomTopic.isEmpty
+      ? '$rootTopic/$deviceTopic'
+      : '$rootTopic/$roomTopic/$deviceTopic';
 }
