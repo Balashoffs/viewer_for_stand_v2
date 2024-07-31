@@ -230,7 +230,7 @@ class _$MqttRoomImpl implements _MqttRoom {
 
   @override
   String toString() {
-    return 'MqttRoom(roomId: $roomId, name: $name, number: $number, topic: $topic, type: $type, devices: $devices, roomMarker: $roomMarker)';
+    return 'MqttRoom(roomId: $roomId, name: $name, number: $number, topic: $topic, type: $type,';
   }
 
   @override

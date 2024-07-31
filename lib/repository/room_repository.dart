@@ -2,21 +2,24 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:viewer_for_stand_v2/models/mqtt/mqtt_device.dart';
 import 'package:viewer_for_stand_v2/models/mqtt/mqtt_room.dart';
 import 'package:viewer_for_stand_v2/models/room/room_marker_with_id.dart';
+import 'package:viewer_for_stand_v2/repository/room/room_state.dart';
+import 'package:viewer_for_stand_v2/repository/room/room_state_data.dart';
 import 'package:viewer_for_stand_v2/widget/ifc_viewer_frame/repository/message_mv.dart';
 import 'package:viewer_for_stand_v2/widget/ifc_viewer_frame/repository/viewer_repository.dart';
 
-class RoomRepository extends RoomMarkerRepository{
-  final StreamController<MqttRoom> _postRoomController = StreamController.broadcast();
+class RoomRepository extends RoomMarkerRepository {
+  final StreamController<RoomStateData> _postRoomController =
+      StreamController.broadcast();
 
-  Stream<MqttRoom> get getPostRoomStream => _postRoomController.stream;
+  Stream<RoomStateData> get getPostRoomStream => _postRoomController.stream;
 
-  int _lastRoomId = -1;
-  int get lastRoomId => _lastRoomId;
+  RoomStateData _roomStateData = RoomStateData();
 
-  void postRoomMarkId(MessageAsMap incoming) async{
+  void postRoomMarkId(MessageAsMap incoming) async {
     Map<String, Object> message = Map.from(incoming);
     MessageTypeMV type = MessageTypeMV.findBy(message['type'] as String);
     if (type == MessageTypeMV.postSelectMarkVM) {
@@ -28,24 +31,52 @@ class RoomRepository extends RoomMarkerRepository{
     }
   }
 
-  void close(){
+  void close() {
     _postRoomController.close();
   }
 
   Future<void> selectingRoom(int roomId) async {
     MqttRoom? mqr = getRoom(roomId);
     if (mqr != null) {
-      if(_lastRoomId == roomId){
-        _lastRoomId = -1;
-      }else{
-        _lastRoomId = roomId;
+      print('before update: ${_roomStateData}');
+      updateRoomStateData(mqr);
+      print('after update: ${_roomStateData}');
+      _postRoomController.sink.add(_roomStateData);
+    }
+  }
+
+  void updateRoomStateData(MqttRoom mqttRoom) {
+    if (_roomStateData.state == RoomState.init) {
+      _roomStateData = _roomStateData.copyWith(
+        lastRoom: _roomStateData.currentRoom,
+        currentRoom: mqttRoom,
+        state: RoomState.change,
+      );
+    } else if (_roomStateData.state == RoomState.change) {
+      if (_roomStateData.lastRoom?.roomId == mqttRoom.roomId) {
+        _roomStateData = _roomStateData.copyWith(
+          lastRoom: _roomStateData.currentRoom,
+          currentRoom: mqttRoom,
+          state: RoomState.init,
+        );
+      } else if (_roomStateData.currentRoom?.roomId == mqttRoom.roomId) {
+        _roomStateData = _roomStateData.copyWith(
+          lastRoom: _roomStateData.currentRoom,
+          currentRoom: mqttRoom,
+          state: RoomState.init,
+        );
+      } else if (_roomStateData.lastRoom?.roomId != mqttRoom.roomId) {
+        _roomStateData = _roomStateData.copyWith(
+          lastRoom: _roomStateData.currentRoom,
+          state: RoomState.change,
+          currentRoom: mqttRoom,
+        );
       }
-      _postRoomController.sink.add(mqr);
     }
   }
 }
 
-class RoomMarkerRepository{
+class RoomMarkerRepository {
   final Map<int, MqttRoom> _rooms = {};
   final Map<int, List<MqttDevice>> _devices = {};
 
@@ -66,11 +97,11 @@ class RoomMarkerRepository{
     return _rooms.values
         .map(
           (e) => RoomMarkerWithId(
-        position3D: e.roomMarker!.position3D,
-        markerSvgIcon: e.roomMarker!.markerSvgIcon,
-        roomId: e.roomId,
-      ),
-    )
+            position3D: e.roomMarker!.position3D,
+            markerSvgIcon: e.roomMarker!.markerSvgIcon,
+            roomId: e.roomId,
+          ),
+        )
         .nonNulls
         .toList();
   }

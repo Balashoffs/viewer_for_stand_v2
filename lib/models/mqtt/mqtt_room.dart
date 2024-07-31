@@ -19,7 +19,14 @@ class MqttRoom with _$MqttRoom {
     RoomMarker? roomMarker,
   }) = _MqttRoom;
 
+  @override
+  String toString() {
+    return 'MqttRoom(roomId: $roomId, name: $name, number: $number, topic: $topic, type: $type,)';
+  }
+
   factory MqttRoom.fromJson(Map<String, dynamic> json) => _$MqttRoomFromJson(json);
+
+
 }
 
 

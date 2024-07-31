@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -19,32 +20,18 @@ import 'package:viewer_for_stand_v2/widget/security_widget.dart';
 typedef ControlFunc = Function(String deviceId, Map<String, dynamic>);
 
 class CardControlService {
-  final MqttRepository? _mqttRepository;
+  final StreamSink? _mqttPushMessageSink;
   late final CardControlBuilder _cardControlBuilder;
   MqttRoom? _mqttRoom;
 
   CardControlService({required MqttRepository? mqttRepository})
-      : _mqttRepository = mqttRepository {
+      : _mqttPushMessageSink = mqttRepository?.pushSink {
     _cardControlBuilder = CardControlBuilder(controlService: controlService);
   }
 
-  Future<void> disableCardControlWidget() async {
-    // _mqttRoom?.devices.map((e) => e.topic).forEach((topic) {
-    //   _mqttRepository?.unSubscribe(topic);
-    // });
-    _mqttRoom = null;
-  }
 
   Future<Widget> createNewCardControlWidget(MqttRoom mqr) async {
-    if (_mqttRoom?.roomId != mqr.roomId) {
-      await disableCardControlWidget();
-    }
     _mqttRoom = mqr;
-    // _mqttRoom?.devices.map((e) => e.topic).forEach((deviceTopic) {
-    //   String topic = buildTopic(mqr.topic, deviceTopic);
-    //   _mqttRepository?.subscribe(topic);
-    // });
-
     return _cardControlBuilder.buildControlCard(room: _mqttRoom);
   }
 
@@ -58,7 +45,8 @@ class CardControlService {
         String topic = buildTopic( deviceTopic, roomTopic: _mqttRoom!.topic);
         PublishMqttMessage actionMessage =
             PublishMqttMessage(topic: topic, value: message);
-        _mqttRepository?.publishSink.add(actionMessage);
+        print('Build message for publishing: $actionMessage');
+        _mqttPushMessageSink?.add(actionMessage);
       }
     }
   }

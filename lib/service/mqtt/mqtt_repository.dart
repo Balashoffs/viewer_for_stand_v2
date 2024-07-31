@@ -5,24 +5,39 @@ import 'dart:developer';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:viewer_for_stand_v2/models/custom_mqtt_message.dart';
 import 'package:viewer_for_stand_v2/models/device/device_type.dart';
+import 'package:viewer_for_stand_v2/models/mqtt/mqtt_device.dart';
+import 'package:viewer_for_stand_v2/models/mqtt/mqtt_room.dart';
+import 'package:viewer_for_stand_v2/repository/room/room_state.dart';
+import 'package:viewer_for_stand_v2/repository/room/room_state_data.dart';
+import 'package:viewer_for_stand_v2/repository/room_repository.dart';
 import 'package:viewer_for_stand_v2/service/mqtt/stand_mqtt_client.dart';
+import 'package:viewer_for_stand_v2/util/mqqt_topic_convertor.dart';
 
 class MqttRepository {
   final CustomMqttClient _mqttClient;
 
-  late StreamController<PublishMqttMessage> _publishStreamController;
-  Stream<PublishMqttMessage> get publishStream => _publishStreamController.stream;
-  StreamSink<PublishMqttMessage> get publishSink => _publishStreamController.sink;
+  final StreamController<PublishMqttMessage> _pushStreamController =
+      StreamController();
 
+  Stream<PublishMqttMessage> get pushStream => _pushStreamController.stream;
 
-  late StreamController<PollMqttMessage> _pollStreamController;
+  StreamSink<PublishMqttMessage> get pushSink => _pushStreamController.sink;
+
+  final StreamController<PollMqttMessage> _pollStreamController =
+      StreamController();
+
   Stream<PollMqttMessage> get pollStream => _pollStreamController.stream;
+
   StreamSink<PollMqttMessage> get pollSink => _pollStreamController.sink;
 
-  bool initFlag = false;
+  final Stream<RoomStateData> _streamRoomStateData;
 
-  MqttRepository(String host, int port)
-      : _mqttClient = CustomMqttClient(host, port);
+  MqttRepository(
+      {required String host,
+      required int port,
+      required RoomRepository repository})
+      : _mqttClient = CustomMqttClient(host, port),
+        _streamRoomStateData = repository.getPostRoomStream;
 
   Future<void> init() async {
     _mqttClient.connectionStateCallBack = (state) {
@@ -30,21 +45,60 @@ class MqttRepository {
         case MqttConnectionState.disconnecting:
         case MqttConnectionState.disconnected:
         case MqttConnectionState.faulted:
-          _publishStreamController.close();
+          _pushStreamController.close();
           break;
         case MqttConnectionState.connecting:
-          _publishStreamController = StreamController();
-          _pollStreamController = StreamController();
           _mqttClient.messageCallBack = _onIncomingMessage;
           break;
         case MqttConnectionState.connected:
-          publishStream.listen(_onPublishMessage);
+          pushStream.listen(_onPublishMessage);
           break;
       }
     };
     await _mqttClient
         .connect()
-        .then((value) => initFlag = true);
+        .then((value) => _streamRoomStateData.listen(_onUpdateSubscribes));
+  }
+
+  void _onUpdateSubscribes(RoomStateData roomStateData) {
+    if (roomStateData.state == RoomState.init) {
+      MqttRoom? lastRoom = roomStateData.lastRoom;
+      if (lastRoom != null) {
+        for (MqttDevice element in lastRoom.devices) {
+          String type = element.type;
+          DeviceType dt = DeviceType.findBy(type);
+          if (dt == DeviceType.climate || dt == DeviceType.power) {
+            String topic = buildTopic(element.topic, roomTopic: lastRoom.topic);
+            _mqttClient.unSubscribe(topic);
+          }
+        }
+      }
+    } else if (roomStateData.state == RoomState.change) {
+      MqttRoom? lastRoom = roomStateData.lastRoom;
+      if (lastRoom != null) {
+        for (MqttDevice element in lastRoom.devices) {
+          String type = element.type;
+          DeviceType dt = DeviceType.findBy(type);
+          if (dt == DeviceType.climate || dt == DeviceType.power) {
+            String topic = buildTopic(element.topic, roomTopic: lastRoom.topic);
+            _mqttClient.unSubscribe(topic);
+          }
+        }
+      }
+
+      MqttRoom? currentRoom = roomStateData.currentRoom;
+      if (currentRoom != null) {
+        for (MqttDevice element in currentRoom.devices) {
+          String type = element.type;
+          DeviceType dt = DeviceType.findBy(type);
+          if (dt == DeviceType.climate || dt == DeviceType.power) {
+            String topic =
+                buildTopic(element.topic, roomTopic: currentRoom.topic);
+            _mqttClient.subscribe(topic);
+          }
+        }
+      }
+    }
   }
 
   void _onPublishMessage(PublishMqttMessage message) {
@@ -54,7 +108,7 @@ class MqttRepository {
 
   void _onIncomingMessage(String message) {
     Map<String, dynamic> map = jsonDecode(message);
-    if(map.containsKey('name')){
+    if (map.containsKey('name')) {
       String name = map['name'];
       int index = name.lastIndexOf('/') + 1;
       name = name.substring(index).split('_')[0];

@@ -9,6 +9,8 @@ import 'package:viewer_for_stand_v2/models/mqtt/device/climate.dart';
 import 'package:viewer_for_stand_v2/models/mqtt/device/power.dart';
 import 'package:viewer_for_stand_v2/models/mqtt/mqtt_device.dart';
 import 'package:viewer_for_stand_v2/models/mqtt/mqtt_room.dart';
+import 'package:viewer_for_stand_v2/repository/room/room_state.dart';
+import 'package:viewer_for_stand_v2/repository/room/room_state_data.dart';
 import 'package:viewer_for_stand_v2/repository/room_repository.dart';
 import 'package:viewer_for_stand_v2/service/mqtt/mqtt_repository.dart';
 import 'package:viewer_for_stand_v2/util/mqqt_topic_convertor.dart';
@@ -18,74 +20,49 @@ part 'update_card_data_state.dart';
 part 'update_card_data_cubit.freezed.dart';
 
 class UpdateCardDataCubit extends Cubit<UpdateCardDataState> {
-  final MqttRepository? _mqttRepository;
-  final RoomRepository _roomRepository;
-  bool _isRoomActive = false;
-  MqttRoom? _lastRoom = null;
+  final Stream<PollMqttMessage>? _mqttPollMessageStream;
+  final Stream<RoomStateData> _roomStateDataStream;
+  bool _isRoomActive = true;
 
   UpdateCardDataCubit({
     required MqttRepository? mqttRepository,
     required RoomRepository roomRepository,
-  })  : _mqttRepository = mqttRepository,
-        _roomRepository = roomRepository,
+  })  : _mqttPollMessageStream = mqttRepository?.pollStream,
+        _roomStateDataStream = roomRepository.getPostRoomStream,
         super(const UpdateCardDataState.initial()) {
-    _mqttRepository?.pollStream.listen(_handleMqttEvent);
-    _roomRepository.getPostRoomStream.listen(_handleRoomEvent);
+    _mqttPollMessageStream?.listen(_handleMqttEvent);
+    _roomStateDataStream.listen(_handleRoomEvent);
   }
 
-  void _handleRoomEvent(MqttRoom room) {
-    print('Income new room');
-    if (_lastRoom != null && room.roomId == _lastRoom?.roomId) {
-      print('_lastRoom != null && room.roomId == _lastRoom?.roomId');
-      emit(const UpdateCardDataState.initial());
-      for (var element in room.devices) {
-        String type = element.type;
-        DeviceType dt = DeviceType.findBy(type);
-        if(dt == DeviceType.climate){
-          String topic = buildTopic(element.topic, roomTopic: _lastRoom!.topic);
-          _mqttRepository?.unSubscribe(topic);
-        }
-      }
-      _isRoomActive = false;
-    }else{
-      if(_lastRoom != null && _lastRoom?.roomId != -1){
-        print('_lastRoom != null && _lastRoom?.roomId != -1');
-        for (MqttDevice element in _lastRoom!.devices) {
-          String type = element.type;
-          DeviceType dt = DeviceType.findBy(type);
-          if(dt == DeviceType.climate){
-            String topic = buildTopic(element.topic, roomTopic: _lastRoom!.topic);
-            _mqttRepository?.unSubscribe(topic);
-          }
-        }
-      }
-      _lastRoom = room;
-      _isRoomActive = true;
-      for (var element in room.devices) {
-        String type = element.type;
-        DeviceType dt = DeviceType.findBy(type);
-        if(dt == DeviceType.climate){
-          String topic = buildTopic(element.topic, roomTopic: _lastRoom!.topic);
-          _mqttRepository?.subscribe(topic);
-        }
-      }
-    }
-
-
+  void _handleRoomEvent(RoomStateData roomStateData) {
+    print('_handleRoomEvent before: $_isRoomActive');
+    _isRoomActive = roomStateData.state == RoomState.change;
+    print('_handleRoomEvent after: $_isRoomActive');
   }
 
   void _handleMqttEvent(PollMqttMessage message) {
     print('_handleMqttEvent(PollMqttMessage message) ');
     if (_isRoomActive) {
-        switch (message.type) {
+      switch (message.type) {
         case DeviceType.climate:
-          ClimateMeter climateMeter =
-              ClimateMeter.fromJson(message.map);
+          ClimateMeter climateMeter = ClimateMeter.fromJson(message.map);
           emit(UpdateCardDataState.fillClimateCard(climateMeter));
+          break;
         case DeviceType.power:
-          EnergyMeter energyMeter =
-              EnergyMeter.fromJson(message.map);
+          EnergyMeter energyMeter = EnergyMeter.fromJson(message.map);
           emit(UpdateCardDataState.fillPower(energyMeter));
+          break;
+        default:
+          break;
+      }
+    } else {
+      switch (message.type) {
+        case DeviceType.climate:
+          emit(const UpdateCardDataState.fillClimateCard(ClimateMeter()));
+          break;
+        case DeviceType.power:
+          emit(const UpdateCardDataState.fillPower(EnergyMeter()));
+          break;
         default:
           break;
       }
