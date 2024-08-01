@@ -42,7 +42,7 @@ class EnergyMeterDataWidget extends StatelessWidget {
           children: [
             LabelCustomWidget(
               iconPath: 'assets/svg/power.svg',
-              label: 'Мощность, W',
+              label: 'Мощность, кW',
               style: cardLabelTextStyle,
               width: 24,
               height: 24,

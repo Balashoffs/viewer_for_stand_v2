@@ -102,7 +102,7 @@ class CardControlBuilder {
                       DeviceType.light, LightControl(isOn: p0).toJson());
                 },
                 spaceIconPath:
-                    'assets/svg/room_type_icons/1_working_space_on.svg',
+                    'assets/svg/room_type_icons/2_meeting_room_on.svg',
               ),
               const ClimateInfoWidget(),
             ],

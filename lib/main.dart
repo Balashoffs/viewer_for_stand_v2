@@ -53,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     _roomRepository = RoomRepository();
     _viewerRepository = ViewerRepository(_roomRepository);
-    // _mqttRepository = MqttRepository(host: 'ws://192.168.88.189', port: 1884, repository: _roomRepository);
+    // _mqttRepository = MqttRepository(host: 'ws://192.168.88.189', port: 18831, repository: _roomRepository);
     _mqttRepository = MqttRepository(host: 'ws://127.0.0.1', port: 8080, repository: _roomRepository);
     _roomRepository.loadFromAsset().then((value) => _viewerRepository?.init().then((value) => _mqttRepository?.init()));
   }
