@@ -12,25 +12,32 @@ import 'package:viewer_for_stand_v2/models/custom_mqtt_message.dart';
 import 'package:viewer_for_stand_v2/service/mqtt/mqtt_repository.dart';
 import 'package:viewer_for_stand_v2/util/mqqt_topic_convertor.dart';
 import 'package:viewer_for_stand_v2/widget/climate_widget.dart';
-import 'package:viewer_for_stand_v2/widget/control_card/control_cards.dart';
-import 'package:viewer_for_stand_v2/widget/custom/flexible_widget_container.dart';
 import 'package:viewer_for_stand_v2/widget/electrical_widget.dart';
-import 'package:viewer_for_stand_v2/widget/security_widget.dart';
+import 'package:viewer_for_stand_v2/widget/ifc_viewer_frame/repository/message_mv.dart';
+import 'package:viewer_for_stand_v2/widget/ifc_viewer_frame/repository/viewer_repository.dart';
 import 'package:viewer_for_stand_v2/widget/three/custom_body_widget.dart';
 import 'package:viewer_for_stand_v2/widget/three/custom_card_widget.dart';
 import 'package:viewer_for_stand_v2/widget/three/head_widget.dart';
-import 'package:viewer_for_stand_v2/widget/three/space_widget.dart';
 
 typedef ControlFunc = Function(DeviceType type, Map<String, dynamic>);
+typedef CloseFunc = Function(int id);
 
 class CardControlService {
-  final StreamSink? _mqttPushMessageSink;
+  final StreamSink<PublishMqttMessage>? _mqttPushMessageSink;
+  final StreamSink<MessageAsMap>? _onPostMessageSink;
   late final CardControlBuilder _cardControlBuilder;
+
   MqttRoom? _mqttRoom;
 
-  CardControlService({required MqttRepository? mqttRepository})
-      : _mqttPushMessageSink = mqttRepository?.pushSink {
-    _cardControlBuilder = CardControlBuilder(controlService: controlService);
+  CardControlService({
+    required MqttRepository? mqttRepository,
+    required ViewerRepository? viewerRepository,
+  })  : _mqttPushMessageSink = mqttRepository?.pushSink,
+        _onPostMessageSink = viewerRepository?.postViewerSinkStream {
+    _cardControlBuilder = CardControlBuilder(
+      controlFunc: onPostControl,
+      closeFunc: onCloseControl,
+    );
   }
 
   Future<Widget> createNewCardControlWidget(MqttRoom mqr) async {
@@ -38,7 +45,7 @@ class CardControlService {
     return _cardControlBuilder.buildControlCard(room: _mqttRoom);
   }
 
-  void controlService(DeviceType deviceType, Map<String, dynamic> action) {
+  void onPostControl(DeviceType deviceType, Map<String, dynamic> action) {
     if (_mqttRoom != null) {
       String message = jsonEncode(action);
       MqttDevice? mqttDevice = _mqttRoom?.devices
@@ -57,13 +64,25 @@ class CardControlService {
       }
     }
   }
+
+  void onCloseControl(int id) {
+    print('onCloseControl: $id');
+    var body = {'id':id};
+    MessageMV messageMV = MessageMV.toMessage(
+        typeMV: MessageTypeMV.postDisableMarkMV, body: body);
+    _onPostMessageSink?.add(messageMV.message);
+  }
 }
 
 class CardControlBuilder {
   final ControlFunc _controlFunc;
+  final CloseFunc _closeFunc;
 
-  CardControlBuilder({required ControlFunc controlService})
-      : _controlFunc = controlService;
+  CardControlBuilder({
+    required ControlFunc controlFunc,
+    required CloseFunc closeFunc,
+  })  : _controlFunc = controlFunc,
+        _closeFunc = closeFunc;
 
   Widget buildControlCard({
     required MqttRoom? room,
@@ -75,15 +94,17 @@ class CardControlBuilder {
       switch (type) {
         case RoomType.workroom:
           return CustomSpaceCardWidget(
-            head: HeadWithButton(
-              text: roomName,
-              id: room.roomId,
-              iconPath: room.iconPath,
-              onCLose: (id) {},
-            ),
+            head: Builder(builder: (context) {
+              return HeadWithButton(
+                text: roomName,
+                id: room.roomId,
+                iconPath: room.iconPath,
+                onCLose: _closeFunc,
+              );
+            }),
             body: Column(
               children: [
-                CustomDivider(),
+                const CustomDivider(),
                 OfficeRoomControlWidget(
                   buttonNotifier: (p0) {
                     _controlFunc(
@@ -111,7 +132,7 @@ class CardControlBuilder {
               text: roomName,
               id: room.roomId,
               iconPath: room.iconPath,
-              onCLose: (id) {},
+              onCLose: _closeFunc,
             ),
             body: Column(
               children: [
@@ -141,8 +162,7 @@ class CardControlBuilder {
               CustomBodyWriteSwitchWidget(
                 name: 'Видеонаблюдение',
                 iconPath: 'assets/svg/viewer_control/camera.svg',
-                onSwitch: (p0) {
-                },
+                onSwitch: (p0) {},
               ),
               const CustomDivider(),
             ],
@@ -151,6 +171,6 @@ class CardControlBuilder {
           break;
       }
     }
-    return SizedBox.shrink();
+    return const SizedBox.shrink();
   }
 }

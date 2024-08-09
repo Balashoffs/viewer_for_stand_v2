@@ -72,6 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     roomRepository: _roomRepository,
                     cardControlService: CardControlService(
                       mqttRepository: _mqttRepository,
+                      viewerRepository: _viewerRepository,
                     ),
                   );
                 },

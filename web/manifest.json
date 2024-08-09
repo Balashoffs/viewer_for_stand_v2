@@ -1,11 +1,11 @@
 {
-    "name": "viewer_for_stand_v2",
-    "short_name": "viewer_for_stand_v2",
+    "name": "3d viewer with control",
+    "short_name": "3d bms",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "3d viewer with control",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

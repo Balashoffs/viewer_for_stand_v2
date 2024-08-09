@@ -23,6 +23,7 @@ class ViewerRepository {
   Stream<MessageAsMap> get postViewerStream => _postViewerController.stream;
 
   StreamSink<MessageAsMap> get getViewerSinkStream => _getViewerController.sink;
+  StreamSink<MessageAsMap> get postViewerSinkStream => _postViewerController.sink;
 
   Future<void> init() async {
     _getViewerController.stream.listen(

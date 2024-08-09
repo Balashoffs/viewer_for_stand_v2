@@ -16,6 +16,8 @@ enum MessageTypeMV {
    ///Передать конфиг файл
   postConfigMV('post_config_mv'),
 
+  postDisableMarkMV('post_disable_mark_mv'),
+
   ///Модель во вьювере загружена
   postModelLoadedVM('post_model_loaded_vm'),
 
