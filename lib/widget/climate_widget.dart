@@ -4,31 +4,6 @@ import 'package:viewer_for_stand_v2/cubit/update_card_data/update_card_data_cubi
 import 'package:viewer_for_stand_v2/widget/custom/custom.dart';
 import 'package:viewer_for_stand_v2/widget/text_style.dart';
 
-class ClimateInfoWidget extends StatelessWidget {
-  const ClimateInfoWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(16.0),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            HeadLabelCustomWidget(
-              iconPath: 'assets/svg/climate.svg',
-              label: 'Климат',
-              style: cardHeadTextStyle,
-            ),
-            ClimateValuesWidget(),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class ClimateValuesWidget extends StatelessWidget {
   const ClimateValuesWidget({super.key});
 

@@ -16,6 +16,10 @@ import 'package:viewer_for_stand_v2/widget/control_card/control_cards.dart';
 import 'package:viewer_for_stand_v2/widget/custom/flexible_widget_container.dart';
 import 'package:viewer_for_stand_v2/widget/electrical_widget.dart';
 import 'package:viewer_for_stand_v2/widget/security_widget.dart';
+import 'package:viewer_for_stand_v2/widget/three/custom_body_widget.dart';
+import 'package:viewer_for_stand_v2/widget/three/custom_card_widget.dart';
+import 'package:viewer_for_stand_v2/widget/three/head_widget.dart';
+import 'package:viewer_for_stand_v2/widget/three/space_widget.dart';
 
 typedef ControlFunc = Function(DeviceType type, Map<String, dynamic>);
 
@@ -70,75 +74,77 @@ class CardControlBuilder {
           room.number.isNotEmpty ? '${room.name} (${room.number})' : room.name;
       switch (type) {
         case RoomType.workroom:
-          return FlexibleWidgetContainer(
-            children: [
-              OpenSpaceControl2Widget(
-                spaceName: roomName,
-                onCurtainsSwitch: (p0) {
-                  _controlFunc(
-                    DeviceType.curtains,
-                    CurtainsControl(direction: p0).toJson(),
-                  );
-                },
-                onLightingSwitch: (p0) {
-                  _controlFunc(
-                    DeviceType.light,
-                    LightControl(isOn: p0).toJson(),
-                  );
-                },
-                spaceIconPath:
-                    'assets/svg/room_type_icons/1_working_space_on.svg',
-              ),
-              const ClimateInfoWidget(),
-            ],
+          return CustomSpaceCardWidget(
+            head: HeadWithButton(
+              text: roomName,
+              id: room.roomId,
+              iconPath: room.iconPath,
+              onCLose: (id) {},
+            ),
+            body: Column(
+              children: [
+                CustomDivider(),
+                OfficeRoomControlWidget(
+                  buttonNotifier: (p0) {
+                    _controlFunc(
+                      DeviceType.curtains,
+                      CurtainsControl(direction: p0).toJson(),
+                    );
+                  },
+                  onSwitch: (p0) {
+                    _controlFunc(
+                      DeviceType.light,
+                      LightControl(isOn: p0).toJson(),
+                    );
+                  },
+                ),
+                const CustomDivider(),
+                const ClimateValuesWidget(),
+                const CustomDivider(),
+              ],
+            ),
           );
         case RoomType.meetingroom:
-          return FlexibleWidgetContainer(
-            children: [
-              MeetingControl2Widget(
-                spaceName: roomName,
-                onBookingSwitch: (p0) {
-                  _controlFunc(
-                      DeviceType.light, LightControl(isOn: p0).toJson());
-                },
-                spaceIconPath:
-                    'assets/svg/room_type_icons/2_meeting_room_on.svg',
-              ),
-              const ClimateInfoWidget(),
-            ],
-          );
         case RoomType.restroom:
-          return FlexibleWidgetContainer(
-            children: [
-              RestSpaceControl2Widget(
-                spaceName: roomName,
-                spaceIconPath: 'assets/svg/room_type_icons/3_kitchen_on.svg',
-                onBookingSwitch: (p0) {
-                  _controlFunc(
-                      DeviceType.light, LightControl(isOn: p0).toJson());
-                },
-              ),
-              ClimateInfoWidget(),
-            ],
+          return CustomSpaceCardWidget(
+            head: HeadWithButton(
+              text: roomName,
+              id: room.roomId,
+              iconPath: room.iconPath,
+              onCLose: (id) {},
+            ),
+            body: Column(
+              children: [
+                const CustomDivider(),
+                MeetingRoomControlWidget(
+                  onSwitch: (p0) {
+                    _controlFunc(
+                      DeviceType.light,
+                      LightControl(isOn: p0).toJson(),
+                    );
+                  },
+                ),
+                const CustomDivider(),
+                const ClimateValuesWidget(),
+                const CustomDivider(),
+              ],
+            ),
           );
         case RoomType.power:
-          return FlexibleWidgetContainer(
+          return CustomCardWidget(
             children: [
-              ElectricalControl2Widget(
-                spaceName: roomName,
-                spaceIconPath: 'assets/svg/electrosity.svg',
+              HeadWidget(
+                text: roomName,
               ),
-              EnergyMeterCardWidget(),
-            ],
-          );
-        case RoomType.camera:
-          return FlexibleWidgetContainer(
-            children: [
-              ElectricalControl2Widget(
-                spaceName: roomName,
-                spaceIconPath: 'assets/svg/camera.svg',
+              const EnergyMeterDataWidget(),
+              const CustomDivider(),
+              CustomBodyWriteSwitchWidget(
+                name: 'Видеонаблюдение',
+                iconPath: 'assets/svg/viewer_control/camera.svg',
+                onSwitch: (p0) {
+                },
               ),
-              SecuritySettingsWidget(),
+              const CustomDivider(),
             ],
           );
         default:

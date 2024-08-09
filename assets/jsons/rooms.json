@@ -4,6 +4,7 @@
     "name": "Кухня",
     "number": "3.23",
     "topic": "kitchen_3_23",
+    "iconPath":"assets/svg/viewer_control/kitchen.svg",
     "type": 3,
     "devices": [
       {
@@ -33,6 +34,7 @@
     "number": "3.16",
     "topic": "gym_3_16",
     "type": 3,
+    "iconPath": "assets/svg/viewer_control/gym.svg",
     "devices": [
       {
         "topic": "light_switch",
@@ -61,6 +63,7 @@
     "number": "3.3",
     "topic": "lectory_3_3",
     "type": 1,
+    "iconPath": "assets/svg/viewer_control/lectory.svg",
     "devices": [
       {
         "topic": "light_switch",
@@ -93,6 +96,7 @@
     "number": "3.4",
     "topic": "lectory_3_4",
     "type": 1,
+    "iconPath": "assets/svg/viewer_control/lectory.svg",
     "devices": [
       {
         "topic": "curtains_switch",
@@ -125,6 +129,7 @@
     "number": "3.5",
     "topic": "office_room_3_5",
     "type": 1,
+    "iconPath": "assets/svg/viewer_control/office_room.svg",
     "devices": [
       {
         "topic": "curtains_switch",
@@ -157,6 +162,7 @@
     "number": "3.7",
     "topic": "meeting_room_3_7",
     "type": 2,
+    "iconPath": "assets/svg/viewer_control/meeting_room.svg",
     "devices": [
       {
         "topic": "light_switch",
@@ -185,6 +191,7 @@
     "number": "3.6",
     "topic": "office_room_3_6",
     "type": 1,
+    "iconPath": "assets/svg/viewer_control/office_room.svg",
     "devices": [
       {
         "topic": "curtains_switch",
@@ -217,6 +224,7 @@
     "number": "3.2.1",
     "topic": "office_room_3_2_1",
     "type": 1,
+    "iconPath": "assets/svg/viewer_control/office_room.svg",
     "devices": [
       {
         "topic": "curtains_switch",
@@ -249,6 +257,7 @@
     "number": "3.2.2",
     "topic": "office_room_3_2_2",
     "type": 1,
+    "iconPath": "assets/svg/viewer_control/office_room.svg",
     "devices": [
       {
         "topic": "curtains_switch",
@@ -281,6 +290,7 @@
     "number": "3.8",
     "topic": "meeting_room_3_8",
     "type": 2,
+    "iconPath": "assets/svg/viewer_control/meeting_room.svg",
     "devices": [
       {
         "topic": "light_switch",
@@ -309,6 +319,7 @@
     "number": "3.9",
     "topic": "meeting_room_3_9",
     "type": 2,
+    "iconPath": "assets/svg/viewer_control/meeting_room.svg",
     "devices": [
       {
         "topic": "light_switch",
@@ -337,6 +348,7 @@
     "number": "3.10",
     "topic": "meeting_room_3_10",
     "type": 2,
+    "iconPath": "assets/svg/viewer_control/meeting_room.svg",
     "devices": [
       {
         "topic": "light_switch",
@@ -365,6 +377,7 @@
     "number": "3.11",
     "topic": "office_room_3_11",
     "type": 1,
+    "iconPath": "assets/svg/viewer_control/office_room.svg",
     "devices": [
       {
         "topic": "curtains_switch",
@@ -397,6 +410,7 @@
     "number": "3.14",
     "topic": "office_room_3_14",
     "type": 1,
+    "iconPath": "assets/svg/viewer_control/office_room.svg",
     "devices": [
       {
         "topic": "curtains_switch",
@@ -429,6 +443,7 @@
     "number": "3.12",
     "topic": "office_room_3_12",
     "type": 1,
+    "iconPath": "assets/svg/viewer_control/office_room.svg",
     "devices": [
       {
         "topic": "curtains_switch",
@@ -461,6 +476,7 @@
     "number": "3.13",
     "topic": "coffee_point_3_13",
     "type": 3,
+    "iconPath": "assets/svg/viewer_control/kitchen.svg",
     "devices": [
       {
         "topic": "light_switch",
@@ -489,6 +505,7 @@
     "number": "3.25",
     "topic": "meeting_room_3_25",
     "type": 2,
+    "iconPath": "assets/svg/viewer_control/meeting_room.svg",
     "devices": [
       {
         "topic": "light_switch",
@@ -517,6 +534,7 @@
     "number": "3.27",
     "topic": "meeting_room_3_27",
     "type": 2,
+    "iconPath": "assets/svg/viewer_control/meeting_room.svg",
     "devices": [
       {
         "topic": "light_switch",
@@ -545,6 +563,7 @@
     "number": "3.18",
     "topic": "shower_room_3_18",
     "type": 2,
+    "iconPath": "assets/svg/viewer_control/shower.svg",
     "devices": [
       {
         "topic": "light_switch",
@@ -573,6 +592,7 @@
     "number": "3.19",
     "topic": "shower_room_3_19",
     "type": 2,
+    "iconPath": "assets/svg/viewer_control/shower.svg",
     "devices": [
       {
         "topic": "light_switch",
@@ -601,6 +621,7 @@
     "number": "3.1",
     "topic": "suit_room_3_1",
     "type": 3,
+    "iconPath": "assets/svg/viewer_control/wardrobe.svg",
     "devices": [
       {
         "topic": "light_switch",

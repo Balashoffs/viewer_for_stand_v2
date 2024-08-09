@@ -4,6 +4,7 @@
   "number": "",
   "topic": "electrical_shield_3_1",
   "type": 4,
+  "iconPath": "",
   "devices": [
     {
       "topic": "power_data",

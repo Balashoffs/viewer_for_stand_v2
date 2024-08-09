@@ -12,6 +12,7 @@ _$MqttRoomImpl _$$MqttRoomImplFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String,
       number: json['number'] as String,
       topic: json['topic'] as String,
+      iconPath: json['iconPath'] as String,
       type: (json['type'] as num).toInt(),
       devices: (json['devices'] as List<dynamic>?)
               ?.map((e) => MqttDevice.fromJson(e as Map<String, dynamic>))
@@ -28,6 +29,7 @@ Map<String, dynamic> _$$MqttRoomImplToJson(_$MqttRoomImpl instance) =>
       'name': instance.name,
       'number': instance.number,
       'topic': instance.topic,
+      'iconPath': instance.iconPath,
       'type': instance.type,
       'devices': instance.devices,
       'roomMarker': instance.roomMarker,

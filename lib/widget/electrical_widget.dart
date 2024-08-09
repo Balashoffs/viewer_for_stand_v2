@@ -5,30 +5,6 @@ import 'package:viewer_for_stand_v2/widget/text_style.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:viewer_for_stand_v2/cubit/update_card_data/update_card_data_cubit.dart';
 
-class EnergyMeterCardWidget extends StatelessWidget {
-  const EnergyMeterCardWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(16.0),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            HeadLabelCustomWidget(
-              iconPath: 'assets/svg/electrosity.svg',
-              label: 'Электроснабжение',
-              style: cardHeadTextStyle,
-            ),
-            const EnergyMeterDataWidget(),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class EnergyMeterDataWidget extends StatelessWidget {
   const EnergyMeterDataWidget({super.key});
@@ -36,6 +12,7 @@ class EnergyMeterDataWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,28 +25,28 @@ class EnergyMeterDataWidget extends StatelessWidget {
               height: 24,
             ),
             LabelCustomWidget(
-              iconPath: 'assets/svg/voltage.svg',
+              iconPath: 'assets/svg/power.svg',
               label: 'Напряжение, V',
               style: cardLabelTextStyle,
               width: 24,
               height: 24,
             ),
             LabelCustomWidget(
-              iconPath: 'assets/svg/voltage.svg',
+              iconPath: 'assets/svg/power.svg',
               label: 'Ток, A',
               style: cardLabelTextStyle,
               width: 24,
               height: 24,
             ),
             LabelCustomWidget(
-              iconPath: 'assets/svg/voltage.svg',
+              iconPath: 'assets/svg/power.svg',
               label: 'Коэфициент мощности, cosQ',
               style: cardLabelTextStyle,
               width: 24,
               height: 24,
             ),
             LabelCustomWidget(
-              iconPath: 'assets/svg/voltage.svg',
+              iconPath: 'assets/svg/power.svg',
               label: 'Частота, Hz',
               style: cardLabelTextStyle,
               width: 24,
@@ -83,6 +60,7 @@ class EnergyMeterDataWidget extends StatelessWidget {
               orElse: () => SizedBox(),
               fillPower: (energyMeter) {
                 return Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     ValueCustomWidget(value: '${energyMeter.power}'),
                     ValueCustomWidget(value: '${energyMeter.voltage}'),

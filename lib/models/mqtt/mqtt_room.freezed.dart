@@ -24,6 +24,7 @@ mixin _$MqttRoom {
   String get name => throw _privateConstructorUsedError;
   String get number => throw _privateConstructorUsedError;
   String get topic => throw _privateConstructorUsedError;
+  String get iconPath => throw _privateConstructorUsedError;
   int get type => throw _privateConstructorUsedError;
   List<MqttDevice> get devices => throw _privateConstructorUsedError;
   RoomMarker? get roomMarker => throw _privateConstructorUsedError;
@@ -44,6 +45,7 @@ abstract class $MqttRoomCopyWith<$Res> {
       String name,
       String number,
       String topic,
+      String iconPath,
       int type,
       List<MqttDevice> devices,
       RoomMarker? roomMarker});
@@ -68,6 +70,7 @@ class _$MqttRoomCopyWithImpl<$Res, $Val extends MqttRoom>
     Object? name = null,
     Object? number = null,
     Object? topic = null,
+    Object? iconPath = null,
     Object? type = null,
     Object? devices = null,
     Object? roomMarker = freezed,
@@ -88,6 +91,10 @@ class _$MqttRoomCopyWithImpl<$Res, $Val extends MqttRoom>
       topic: null == topic
           ? _value.topic
           : topic // ignore: cast_nullable_to_non_nullable
+              as String,
+      iconPath: null == iconPath
+          ? _value.iconPath
+          : iconPath // ignore: cast_nullable_to_non_nullable
               as String,
       type: null == type
           ? _value.type
@@ -130,6 +137,7 @@ abstract class _$$MqttRoomImplCopyWith<$Res>
       String name,
       String number,
       String topic,
+      String iconPath,
       int type,
       List<MqttDevice> devices,
       RoomMarker? roomMarker});
@@ -153,6 +161,7 @@ class __$$MqttRoomImplCopyWithImpl<$Res>
     Object? name = null,
     Object? number = null,
     Object? topic = null,
+    Object? iconPath = null,
     Object? type = null,
     Object? devices = null,
     Object? roomMarker = freezed,
@@ -173,6 +182,10 @@ class __$$MqttRoomImplCopyWithImpl<$Res>
       topic: null == topic
           ? _value.topic
           : topic // ignore: cast_nullable_to_non_nullable
+              as String,
+      iconPath: null == iconPath
+          ? _value.iconPath
+          : iconPath // ignore: cast_nullable_to_non_nullable
               as String,
       type: null == type
           ? _value.type
@@ -198,6 +211,7 @@ class _$MqttRoomImpl implements _MqttRoom {
       required this.name,
       required this.number,
       required this.topic,
+      required this.iconPath,
       required this.type,
       final List<MqttDevice> devices = const [],
       this.roomMarker})
@@ -215,6 +229,8 @@ class _$MqttRoomImpl implements _MqttRoom {
   @override
   final String topic;
   @override
+  final String iconPath;
+  @override
   final int type;
   final List<MqttDevice> _devices;
   @override
@@ -229,11 +245,6 @@ class _$MqttRoomImpl implements _MqttRoom {
   final RoomMarker? roomMarker;
 
   @override
-  String toString() {
-    return 'MqttRoom(roomId: $roomId, name: $name, number: $number, topic: $topic, type: $type,';
-  }
-
-  @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
@@ -242,6 +253,8 @@ class _$MqttRoomImpl implements _MqttRoom {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.number, number) || other.number == number) &&
             (identical(other.topic, topic) || other.topic == topic) &&
+            (identical(other.iconPath, iconPath) ||
+                other.iconPath == iconPath) &&
             (identical(other.type, type) || other.type == type) &&
             const DeepCollectionEquality().equals(other._devices, _devices) &&
             (identical(other.roomMarker, roomMarker) ||
@@ -250,8 +263,16 @@ class _$MqttRoomImpl implements _MqttRoom {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, roomId, name, number, topic,
-      type, const DeepCollectionEquality().hash(_devices), roomMarker);
+  int get hashCode => Object.hash(
+      runtimeType,
+      roomId,
+      name,
+      number,
+      topic,
+      iconPath,
+      type,
+      const DeepCollectionEquality().hash(_devices),
+      roomMarker);
 
   @JsonKey(ignore: true)
   @override
@@ -273,6 +294,7 @@ abstract class _MqttRoom implements MqttRoom {
       required final String name,
       required final String number,
       required final String topic,
+      required final String iconPath,
       required final int type,
       final List<MqttDevice> devices,
       final RoomMarker? roomMarker}) = _$MqttRoomImpl;
@@ -288,6 +310,8 @@ abstract class _MqttRoom implements MqttRoom {
   String get number;
   @override
   String get topic;
+  @override
+  String get iconPath;
   @override
   int get type;
   @override

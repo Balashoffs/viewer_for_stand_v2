@@ -12,7 +12,7 @@ class ValueCustomWidget extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(right: 28.0, top: 16.0, bottom: 16.0),
       child: SizedBox(height:24, child: Text(value, style: const TextStyle(fontWeight: FontWeight.bold))),
     );
   }

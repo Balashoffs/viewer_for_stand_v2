@@ -14,6 +14,7 @@ class MqttRoom with _$MqttRoom {
     required String name,
     required String number,
     required String topic,
+    required String iconPath,
     required int type,
     @Default([]) List<MqttDevice> devices,
     RoomMarker? roomMarker,

@@ -13,7 +13,7 @@ class HeadWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 24.0),
       child: Text(
         text,
         style: cardHeadTextStyle,
@@ -40,7 +40,7 @@ class HeadWithButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(21.0),
+        padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 24.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
