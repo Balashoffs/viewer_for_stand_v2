@@ -1,0 +1,133 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:mqtt_client/mqtt_client.dart';
+import 'package:viewer_for_stand_v2/models/custom_mqtt_message.dart';
+import 'package:viewer_for_stand_v2/models/device/device_type.dart';
+import 'package:viewer_for_stand_v2/models/mqtt/mqtt_device.dart';
+import 'package:viewer_for_stand_v2/models/mqtt/mqtt_room.dart';
+import 'package:viewer_for_stand_v2/repository/room/room_state.dart';
+import 'package:viewer_for_stand_v2/repository/room/room_state_data.dart';
+import 'package:viewer_for_stand_v2/repository/room_repository.dart';
+import 'package:viewer_for_stand_v2/service/mqtt/stand_mqtt_client.dart';
+import 'package:viewer_for_stand_v2/util/mqqt_topic_convertor.dart';
+
+class MqttRepository {
+  final CustomMqttClient _mqttClient;
+
+  final StreamController<PublishMqttMessage> _pushStreamController =
+      StreamController();
+
+  Stream<PublishMqttMessage> get pushStream => _pushStreamController.stream;
+
+  StreamSink<PublishMqttMessage> get pushSink => _pushStreamController.sink;
+
+  final StreamController<PollMqttMessage> _pollStreamController =
+      StreamController();
+
+  Stream<PollMqttMessage> get pollStream => _pollStreamController.stream;
+
+  StreamSink<PollMqttMessage> get pollSink => _pollStreamController.sink;
+
+  final Stream<RoomStateData> _streamRoomStateData;
+
+  MqttRepository({
+    required String host,
+    required int port,
+    required RoomRepository repository,
+  })  : _mqttClient = CustomMqttClient(host, port),
+        _streamRoomStateData = repository.getPostRoomStream;
+
+  Future<void> init() async {
+    _mqttClient.connectionStateCallBack = (state) {
+      switch (state) {
+        case MqttConnectionState.disconnecting:
+        case MqttConnectionState.disconnected:
+        case MqttConnectionState.faulted:
+          _pushStreamController.close();
+          break;
+        case MqttConnectionState.connecting:
+          _mqttClient.messageCallBack = _onIncomingMessage;
+          break;
+        case MqttConnectionState.connected:
+          pushStream.listen(_onPublishMessage);
+          break;
+      }
+    };
+    await _mqttClient
+        .connect()
+        .then((value) => _streamRoomStateData.listen(_onUpdateSubscribes));
+  }
+
+  void _onUpdateSubscribes(RoomStateData roomStateData) {
+    if (roomStateData.state == RoomState.init) {
+      MqttRoom? lastRoom = roomStateData.lastRoom;
+      if (lastRoom != null) {
+        for (MqttDevice element in lastRoom.devices) {
+          String type = element.type;
+          DeviceType dt = DeviceType.findBy(type);
+          if (dt == DeviceType.climate || dt == DeviceType.power) {
+            String topic = buildTopic(element.topic, roomTopic: lastRoom.topic);
+            _mqttClient.unSubscribe(topic);
+          }
+        }
+      }
+    } else if (roomStateData.state == RoomState.change) {
+      MqttRoom? lastRoom = roomStateData.lastRoom;
+      if (lastRoom != null) {
+        for (MqttDevice element in lastRoom.devices) {
+          String type = element.type;
+          DeviceType dt = DeviceType.findBy(type);
+          if (dt == DeviceType.climate || dt == DeviceType.power) {
+            String topic = buildTopic(element.topic, roomTopic: lastRoom.topic);
+            _mqttClient.unSubscribe(topic);
+          }
+        }
+      }
+
+      MqttRoom? currentRoom = roomStateData.currentRoom;
+      if (currentRoom != null) {
+        for (MqttDevice element in currentRoom.devices) {
+          String type = element.type;
+          DeviceType dt = DeviceType.findBy(type);
+          if (dt == DeviceType.climate || dt == DeviceType.power) {
+            String topic =
+                buildTopic(element.topic, roomTopic: currentRoom.topic);
+            _mqttClient.subscribe(topic);
+          }
+        }
+      }
+    }
+  }
+
+  void _onPublishMessage(PublishMqttMessage message) {
+    log('${message}');
+    _mqttClient.publish(message);
+  }
+
+  void _onIncomingMessage(String message) {
+    Map<String, dynamic> map = jsonDecode(message);
+    if (map.containsKey('name')) {
+      String name = map['name'];
+      int index = name.lastIndexOf('/') + 1;
+      name = name.substring(index).split('_')[0];
+      DeviceType deviceType = DeviceType.findBy(name);
+      final pmm = PollMqttMessage(type: deviceType, map: map);
+      print(pmm);
+      pollSink.add(pmm);
+    }
+  }
+
+  void subscribe(String topic) {
+    _mqttClient.subscribe(topic);
+  }
+
+  void unSubscribe(String topic) {
+    _mqttClient.unSubscribe(topic);
+  }
+
+  Future<void> close() async {
+    _mqttClient.close();
+  }
+}

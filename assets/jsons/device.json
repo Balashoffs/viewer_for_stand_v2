@@ -1,0 +1,22 @@
+[
+  {
+    "topic": "power_data",
+    "type": "power"
+  },
+  {
+    "topic": "light_switch",
+    "type": "light"
+  },
+  {
+    "topic": "climate_data",
+    "type": "climate"
+  },
+  {
+    "topic": "curtains_switch",
+    "type": "curtains"
+  },
+  {
+    "topic": "camera",
+    "type": "camera"
+  }
+]

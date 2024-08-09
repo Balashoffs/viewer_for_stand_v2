@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:viewer_for_stand_v2/utils/initial/initial.dart';
-import 'package:viewer_for_stand_v2/widget/climate_widget.dart';
-import 'package:viewer_for_stand_v2/widget/electrical_widget.dart';
-import 'package:viewer_for_stand_v2/widget/enable_remote_control_widget.dart';
-import 'package:viewer_for_stand_v2/widget/ifc_viewer_widget.dart';
-import 'package:viewer_for_stand_v2/widget/office_space_widget.dart';
-import 'package:viewer_for_stand_v2/widget/security_widget.dart';
-
-
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:viewer_for_stand_v2/cubit/control_card_cubit/control_card_cubit.dart';
+import 'package:viewer_for_stand_v2/cubit/save_host_value/save_host_value_cubit.dart';
+import 'package:viewer_for_stand_v2/cubit/update_card_data/update_card_data_cubit.dart';
+import 'package:viewer_for_stand_v2/repository/room_repository.dart';
+import 'package:viewer_for_stand_v2/service/card_control_service/card_control_service.dart';
+import 'package:viewer_for_stand_v2/service/mqtt/mqtt_repository.dart';
+import 'package:viewer_for_stand_v2/widget/ifc_viewer_frame/ifc_viewer_widget.dart';
+import 'package:viewer_for_stand_v2/widget/ifc_viewer_frame/repository/viewer_repository.dart';
+import 'package:viewer_for_stand_v2/widget/text_style.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
- await initWebServer();
+  await initWebServer();
 
   runApp(const MyApp());
 }
@@ -24,40 +24,100 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    print('MyApp build');
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Viewer with BMS',
       theme: ThemeData(
         // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      // home: const MainPage(title: 'Viewer with BMS'),
+      home: BlocProvider(
+        create: (context) => SaveHostValueCubit()..checkHostAtCache(),
+        child: StartWidget(),
+      ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+class StartWidget extends StatelessWidget {
+  const StartWidget({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  Widget build(BuildContext context) {
+    return BlocBuilder<SaveHostValueCubit, SaveHostValueState>(
+      builder: (context, state) => state.when(
+          initial: () => const Center(
+                child: CircularProgressIndicator(),
+              ),
+          onSave: (host, port) => MainPage(
+                host: host,
+                port: port,
+              ),
+          onEnter: () => const LoginPage()),
+    );
+  }
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  // late ViewerDeviceControlRepository _deviceControlRepository;
+class MainPage extends StatefulWidget {
+  const MainPage({super.key, required this.host, required this.port});
+
+  final String host;
+  final int port;
+
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  late ViewerRepository? _viewerRepository;
+  late RoomRepository _roomRepository;
+  late MqttRepository? _mqttRepository;
 
   @override
   void initState() {
     super.initState();
-    // _deviceControlRepository = ViewerDeviceControlRepository();
+    _roomRepository = RoomRepository();
+    _viewerRepository = ViewerRepository(_roomRepository);
+    _mqttRepository = MqttRepository(
+        host: widget.host, port: widget.port, repository: _roomRepository);
+    // _mqttRepository = MqttRepository(
+    //     host: 'ws://127.0.0.1', port: 8080, repository: _roomRepository);
+    _roomRepository.loadFromAsset().then((value) =>
+        _viewerRepository?.init().then((value) => _mqttRepository?.init()));
   }
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
+    return SafeArea(
       child: Scaffold(
-        body: MainPage(),
+        body: RepositoryProvider.value(
+          value: _viewerRepository,
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider<ControlCardCubit>(
+                create: (context) {
+                  return ControlCardCubit(
+                    roomRepository: _roomRepository,
+                    cardControlService: CardControlService(
+                      mqttRepository: _mqttRepository,
+                      viewerRepository: _viewerRepository,
+                    ),
+                  );
+                },
+              ),
+              BlocProvider<UpdateCardDataCubit>(
+                create: (context) {
+                  return UpdateCardDataCubit(
+                    mqttRepository: _mqttRepository,
+                    roomRepository: _roomRepository,
+                  );
+                },
+              )
+            ],
+            child: ViewerWithBmsWidget(),
+          ),
+        ),
       ),
     );
   }
@@ -68,9 +128,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class MainPage extends StatelessWidget {
-  const MainPage({super.key});
-
+class ViewerWithBmsWidget extends StatelessWidget {
+  const ViewerWithBmsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -80,70 +139,84 @@ class MainPage extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Flexible(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    EnableRemoteControlWidget(
-                      icRemote: (isChecked) async {
-                      },
-                    ),
-                    const Divider(
-                      height: 20,
-                      thickness: 2,
-                      indent: 0,
-                      endIndent: 0,
-                      color: Colors.deepPurple,
-                    ),
-                    OpenSpaceControlWidget(
-                      name: 'Пространство',
-                      onCurtainsDown: () async {
-                      },
-                      onCurtainsUp: () async {
-                      },
-                      onLightingSwitch: (state) async {
-                      },
-                    ),
-                    const SizedBox(
-                      height: 36,
-                    ),
-                    OpenSpaceControlWidget(
-                      name: 'Кабинет',
-                      onCurtainsDown: () async {
-
-                      },
-                      onCurtainsUp: () async {
-
-                      },
-                      onLightingSwitch: (state) async {
-
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              // fit: FlexFit.loose,
+            BlocBuilder<ControlCardCubit, ControlCardState>(
+              builder: (context, state) {
+                return state.when(
+                  initial: () => SizedBox(),
+                  showControlCard: (widget) => Flexible(flex: 5, child: widget),
+                );
+              },
             ),
             Flexible(
               flex: 12,
-              child: IfcViewerWidget(initialFile: initialFile,initialUrlRequest: initialUrlRequest,),
-            ),
-            Flexible(
-              flex: 5,
-              child: Column(
-                children: [
-                  SecuritySettingsWidget(),
-                  ElectricitySupplyWidget(),
-                  ClimateInfoWidget(),
-                ],
+              child: IfcViewerWidget(
+                initial: initial,
+                onPostMessage:
+                    context.read<ViewerRepository>().postViewerStream,
+                onReceiveMessage:
+                    context.read<ViewerRepository>().getViewerSinkStream,
               ),
-              // fit: FlexFit.loose,
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class LoginPage extends StatelessWidget {
+  const LoginPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+          body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Введите IP адрес и порт MQTT сервера',
+              style: cardHeadTextStyle,
+            ),
+            Text(
+              '(например: 192.168.0.1:1111)',
+              style: cardLabelTextStyle,
+            ),
+            SizedBox(
+              height: 8.0,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 200.0,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      autofocus: true,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        focusColor: Colors.grey,
+                      ),
+                      onChanged: (value) => {
+                        context
+                            .read<SaveHostValueCubit>()
+                            .updateHostValue(value)
+                      },
+                    ),
+                  ),
+                ),
+                IconButton(
+                    onPressed: () {
+                      context.read<SaveHostValueCubit>().saveHost();
+                    },
+                    icon: Icon(Icons.arrow_circle_right_outlined, size: 48,))
+              ],
+            ),
+          ],
+        ),
+      )),
     );
   }
 }

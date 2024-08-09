@@ -1,91 +1,107 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
-class ClimateInfoWidget extends StatelessWidget {
-  const ClimateInfoWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(16.0),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Климат',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(Icons.thermostat_outlined,
-                      color: Colors.grey[600], size: 20),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:viewer_for_stand_v2/cubit/update_card_data/update_card_data_cubit.dart';
+import 'package:viewer_for_stand_v2/widget/custom/custom.dart';
+import 'package:viewer_for_stand_v2/widget/text_style.dart';
 
 class ClimateValuesWidget extends StatelessWidget {
   const ClimateValuesWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: 16),
-        ClimateValueWidget(iconPath: '', label: 'Температура', value: '18,39'),
-        const SizedBox(height: 12),
-        ClimateValueWidget(iconPath: '', label: 'Влажность', value: '70,30'),
-        const SizedBox(height: 12),
-        ClimateValueWidget(iconPath: '', label: 'Давление', value: '761,12'),
-      ],
+    return BlocBuilder<UpdateCardDataCubit, UpdateCardDataState>(
+      builder: (context, state) {
+        return state.maybeWhen(
+          orElse: () => SizedBox(),
+          fillClimateCard: (climateMeter) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    LabelCustomWidget(
+                      iconPath: 'assets/svg/temp.svg',
+                      label: 'Температура',
+                      style: cardLabelTextStyle,
+                      width: 24,
+                      height: 24,
+                    ),
+                    LabelCustomWidget(
+                      iconPath: 'assets/svg/humi.svg',
+                      label: 'Влажность',
+                      style: cardLabelTextStyle,
+                      width: 24,
+                      height: 24,
+                    ),
+                    climateMeter.pressure.compareTo(-1.0) != 0
+                        ? LabelCustomWidget(
+                            iconPath: 'assets/svg/press.svg',
+                            label: 'Давление',
+                            style: cardLabelTextStyle,
+                            width: 24,
+                            height: 24,
+                          )
+                        : SizedBox(),
+                    climateMeter.co2.compareTo(-1.0) != 0
+                        ? LabelCustomWidget(
+                            iconPath: 'assets/svg/press.svg',
+                            label: 'Содержание eCO2',
+                            style: cardLabelTextStyle,
+                            width: 24,
+                            height: 24,
+                          )
+                        : SizedBox(),
+                    climateMeter.tvoc.compareTo(-1.0) != 0
+                        ? LabelCustomWidget(
+                            iconPath: 'assets/svg/press.svg',
+                            label: 'Содержание TVOC',
+                            style: cardLabelTextStyle,
+                            width: 24,
+                            height: 24,
+                          )
+                        : SizedBox(),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ValueCustomWidget(
+                      value: checkOnEmpty(climateMeter.temperature),
+                    ),
+                    ValueCustomWidget(
+                      value: checkOnEmpty(climateMeter.humidity),
+                    ),
+                    climateMeter.pressure.compareTo(-1.0) != 0
+                        ? ValueCustomWidget(
+                            value: checkOnEmpty(climateMeter.pressure),
+                          )
+                        : SizedBox(),
+                    climateMeter.co2.compareTo(-1.0) != 0
+                        ? ValueCustomWidget(
+                            value: checkOnEmpty(climateMeter.co2),
+                          )
+                        : SizedBox(),
+                    climateMeter.tvoc.compareTo(-1.0) != 0
+                        ? ValueCustomWidget(
+                            value: checkOnEmpty(climateMeter.tvoc),
+                          )
+                        : SizedBox(),
+                  ],
+                )
+              ],
+            );
+          },
+        );
+      },
     );
   }
-}
 
-class ClimateValueWidget extends StatelessWidget {
-  const ClimateValueWidget({
-    super.key,
-    required this.iconPath,
-    required this.label,
-    required this.value,
-  });
-
-  final String iconPath;
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            SvgPicture.asset(
-              iconPath,
-              height: 20.0,
-              width: 20.0,
-            ),
-            const SizedBox(width: 8),
-            Text(label, style: TextStyle(color: Colors.grey[600])),
-          ],
-        ),
-        Text(value, style: const TextStyle(fontWeight: FontWeight.bold)),
-      ],
-    );
+  String checkOnEmpty(double value) {
+    if (value.compareTo(-1.0) == 0) {
+      return '??';
+    }
+    return '$value';
   }
 }

@@ -8,17 +8,21 @@ version: 1.0.0+1
 environment:
   sdk: '>=3.3.0 <4.0.0'
 
-
 dependencies:
   flutter:
     sdk: flutter
 
-#  flutter_bloc: ^8.1.6
-#  flutter_inappwebview: ^6.0.0
+  flutter_bloc: ^8.1.6
   flutter_svg: ^2.0.10+1
-#  freezed: ^2.5.7
+  freezed: ^2.5.2
+  mqtt_client: ^10.0.2
+  freezed_annotation: ^2.4.4
+  json_annotation: ^4.9.0
   lite_rolling_switch: ^1.0.1
   flutter_inappwebview: ^6.0.0
+  toggle_switch: ^2.3.0
+  uuid: ^4.4.2
+  shared_preferences: ^2.2.3
 #  ffi: ^2.1.2
 #  path_provider: ^2.1.3
 #  path: ^1.9.0
@@ -51,7 +55,11 @@ flutter:
     - assets/viewer/fonts/nunito_sans/
     - assets/viewer/assets/
     - assets/viewer/wasm/
+    - assets/jsons/
     - assets/svg/
+    - assets/svg/room_type_icons/
+    - assets/svg/control_icon/
+    - assets/svg/viewer_control/
 
   fonts:
     - family: NunitoSans-Black
