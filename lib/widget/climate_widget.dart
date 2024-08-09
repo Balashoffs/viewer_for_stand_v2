@@ -9,55 +9,61 @@ class ClimateValuesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            LabelCustomWidget(
-              iconPath: 'assets/svg/temp.svg',
-              label: 'Температура',
-              style: cardLabelTextStyle,
-              width: 24,
-              height: 24,
-            ),
-            LabelCustomWidget(
-              iconPath: 'assets/svg/humi.svg',
-              label: 'Влажность',
-              style: cardLabelTextStyle,
-              width: 24,
-              height: 24,
-            ),
-            LabelCustomWidget(
-              iconPath: 'assets/svg/press.svg',
-              label: 'Давление',
-              style: cardLabelTextStyle,
-              width: 24,
-              height: 24,
-            ),
-            LabelCustomWidget(
-              iconPath: 'assets/svg/press.svg',
-              label: 'Содержание eCO2',
-              style: cardLabelTextStyle,
-              width: 24,
-              height: 24,
-            ),
-            LabelCustomWidget(
-              iconPath: 'assets/svg/press.svg',
-              label: 'Содержание TVOC',
-              style: cardLabelTextStyle,
-              width: 24,
-              height: 24,
-            ),
-          ],
-        ),
-        BlocBuilder<UpdateCardDataCubit, UpdateCardDataState>(
-          builder: (context, state) {
-            return state.maybeWhen(
-              orElse: () => SizedBox(),
-              fillClimateCard: (climateMeter) {
-                return Column(
+    return BlocBuilder<UpdateCardDataCubit, UpdateCardDataState>(
+      builder: (context, state) {
+        return state.maybeWhen(
+          orElse: () => SizedBox(),
+          fillClimateCard: (climateMeter) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    LabelCustomWidget(
+                      iconPath: 'assets/svg/temp.svg',
+                      label: 'Температура',
+                      style: cardLabelTextStyle,
+                      width: 24,
+                      height: 24,
+                    ),
+                    LabelCustomWidget(
+                      iconPath: 'assets/svg/humi.svg',
+                      label: 'Влажность',
+                      style: cardLabelTextStyle,
+                      width: 24,
+                      height: 24,
+                    ),
+                    climateMeter.pressure.compareTo(-1.0) != 0
+                        ? LabelCustomWidget(
+                            iconPath: 'assets/svg/press.svg',
+                            label: 'Давление',
+                            style: cardLabelTextStyle,
+                            width: 24,
+                            height: 24,
+                          )
+                        : SizedBox(),
+                    climateMeter.co2.compareTo(-1.0) != 0
+                        ? LabelCustomWidget(
+                            iconPath: 'assets/svg/press.svg',
+                            label: 'Содержание eCO2',
+                            style: cardLabelTextStyle,
+                            width: 24,
+                            height: 24,
+                          )
+                        : SizedBox(),
+                    climateMeter.tvoc.compareTo(-1.0) != 0
+                        ? LabelCustomWidget(
+                            iconPath: 'assets/svg/press.svg',
+                            label: 'Содержание TVOC',
+                            style: cardLabelTextStyle,
+                            width: 24,
+                            height: 24,
+                          )
+                        : SizedBox(),
+                  ],
+                ),
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -67,22 +73,28 @@ class ClimateValuesWidget extends StatelessWidget {
                     ValueCustomWidget(
                       value: checkOnEmpty(climateMeter.humidity),
                     ),
-                    ValueCustomWidget(
-                      value: checkOnEmpty(climateMeter.pressure),
-                    ),
-                    ValueCustomWidget(
-                      value: checkOnEmpty(climateMeter.co2),
-                    ),
-                    ValueCustomWidget(
-                      value: checkOnEmpty(climateMeter.tvoc),
-                    ),
+                    climateMeter.pressure.compareTo(-1.0) != 0
+                        ? ValueCustomWidget(
+                            value: checkOnEmpty(climateMeter.pressure),
+                          )
+                        : SizedBox(),
+                    climateMeter.co2.compareTo(-1.0) != 0
+                        ? ValueCustomWidget(
+                            value: checkOnEmpty(climateMeter.co2),
+                          )
+                        : SizedBox(),
+                    climateMeter.tvoc.compareTo(-1.0) != 0
+                        ? ValueCustomWidget(
+                            value: checkOnEmpty(climateMeter.tvoc),
+                          )
+                        : SizedBox(),
                   ],
-                );
-              },
+                )
+              ],
             );
           },
-        )
-      ],
+        );
+      },
     );
   }
 

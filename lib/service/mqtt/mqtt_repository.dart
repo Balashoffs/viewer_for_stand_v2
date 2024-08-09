@@ -32,11 +32,11 @@ class MqttRepository {
 
   final Stream<RoomStateData> _streamRoomStateData;
 
-  MqttRepository(
-      {required String host,
-      required int port,
-      required RoomRepository repository})
-      : _mqttClient = CustomMqttClient(host, port),
+  MqttRepository({
+    required String host,
+    required int port,
+    required RoomRepository repository,
+  })  : _mqttClient = CustomMqttClient(host, port),
         _streamRoomStateData = repository.getPostRoomStream;
 
   Future<void> init() async {
