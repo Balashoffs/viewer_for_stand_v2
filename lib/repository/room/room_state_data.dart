@@ -10,6 +10,7 @@ class RoomStateData with _$RoomStateData{
   factory RoomStateData ({
     MqttRoom? lastRoom,
     MqttRoom? currentRoom,
+    MqttRoom? defaultRoom,
     @Default(RoomState.init) RoomState state,
   }) = _RoomStateData;
 

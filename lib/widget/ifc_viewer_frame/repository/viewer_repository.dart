@@ -46,6 +46,7 @@ class ViewerRepository {
         List<RoomMarkerWithId> markers = _roomRepository.getMarkers();
         String json = jsonEncode(markers);
         postMessage({'config': json}, MessageTypeMV.postConfigMV);
+        _roomRepository.selectingRoom(1);
       } else if (incomingType case MessageTypeMV.postSelectMarkVM) {
         _roomRepository.postRoomMarkId(incoming);
       }

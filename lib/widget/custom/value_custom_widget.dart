@@ -13,7 +13,7 @@ class ValueCustomWidget extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Text(value, style: const TextStyle(fontWeight: FontWeight.bold)),
+      child: SizedBox(height:24, child: Text(value, style: const TextStyle(fontWeight: FontWeight.bold))),
     );
   }
 }

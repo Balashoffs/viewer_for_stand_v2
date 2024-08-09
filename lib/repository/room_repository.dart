@@ -36,7 +36,7 @@ class RoomRepository extends RoomMarkerRepository {
   }
 
   Future<void> selectingRoom(int roomId) async {
-    MqttRoom? mqr = getRoom(roomId);
+    MqttRoom? mqr = roomId == 1 ? defaultRooms : getRoom(roomId);
     if (mqr != null) {
       print('before update: ${_roomStateData}');
       updateRoomStateData(mqr);
@@ -47,6 +47,7 @@ class RoomRepository extends RoomMarkerRepository {
 
   void updateRoomStateData(MqttRoom mqttRoom) {
     if (_roomStateData.state == RoomState.init) {
+      print('_roomStateData.state == RoomState.init');
       _roomStateData = _roomStateData.copyWith(
         lastRoom: _roomStateData.currentRoom,
         currentRoom: mqttRoom,
@@ -54,18 +55,21 @@ class RoomRepository extends RoomMarkerRepository {
       );
     } else if (_roomStateData.state == RoomState.change) {
       if (_roomStateData.lastRoom?.roomId == mqttRoom.roomId) {
+        print('_roomStateData.lastRoom?.roomId == mqttRoom.roomId');
         _roomStateData = _roomStateData.copyWith(
           lastRoom: _roomStateData.currentRoom,
           currentRoom: mqttRoom,
-          state: RoomState.init,
+          state: RoomState.change,
         );
       } else if (_roomStateData.currentRoom?.roomId == mqttRoom.roomId) {
+        print('_roomStateData.currentRoom?.roomId == mqttRoom.roomId');
         _roomStateData = _roomStateData.copyWith(
           lastRoom: _roomStateData.currentRoom,
-          currentRoom: mqttRoom,
-          state: RoomState.init,
+          currentRoom: defaultRooms,
+          state: RoomState.change,
         );
       } else if (_roomStateData.lastRoom?.roomId != mqttRoom.roomId) {
+        print('_roomStateData.lastRoom?.roomId != mqttRoom.roomId');
         _roomStateData = _roomStateData.copyWith(
           lastRoom: _roomStateData.currentRoom,
           state: RoomState.change,
@@ -78,6 +82,7 @@ class RoomRepository extends RoomMarkerRepository {
 
 class RoomMarkerRepository {
   final Map<int, MqttRoom> _rooms = {};
+  late final MqttRoom defaultRooms;
   final Map<int, List<MqttDevice>> _devices = {};
 
   Future<void> loadFromAsset() async {
@@ -91,6 +96,10 @@ class RoomMarkerRepository {
       _rooms[element.roomId] = element;
       _devices[element.roomId] = element.devices;
     }
+
+    json = await rootBundle.loadString('assets/jsons/default.json');
+    Map<String, dynamic> map = jsonDecode(json);
+    defaultRooms = MqttRoom.fromJson(map);
   }
 
   List<RoomMarkerWithId> getMarkers() {

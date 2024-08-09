@@ -35,7 +35,7 @@ class ClimateValuesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,6 +84,7 @@ class ClimateValuesWidget extends StatelessWidget {
               fillClimateCard: (climateMeter) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ValueCustomWidget(
                       value: checkOnEmpty(climateMeter.temperature),

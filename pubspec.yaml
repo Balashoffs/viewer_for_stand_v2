@@ -57,6 +57,7 @@ flutter:
     - assets/jsons/
     - assets/svg/
     - assets/svg/room_type_icons/
+    - assets/svg/control_icon/
 
   fonts:
     - family: NunitoSans-Black
