@@ -6,7 +6,6 @@ part 'light.g.dart';
 @freezed
 class LightControl with _$LightControl {
   const factory LightControl({
-     @Default('')String name,
     required bool isOn,
   }) = _LightControl;
 

@@ -20,7 +20,6 @@ EnergyMeter _$EnergyMeterFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$EnergyMeter {
-  String get name => throw _privateConstructorUsedError;
   double get power => throw _privateConstructorUsedError;
   double get voltage => throw _privateConstructorUsedError;
   double get current => throw _privateConstructorUsedError;
@@ -40,8 +39,7 @@ abstract class $EnergyMeterCopyWith<$Res> {
       _$EnergyMeterCopyWithImpl<$Res, EnergyMeter>;
   @useResult
   $Res call(
-      {String name,
-      double power,
+      {double power,
       double voltage,
       double current,
       double powerFactor,
@@ -61,7 +59,6 @@ class _$EnergyMeterCopyWithImpl<$Res, $Val extends EnergyMeter>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = null,
     Object? power = null,
     Object? voltage = null,
     Object? current = null,
@@ -69,10 +66,6 @@ class _$EnergyMeterCopyWithImpl<$Res, $Val extends EnergyMeter>
     Object? voltageFrequency = null,
   }) {
     return _then(_value.copyWith(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
       power: null == power
           ? _value.power
           : power // ignore: cast_nullable_to_non_nullable
@@ -106,8 +99,7 @@ abstract class _$$EnergyMeterImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String name,
-      double power,
+      {double power,
       double voltage,
       double current,
       double powerFactor,
@@ -125,7 +117,6 @@ class __$$EnergyMeterImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = null,
     Object? power = null,
     Object? voltage = null,
     Object? current = null,
@@ -133,10 +124,6 @@ class __$$EnergyMeterImplCopyWithImpl<$Res>
     Object? voltageFrequency = null,
   }) {
     return _then(_$EnergyMeterImpl(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
       power: null == power
           ? _value.power
           : power // ignore: cast_nullable_to_non_nullable
@@ -165,8 +152,7 @@ class __$$EnergyMeterImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$EnergyMeterImpl implements _EnergyMeter {
   const _$EnergyMeterImpl(
-      {this.name = '',
-      this.power = -1.0,
+      {this.power = -1.0,
       this.voltage = -1.0,
       this.current = -1.0,
       this.powerFactor = -1.0,
@@ -175,9 +161,6 @@ class _$EnergyMeterImpl implements _EnergyMeter {
   factory _$EnergyMeterImpl.fromJson(Map<String, dynamic> json) =>
       _$$EnergyMeterImplFromJson(json);
 
-  @override
-  @JsonKey()
-  final String name;
   @override
   @JsonKey()
   final double power;
@@ -196,7 +179,7 @@ class _$EnergyMeterImpl implements _EnergyMeter {
 
   @override
   String toString() {
-    return 'EnergyMeter(name: $name, power: $power, voltage: $voltage, current: $current, powerFactor: $powerFactor, voltageFrequency: $voltageFrequency)';
+    return 'EnergyMeter(power: $power, voltage: $voltage, current: $current, powerFactor: $powerFactor, voltageFrequency: $voltageFrequency)';
   }
 
   @override
@@ -204,7 +187,6 @@ class _$EnergyMeterImpl implements _EnergyMeter {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$EnergyMeterImpl &&
-            (identical(other.name, name) || other.name == name) &&
             (identical(other.power, power) || other.power == power) &&
             (identical(other.voltage, voltage) || other.voltage == voltage) &&
             (identical(other.current, current) || other.current == current) &&
@@ -216,8 +198,8 @@ class _$EnergyMeterImpl implements _EnergyMeter {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, name, power, voltage, current,
-      powerFactor, voltageFrequency);
+  int get hashCode => Object.hash(
+      runtimeType, power, voltage, current, powerFactor, voltageFrequency);
 
   @JsonKey(ignore: true)
   @override
@@ -235,8 +217,7 @@ class _$EnergyMeterImpl implements _EnergyMeter {
 
 abstract class _EnergyMeter implements EnergyMeter {
   const factory _EnergyMeter(
-      {final String name,
-      final double power,
+      {final double power,
       final double voltage,
       final double current,
       final double powerFactor,
@@ -245,8 +226,6 @@ abstract class _EnergyMeter implements EnergyMeter {
   factory _EnergyMeter.fromJson(Map<String, dynamic> json) =
       _$EnergyMeterImpl.fromJson;
 
-  @override
-  String get name;
   @override
   double get power;
   @override

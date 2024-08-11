@@ -9,13 +9,11 @@ part of 'curtains.dart';
 _$CurtainsControlImpl _$$CurtainsControlImplFromJson(
         Map<String, dynamic> json) =>
     _$CurtainsControlImpl(
-      name: json['name'] as String? ?? '',
-      direction: (json['direction'] as num).toInt(),
+      direction: (json['direction'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$$CurtainsControlImplToJson(
         _$CurtainsControlImpl instance) =>
     <String, dynamic>{
-      'name': instance.name,
       'direction': instance.direction,
     };

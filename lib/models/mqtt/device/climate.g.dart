@@ -8,7 +8,6 @@ part of 'climate.dart';
 
 _$ClimateMeterImpl _$$ClimateMeterImplFromJson(Map<String, dynamic> json) =>
     _$ClimateMeterImpl(
-      name: json['name'] as String? ?? '',
       temperature: (json['temperature'] as num?)?.toDouble() ?? -1.0,
       humidity: (json['humidity'] as num?)?.toDouble() ?? -1.0,
       pressure: (json['pressure'] as num?)?.toDouble() ?? -1.0,
@@ -18,7 +17,6 @@ _$ClimateMeterImpl _$$ClimateMeterImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$ClimateMeterImplToJson(_$ClimateMeterImpl instance) =>
     <String, dynamic>{
-      'name': instance.name,
       'temperature': instance.temperature,
       'humidity': instance.humidity,
       'pressure': instance.pressure,

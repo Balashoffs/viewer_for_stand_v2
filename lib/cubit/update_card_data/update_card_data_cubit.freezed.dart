@@ -21,6 +21,7 @@ mixin _$UpdateCardDataState {
     required TResult Function() initial,
     required TResult Function(ClimateMeter climateMeter) fillClimateCard,
     required TResult Function(EnergyMeter energyMeter) fillPower,
+    required TResult Function() updateControl,
     required TResult Function() waiting,
   }) =>
       throw _privateConstructorUsedError;
@@ -29,6 +30,7 @@ mixin _$UpdateCardDataState {
     TResult? Function()? initial,
     TResult? Function(ClimateMeter climateMeter)? fillClimateCard,
     TResult? Function(EnergyMeter energyMeter)? fillPower,
+    TResult? Function()? updateControl,
     TResult? Function()? waiting,
   }) =>
       throw _privateConstructorUsedError;
@@ -37,6 +39,7 @@ mixin _$UpdateCardDataState {
     TResult Function()? initial,
     TResult Function(ClimateMeter climateMeter)? fillClimateCard,
     TResult Function(EnergyMeter energyMeter)? fillPower,
+    TResult Function()? updateControl,
     TResult Function()? waiting,
     required TResult orElse(),
   }) =>
@@ -46,6 +49,7 @@ mixin _$UpdateCardDataState {
     required TResult Function(_Initial value) initial,
     required TResult Function(_FillClimateCard value) fillClimateCard,
     required TResult Function(_FillPowerCard value) fillPower,
+    required TResult Function(_UpdateControl value) updateControl,
     required TResult Function(_Waiting value) waiting,
   }) =>
       throw _privateConstructorUsedError;
@@ -54,6 +58,7 @@ mixin _$UpdateCardDataState {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_FillClimateCard value)? fillClimateCard,
     TResult? Function(_FillPowerCard value)? fillPower,
+    TResult? Function(_UpdateControl value)? updateControl,
     TResult? Function(_Waiting value)? waiting,
   }) =>
       throw _privateConstructorUsedError;
@@ -62,6 +67,7 @@ mixin _$UpdateCardDataState {
     TResult Function(_Initial value)? initial,
     TResult Function(_FillClimateCard value)? fillClimateCard,
     TResult Function(_FillPowerCard value)? fillPower,
+    TResult Function(_UpdateControl value)? updateControl,
     TResult Function(_Waiting value)? waiting,
     required TResult orElse(),
   }) =>
@@ -127,6 +133,7 @@ class _$InitialImpl implements _Initial {
     required TResult Function() initial,
     required TResult Function(ClimateMeter climateMeter) fillClimateCard,
     required TResult Function(EnergyMeter energyMeter) fillPower,
+    required TResult Function() updateControl,
     required TResult Function() waiting,
   }) {
     return initial();
@@ -138,6 +145,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function()? initial,
     TResult? Function(ClimateMeter climateMeter)? fillClimateCard,
     TResult? Function(EnergyMeter energyMeter)? fillPower,
+    TResult? Function()? updateControl,
     TResult? Function()? waiting,
   }) {
     return initial?.call();
@@ -149,6 +157,7 @@ class _$InitialImpl implements _Initial {
     TResult Function()? initial,
     TResult Function(ClimateMeter climateMeter)? fillClimateCard,
     TResult Function(EnergyMeter energyMeter)? fillPower,
+    TResult Function()? updateControl,
     TResult Function()? waiting,
     required TResult orElse(),
   }) {
@@ -164,6 +173,7 @@ class _$InitialImpl implements _Initial {
     required TResult Function(_Initial value) initial,
     required TResult Function(_FillClimateCard value) fillClimateCard,
     required TResult Function(_FillPowerCard value) fillPower,
+    required TResult Function(_UpdateControl value) updateControl,
     required TResult Function(_Waiting value) waiting,
   }) {
     return initial(this);
@@ -175,6 +185,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_FillClimateCard value)? fillClimateCard,
     TResult? Function(_FillPowerCard value)? fillPower,
+    TResult? Function(_UpdateControl value)? updateControl,
     TResult? Function(_Waiting value)? waiting,
   }) {
     return initial?.call(this);
@@ -186,6 +197,7 @@ class _$InitialImpl implements _Initial {
     TResult Function(_Initial value)? initial,
     TResult Function(_FillClimateCard value)? fillClimateCard,
     TResult Function(_FillPowerCard value)? fillPower,
+    TResult Function(_UpdateControl value)? updateControl,
     TResult Function(_Waiting value)? waiting,
     required TResult orElse(),
   }) {
@@ -279,6 +291,7 @@ class _$FillClimateCardImpl implements _FillClimateCard {
     required TResult Function() initial,
     required TResult Function(ClimateMeter climateMeter) fillClimateCard,
     required TResult Function(EnergyMeter energyMeter) fillPower,
+    required TResult Function() updateControl,
     required TResult Function() waiting,
   }) {
     return fillClimateCard(climateMeter);
@@ -290,6 +303,7 @@ class _$FillClimateCardImpl implements _FillClimateCard {
     TResult? Function()? initial,
     TResult? Function(ClimateMeter climateMeter)? fillClimateCard,
     TResult? Function(EnergyMeter energyMeter)? fillPower,
+    TResult? Function()? updateControl,
     TResult? Function()? waiting,
   }) {
     return fillClimateCard?.call(climateMeter);
@@ -301,6 +315,7 @@ class _$FillClimateCardImpl implements _FillClimateCard {
     TResult Function()? initial,
     TResult Function(ClimateMeter climateMeter)? fillClimateCard,
     TResult Function(EnergyMeter energyMeter)? fillPower,
+    TResult Function()? updateControl,
     TResult Function()? waiting,
     required TResult orElse(),
   }) {
@@ -316,6 +331,7 @@ class _$FillClimateCardImpl implements _FillClimateCard {
     required TResult Function(_Initial value) initial,
     required TResult Function(_FillClimateCard value) fillClimateCard,
     required TResult Function(_FillPowerCard value) fillPower,
+    required TResult Function(_UpdateControl value) updateControl,
     required TResult Function(_Waiting value) waiting,
   }) {
     return fillClimateCard(this);
@@ -327,6 +343,7 @@ class _$FillClimateCardImpl implements _FillClimateCard {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_FillClimateCard value)? fillClimateCard,
     TResult? Function(_FillPowerCard value)? fillPower,
+    TResult? Function(_UpdateControl value)? updateControl,
     TResult? Function(_Waiting value)? waiting,
   }) {
     return fillClimateCard?.call(this);
@@ -338,6 +355,7 @@ class _$FillClimateCardImpl implements _FillClimateCard {
     TResult Function(_Initial value)? initial,
     TResult Function(_FillClimateCard value)? fillClimateCard,
     TResult Function(_FillPowerCard value)? fillPower,
+    TResult Function(_UpdateControl value)? updateControl,
     TResult Function(_Waiting value)? waiting,
     required TResult orElse(),
   }) {
@@ -436,6 +454,7 @@ class _$FillPowerCardImpl implements _FillPowerCard {
     required TResult Function() initial,
     required TResult Function(ClimateMeter climateMeter) fillClimateCard,
     required TResult Function(EnergyMeter energyMeter) fillPower,
+    required TResult Function() updateControl,
     required TResult Function() waiting,
   }) {
     return fillPower(energyMeter);
@@ -447,6 +466,7 @@ class _$FillPowerCardImpl implements _FillPowerCard {
     TResult? Function()? initial,
     TResult? Function(ClimateMeter climateMeter)? fillClimateCard,
     TResult? Function(EnergyMeter energyMeter)? fillPower,
+    TResult? Function()? updateControl,
     TResult? Function()? waiting,
   }) {
     return fillPower?.call(energyMeter);
@@ -458,6 +478,7 @@ class _$FillPowerCardImpl implements _FillPowerCard {
     TResult Function()? initial,
     TResult Function(ClimateMeter climateMeter)? fillClimateCard,
     TResult Function(EnergyMeter energyMeter)? fillPower,
+    TResult Function()? updateControl,
     TResult Function()? waiting,
     required TResult orElse(),
   }) {
@@ -473,6 +494,7 @@ class _$FillPowerCardImpl implements _FillPowerCard {
     required TResult Function(_Initial value) initial,
     required TResult Function(_FillClimateCard value) fillClimateCard,
     required TResult Function(_FillPowerCard value) fillPower,
+    required TResult Function(_UpdateControl value) updateControl,
     required TResult Function(_Waiting value) waiting,
   }) {
     return fillPower(this);
@@ -484,6 +506,7 @@ class _$FillPowerCardImpl implements _FillPowerCard {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_FillClimateCard value)? fillClimateCard,
     TResult? Function(_FillPowerCard value)? fillPower,
+    TResult? Function(_UpdateControl value)? updateControl,
     TResult? Function(_Waiting value)? waiting,
   }) {
     return fillPower?.call(this);
@@ -495,6 +518,7 @@ class _$FillPowerCardImpl implements _FillPowerCard {
     TResult Function(_Initial value)? initial,
     TResult Function(_FillClimateCard value)? fillClimateCard,
     TResult Function(_FillPowerCard value)? fillPower,
+    TResult Function(_UpdateControl value)? updateControl,
     TResult Function(_Waiting value)? waiting,
     required TResult orElse(),
   }) {
@@ -513,6 +537,126 @@ abstract class _FillPowerCard implements UpdateCardDataState {
   @JsonKey(ignore: true)
   _$$FillPowerCardImplCopyWith<_$FillPowerCardImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$UpdateControlImplCopyWith<$Res> {
+  factory _$$UpdateControlImplCopyWith(
+          _$UpdateControlImpl value, $Res Function(_$UpdateControlImpl) then) =
+      __$$UpdateControlImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$UpdateControlImplCopyWithImpl<$Res>
+    extends _$UpdateCardDataStateCopyWithImpl<$Res, _$UpdateControlImpl>
+    implements _$$UpdateControlImplCopyWith<$Res> {
+  __$$UpdateControlImplCopyWithImpl(
+      _$UpdateControlImpl _value, $Res Function(_$UpdateControlImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$UpdateControlImpl implements _UpdateControl {
+  const _$UpdateControlImpl();
+
+  @override
+  String toString() {
+    return 'UpdateCardDataState.updateControl()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$UpdateControlImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function(ClimateMeter climateMeter) fillClimateCard,
+    required TResult Function(EnergyMeter energyMeter) fillPower,
+    required TResult Function() updateControl,
+    required TResult Function() waiting,
+  }) {
+    return updateControl();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function(ClimateMeter climateMeter)? fillClimateCard,
+    TResult? Function(EnergyMeter energyMeter)? fillPower,
+    TResult? Function()? updateControl,
+    TResult? Function()? waiting,
+  }) {
+    return updateControl?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function(ClimateMeter climateMeter)? fillClimateCard,
+    TResult Function(EnergyMeter energyMeter)? fillPower,
+    TResult Function()? updateControl,
+    TResult Function()? waiting,
+    required TResult orElse(),
+  }) {
+    if (updateControl != null) {
+      return updateControl();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_FillClimateCard value) fillClimateCard,
+    required TResult Function(_FillPowerCard value) fillPower,
+    required TResult Function(_UpdateControl value) updateControl,
+    required TResult Function(_Waiting value) waiting,
+  }) {
+    return updateControl(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_FillClimateCard value)? fillClimateCard,
+    TResult? Function(_FillPowerCard value)? fillPower,
+    TResult? Function(_UpdateControl value)? updateControl,
+    TResult? Function(_Waiting value)? waiting,
+  }) {
+    return updateControl?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_FillClimateCard value)? fillClimateCard,
+    TResult Function(_FillPowerCard value)? fillPower,
+    TResult Function(_UpdateControl value)? updateControl,
+    TResult Function(_Waiting value)? waiting,
+    required TResult orElse(),
+  }) {
+    if (updateControl != null) {
+      return updateControl(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _UpdateControl implements UpdateCardDataState {
+  const factory _UpdateControl() = _$UpdateControlImpl;
 }
 
 /// @nodoc
@@ -556,6 +700,7 @@ class _$WaitingImpl implements _Waiting {
     required TResult Function() initial,
     required TResult Function(ClimateMeter climateMeter) fillClimateCard,
     required TResult Function(EnergyMeter energyMeter) fillPower,
+    required TResult Function() updateControl,
     required TResult Function() waiting,
   }) {
     return waiting();
@@ -567,6 +712,7 @@ class _$WaitingImpl implements _Waiting {
     TResult? Function()? initial,
     TResult? Function(ClimateMeter climateMeter)? fillClimateCard,
     TResult? Function(EnergyMeter energyMeter)? fillPower,
+    TResult? Function()? updateControl,
     TResult? Function()? waiting,
   }) {
     return waiting?.call();
@@ -578,6 +724,7 @@ class _$WaitingImpl implements _Waiting {
     TResult Function()? initial,
     TResult Function(ClimateMeter climateMeter)? fillClimateCard,
     TResult Function(EnergyMeter energyMeter)? fillPower,
+    TResult Function()? updateControl,
     TResult Function()? waiting,
     required TResult orElse(),
   }) {
@@ -593,6 +740,7 @@ class _$WaitingImpl implements _Waiting {
     required TResult Function(_Initial value) initial,
     required TResult Function(_FillClimateCard value) fillClimateCard,
     required TResult Function(_FillPowerCard value) fillPower,
+    required TResult Function(_UpdateControl value) updateControl,
     required TResult Function(_Waiting value) waiting,
   }) {
     return waiting(this);
@@ -604,6 +752,7 @@ class _$WaitingImpl implements _Waiting {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_FillClimateCard value)? fillClimateCard,
     TResult? Function(_FillPowerCard value)? fillPower,
+    TResult? Function(_UpdateControl value)? updateControl,
     TResult? Function(_Waiting value)? waiting,
   }) {
     return waiting?.call(this);
@@ -615,6 +764,7 @@ class _$WaitingImpl implements _Waiting {
     TResult Function(_Initial value)? initial,
     TResult Function(_FillClimateCard value)? fillClimateCard,
     TResult Function(_FillPowerCard value)? fillPower,
+    TResult Function(_UpdateControl value)? updateControl,
     TResult Function(_Waiting value)? waiting,
     required TResult orElse(),
   }) {

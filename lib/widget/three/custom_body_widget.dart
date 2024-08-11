@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:viewer_for_stand_v2/cubit/update_card_data/update_card_data_cubit.dart';
+import 'package:viewer_for_stand_v2/models/room_switch_state_value.dart';
 import 'package:viewer_for_stand_v2/widget/buttons/lighting_buttons.dart';
 import 'package:viewer_for_stand_v2/widget/text_style.dart';
 
@@ -49,6 +52,7 @@ class PowerWidget extends StatelessWidget {
 
 class ClimateWidget extends StatelessWidget {
   const ClimateWidget({super.key, required this.valueNotifier});
+
   final ClimateValueNotifier valueNotifier;
 
   @override
@@ -83,26 +87,30 @@ class ClimateWidget extends StatelessWidget {
 class OfficeRoomControlWidget extends StatelessWidget {
   const OfficeRoomControlWidget({
     super.key,
-    required this.buttonNotifier,
+    required this.onPress,
     required this.onSwitch,
+    required this.stateValue,
   });
 
-  final Function(int) buttonNotifier;
+  final Function(int) onPress;
   final Function(bool) onSwitch;
+  final RoomSwitchStateValue stateValue;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         CustomBodyWriteSwitchWidget(
+          isOn: stateValue.isOnLight,
           name: 'Освещение',
           iconPath: 'assets/svg/control_icon/lighting.svg',
           onSwitch: onSwitch,
         ),
         CustomBodyWriteButtonWidget(
+          isOn: stateValue.isOnCurtains,
           name: 'Шторы',
           iconPath: 'assets/svg/control_icon/curtains.svg',
-          onPress: buttonNotifier,
+          onPress: onPress,
         ),
       ],
     );
@@ -113,15 +121,18 @@ class MeetingRoomControlWidget extends StatelessWidget {
   const MeetingRoomControlWidget({
     super.key,
     required this.onSwitch,
+    required this.stateValue,
   });
 
   final Function(bool) onSwitch;
+  final RoomSwitchStateValue stateValue;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         CustomBodyWriteSwitchWidget(
+          isOn: stateValue.isOnLight,
           name: 'Освещение',
           iconPath: 'assets/svg/control_icon/lighting.svg',
           onSwitch: onSwitch,
@@ -184,11 +195,13 @@ class CustomBodyWriteSwitchWidget extends StatelessWidget {
     required this.name,
     required this.iconPath,
     required this.onSwitch,
+    required this.isOn,
   });
 
   final String name;
   final String iconPath;
   final Function(bool) onSwitch;
+  final bool isOn;
 
   @override
   Widget build(BuildContext context) {
@@ -213,6 +226,7 @@ class CustomBodyWriteSwitchWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 12.0),
             child: CustomToggleSwitch(
+              isOn: isOn,
               onChanged: onSwitch,
             ),
           ),
@@ -228,11 +242,13 @@ class CustomBodyWriteButtonWidget extends StatelessWidget {
     required this.name,
     required this.iconPath,
     required this.onPress,
+    required this.isOn,
   });
 
   final String name;
   final String iconPath;
   final Function(int) onPress;
+  final int isOn;
 
   @override
   Widget build(BuildContext context) {
@@ -257,8 +273,9 @@ class CustomBodyWriteButtonWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 12.0),
             child: CustomToggleSwitch(
+              isOn: isOn == 1,
               onChanged: (updated) {
-                int value= updated ? 1 : -1;
+                int value = updated ? 1 : -1;
                 onPress(value);
               },
             ),
@@ -274,7 +291,7 @@ class CustomDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return const Padding(
       padding: EdgeInsets.symmetric(horizontal: 28),
       child: Divider(
         color: Color.fromRGBO(226, 226, 226, 1.0),

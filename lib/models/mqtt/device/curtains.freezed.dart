@@ -20,7 +20,6 @@ CurtainsControl _$CurtainsControlFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CurtainsControl {
-  String get name => throw _privateConstructorUsedError;
   int get direction => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -35,7 +34,7 @@ abstract class $CurtainsControlCopyWith<$Res> {
           CurtainsControl value, $Res Function(CurtainsControl) then) =
       _$CurtainsControlCopyWithImpl<$Res, CurtainsControl>;
   @useResult
-  $Res call({String name, int direction});
+  $Res call({int direction});
 }
 
 /// @nodoc
@@ -51,14 +50,9 @@ class _$CurtainsControlCopyWithImpl<$Res, $Val extends CurtainsControl>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = null,
     Object? direction = null,
   }) {
     return _then(_value.copyWith(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
       direction: null == direction
           ? _value.direction
           : direction // ignore: cast_nullable_to_non_nullable
@@ -75,7 +69,7 @@ abstract class _$$CurtainsControlImplCopyWith<$Res>
       __$$CurtainsControlImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, int direction});
+  $Res call({int direction});
 }
 
 /// @nodoc
@@ -89,14 +83,9 @@ class __$$CurtainsControlImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = null,
     Object? direction = null,
   }) {
     return _then(_$CurtainsControlImpl(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
       direction: null == direction
           ? _value.direction
           : direction // ignore: cast_nullable_to_non_nullable
@@ -108,20 +97,18 @@ class __$$CurtainsControlImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$CurtainsControlImpl implements _CurtainsControl {
-  const _$CurtainsControlImpl({this.name = '', required this.direction});
+  const _$CurtainsControlImpl({this.direction = 0});
 
   factory _$CurtainsControlImpl.fromJson(Map<String, dynamic> json) =>
       _$$CurtainsControlImplFromJson(json);
 
   @override
   @JsonKey()
-  final String name;
-  @override
   final int direction;
 
   @override
   String toString() {
-    return 'CurtainsControl(name: $name, direction: $direction)';
+    return 'CurtainsControl(direction: $direction)';
   }
 
   @override
@@ -129,14 +116,13 @@ class _$CurtainsControlImpl implements _CurtainsControl {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CurtainsControlImpl &&
-            (identical(other.name, name) || other.name == name) &&
             (identical(other.direction, direction) ||
                 other.direction == direction));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, name, direction);
+  int get hashCode => Object.hash(runtimeType, direction);
 
   @JsonKey(ignore: true)
   @override
@@ -154,15 +140,11 @@ class _$CurtainsControlImpl implements _CurtainsControl {
 }
 
 abstract class _CurtainsControl implements CurtainsControl {
-  const factory _CurtainsControl(
-      {final String name,
-      required final int direction}) = _$CurtainsControlImpl;
+  const factory _CurtainsControl({final int direction}) = _$CurtainsControlImpl;
 
   factory _CurtainsControl.fromJson(Map<String, dynamic> json) =
       _$CurtainsControlImpl.fromJson;
 
-  @override
-  String get name;
   @override
   int get direction;
   @override

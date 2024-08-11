@@ -29,13 +29,11 @@ class UpdateCardDataCubit extends Cubit<UpdateCardDataState> {
   }
 
   void _handleRoomEvent(RoomStateData roomStateData) {
-    print('_handleRoomEvent before: $_isRoomActive');
     _isRoomActive = roomStateData.state == RoomState.change;
-    print('_handleRoomEvent after: $_isRoomActive');
   }
 
   void _handleMqttEvent(PollMqttMessage message) {
-    print('_handleMqttEvent(PollMqttMessage message) ');
+    print(message);
     if (_isRoomActive) {
       switch (message.type) {
         case DeviceType.climate:

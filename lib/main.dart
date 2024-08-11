@@ -77,10 +77,11 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
+    String host = 'ws://${widget.host}';
     _roomRepository = RoomRepository();
     _viewerRepository = ViewerRepository(_roomRepository);
     _mqttRepository = MqttRepository(
-        host: widget.host, port: widget.port, repository: _roomRepository);
+        host: host, port: widget.port, repository: _roomRepository);
     // _mqttRepository = MqttRepository(
     //     host: 'ws://127.0.0.1', port: 8080, repository: _roomRepository);
     _roomRepository.loadFromAsset().then((value) =>
@@ -142,7 +143,8 @@ class ViewerWithBmsWidget extends StatelessWidget {
             BlocBuilder<ControlCardCubit, ControlCardState>(
               builder: (context, state) {
                 return state.when(
-                  initial: () => SizedBox(),
+                  initial: () => const SizedBox(),
+                  loading:()=> const Flexible(flex: 5, child: Center(child: CircularProgressIndicator(),),),
                   showControlCard: (widget) => Flexible(flex: 5, child: widget),
                 );
               },

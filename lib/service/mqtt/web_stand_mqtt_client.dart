@@ -64,21 +64,18 @@ class CustomMqttClient {
   }
 
   void _onPublished(List<MqttReceivedMessage<MqttMessage>> msgs) {
-    msgs.forEach((element) {
+    for (var element in msgs) {
       final recMess = element.payload  as MqttPublishMessage;
       String messageAsString =
       MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
-      print('messageAsString: $messageAsString');
-
       _onIncomingMessage(messageAsString);
-    });
+    }
   }
 
   Future<void> publish(PublishMqttMessage message) async {
     _messageBuilder.clear();
     _messageBuilder.addString(message.value);
     String topic = message.topic;
-    print(topic);
     _client.publishMessage(
         topic, MqttQos.atLeastOnce, _messageBuilder.payload!);
     _messageBuilder.clear();

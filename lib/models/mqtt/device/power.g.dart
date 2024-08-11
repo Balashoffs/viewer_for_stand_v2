@@ -8,7 +8,6 @@ part of 'power.dart';
 
 _$EnergyMeterImpl _$$EnergyMeterImplFromJson(Map<String, dynamic> json) =>
     _$EnergyMeterImpl(
-      name: json['name'] as String? ?? '',
       power: (json['power'] as num?)?.toDouble() ?? -1.0,
       voltage: (json['voltage'] as num?)?.toDouble() ?? -1.0,
       current: (json['current'] as num?)?.toDouble() ?? -1.0,
@@ -18,7 +17,6 @@ _$EnergyMeterImpl _$$EnergyMeterImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$EnergyMeterImplToJson(_$EnergyMeterImpl instance) =>
     <String, dynamic>{
-      'name': instance.name,
       'power': instance.power,
       'voltage': instance.voltage,
       'current': instance.current,

@@ -114,7 +114,6 @@ class MqttRepository {
       name = name.substring(index).split('_')[0];
       DeviceType deviceType = DeviceType.findBy(name);
       final pmm = PollMqttMessage(type: deviceType, map: map);
-      print(pmm);
       pollSink.add(pmm);
     }
   }

@@ -20,7 +20,6 @@ ClimateMeter _$ClimateMeterFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ClimateMeter {
-  String get name => throw _privateConstructorUsedError;
   double get temperature => throw _privateConstructorUsedError;
   double get humidity => throw _privateConstructorUsedError;
   double get pressure => throw _privateConstructorUsedError;
@@ -40,8 +39,7 @@ abstract class $ClimateMeterCopyWith<$Res> {
       _$ClimateMeterCopyWithImpl<$Res, ClimateMeter>;
   @useResult
   $Res call(
-      {String name,
-      double temperature,
+      {double temperature,
       double humidity,
       double pressure,
       double co2,
@@ -61,7 +59,6 @@ class _$ClimateMeterCopyWithImpl<$Res, $Val extends ClimateMeter>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = null,
     Object? temperature = null,
     Object? humidity = null,
     Object? pressure = null,
@@ -69,10 +66,6 @@ class _$ClimateMeterCopyWithImpl<$Res, $Val extends ClimateMeter>
     Object? tvoc = null,
   }) {
     return _then(_value.copyWith(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
       temperature: null == temperature
           ? _value.temperature
           : temperature // ignore: cast_nullable_to_non_nullable
@@ -106,8 +99,7 @@ abstract class _$$ClimateMeterImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String name,
-      double temperature,
+      {double temperature,
       double humidity,
       double pressure,
       double co2,
@@ -125,7 +117,6 @@ class __$$ClimateMeterImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = null,
     Object? temperature = null,
     Object? humidity = null,
     Object? pressure = null,
@@ -133,10 +124,6 @@ class __$$ClimateMeterImplCopyWithImpl<$Res>
     Object? tvoc = null,
   }) {
     return _then(_$ClimateMeterImpl(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
       temperature: null == temperature
           ? _value.temperature
           : temperature // ignore: cast_nullable_to_non_nullable
@@ -165,8 +152,7 @@ class __$$ClimateMeterImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ClimateMeterImpl implements _ClimateMeter {
   const _$ClimateMeterImpl(
-      {this.name = '',
-      this.temperature = -1.0,
+      {this.temperature = -1.0,
       this.humidity = -1.0,
       this.pressure = -1.0,
       this.co2 = -1.0,
@@ -175,9 +161,6 @@ class _$ClimateMeterImpl implements _ClimateMeter {
   factory _$ClimateMeterImpl.fromJson(Map<String, dynamic> json) =>
       _$$ClimateMeterImplFromJson(json);
 
-  @override
-  @JsonKey()
-  final String name;
   @override
   @JsonKey()
   final double temperature;
@@ -196,7 +179,7 @@ class _$ClimateMeterImpl implements _ClimateMeter {
 
   @override
   String toString() {
-    return 'ClimateMeter(name: $name, temperature: $temperature, humidity: $humidity, pressure: $pressure, co2: $co2, tvoc: $tvoc)';
+    return 'ClimateMeter(temperature: $temperature, humidity: $humidity, pressure: $pressure, co2: $co2, tvoc: $tvoc)';
   }
 
   @override
@@ -204,7 +187,6 @@ class _$ClimateMeterImpl implements _ClimateMeter {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ClimateMeterImpl &&
-            (identical(other.name, name) || other.name == name) &&
             (identical(other.temperature, temperature) ||
                 other.temperature == temperature) &&
             (identical(other.humidity, humidity) ||
@@ -217,8 +199,8 @@ class _$ClimateMeterImpl implements _ClimateMeter {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, name, temperature, humidity, pressure, co2, tvoc);
+  int get hashCode =>
+      Object.hash(runtimeType, temperature, humidity, pressure, co2, tvoc);
 
   @JsonKey(ignore: true)
   @override
@@ -236,8 +218,7 @@ class _$ClimateMeterImpl implements _ClimateMeter {
 
 abstract class _ClimateMeter implements ClimateMeter {
   const factory _ClimateMeter(
-      {final String name,
-      final double temperature,
+      {final double temperature,
       final double humidity,
       final double pressure,
       final double co2,
@@ -246,8 +227,6 @@ abstract class _ClimateMeter implements ClimateMeter {
   factory _ClimateMeter.fromJson(Map<String, dynamic> json) =
       _$ClimateMeterImpl.fromJson;
 
-  @override
-  String get name;
   @override
   double get temperature;
   @override

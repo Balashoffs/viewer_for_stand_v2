@@ -12,8 +12,7 @@ part 'curtains.g.dart';
 @freezed
 class CurtainsControl with _$CurtainsControl {
   const factory CurtainsControl({
-    @Default('')String name,
-    required int direction,
+    @Default(0)  int direction,
   }) = _CurtainsControl;
 
   factory CurtainsControl.fromJson(Map<String, dynamic> json) => _$CurtainsControlFromJson(json);

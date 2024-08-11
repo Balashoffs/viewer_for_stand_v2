@@ -11,6 +11,7 @@ class ClimateValuesWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<UpdateCardDataCubit, UpdateCardDataState>(
       builder: (context, state) {
+        print('BlocBuilder<UpdateCardDataCubit, UpdateCardDataState>');
         return state.maybeWhen(
           orElse: () => SizedBox(),
           fillClimateCard: (climateMeter) {

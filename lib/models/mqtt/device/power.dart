@@ -6,7 +6,6 @@ part 'power.g.dart';
 @freezed
 class EnergyMeter with _$EnergyMeter {
   const factory EnergyMeter({
-    @Default('')String name,
     @Default(-1.0) double power,
     @Default(-1.0) double voltage,
     @Default(-1.0) double current,

@@ -72,35 +72,37 @@ class CustomToggleSwitch extends StatefulWidget {
   const CustomToggleSwitch({
     super.key,
     required this.onChanged,
+    required this.isOn,
   });
 
   final Function(bool) onChanged;
+  final bool isOn;
 
   @override
   State<CustomToggleSwitch> createState() => _CustomToggleSwitchState();
 }
 
 class _CustomToggleSwitchState extends State<CustomToggleSwitch> {
-  bool light = false;
+  bool isLight = false;
+
+
+  @override
+  void initState() {
+    super.initState();
+    isLight = widget.isOn;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Switch(
-        // This bool value toggles the switch.
-        value: light,
-        activeColor: Color.fromRGBO(103, 77, 178, 1.0),
-        onChanged: (bool value) {
-          setState(() {
-            light = value;
-            print('switch: $value');
-            widget.onChanged.call(value);
-          });
-        },
-      ),
-      onTap: () {
-        print('onTap: $light');
-        widget.onChanged.call(light);
+    return Switch(
+      value: isLight,
+      activeColor: const Color.fromRGBO(103, 77, 178, 1.0),
+      onChanged: (bool value) {
+        setState(() {
+          isLight = value;
+          print('switch: $value');
+          widget.onChanged.call(value);
+        });
       },
     );
   }
