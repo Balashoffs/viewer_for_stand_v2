@@ -4,6 +4,7 @@ import 'package:viewer_for_stand_v2/models/custom_mqtt_message.dart';
 import 'package:viewer_for_stand_v2/models/device/device_type.dart';
 import 'package:viewer_for_stand_v2/models/mqtt/device/climate.dart';
 import 'package:viewer_for_stand_v2/models/mqtt/device/power.dart';
+import 'package:viewer_for_stand_v2/models/room/room_type.dart';
 import 'package:viewer_for_stand_v2/repository/room/room_state.dart';
 import 'package:viewer_for_stand_v2/repository/room/room_state_data.dart';
 import 'package:viewer_for_stand_v2/repository/room_repository.dart';
@@ -29,35 +30,38 @@ class UpdateCardDataCubit extends Cubit<UpdateCardDataState> {
   }
 
   void _handleRoomEvent(RoomStateData roomStateData) {
-    _isRoomActive = roomStateData.state == RoomState.change;
+    print('void _handleRoomEvent(RoomStateData roomStateData)');
+    print(roomStateData.currentRoom!);
+    RoomType rt = RoomType.findByPos(roomStateData.currentRoom!.type);
+    switch (rt ) {
+      case RoomType.meetingroom:
+      case RoomType.restroom:
+      case RoomType.workroom:
+        emit(const UpdateCardDataState.fillClimateCard(ClimateMeter()));
+        break;
+      case RoomType.power:
+        emit(const UpdateCardDataState.fillPower(EnergyMeter()));
+        break;
+      default:
+        break;
+    }
   }
 
   void _handleMqttEvent(PollMqttMessage message) {
     print(message);
-    if (_isRoomActive) {
-      switch (message.type) {
-        case DeviceType.climate:
-          ClimateMeter climateMeter = ClimateMeter.fromJson(message.map);
-          emit(UpdateCardDataState.fillClimateCard(climateMeter));
-          break;
-        case DeviceType.power:
-          EnergyMeter energyMeter = EnergyMeter.fromJson(message.map);
-          emit(UpdateCardDataState.fillPower(energyMeter));
-          break;
-        default:
-          break;
-      }
-    } else {
-      switch (message.type) {
-        case DeviceType.climate:
-          emit(const UpdateCardDataState.fillClimateCard(ClimateMeter()));
-          break;
-        case DeviceType.power:
-          emit(const UpdateCardDataState.fillPower(EnergyMeter()));
-          break;
-        default:
-          break;
-      }
+    switch (message.type) {
+      case DeviceType.climate:
+      case DeviceType.light:
+      case DeviceType.curtains:
+        ClimateMeter climateMeter = ClimateMeter.fromJson(message.map);
+        emit(UpdateCardDataState.fillClimateCard(climateMeter));
+        break;
+      case DeviceType.power:
+        EnergyMeter energyMeter = EnergyMeter.fromJson(message.map);
+        emit(UpdateCardDataState.fillPower(energyMeter));
+        break;
+      default:
+        break;
     }
   }
 }

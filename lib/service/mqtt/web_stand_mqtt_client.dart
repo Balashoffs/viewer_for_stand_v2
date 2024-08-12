@@ -1,5 +1,6 @@
 import 'package:mqtt_client/mqtt_browser_client.dart';
 import 'package:mqtt_client/mqtt_client.dart';
+import 'package:uuid/uuid.dart';
 import 'package:viewer_for_stand_v2/models/custom_mqtt_message.dart';
 
 class CustomMqttClient {
@@ -9,7 +10,7 @@ class CustomMqttClient {
   CustomMqttClient(String host, int port)
       : _client = MqttBrowserClient(
           host,
-          '',
+          const Uuid().v4(),
         )..port = port,
         _messageBuilder = MqttClientPayloadBuilder();
 
@@ -34,10 +35,13 @@ class CustomMqttClient {
     _client.onDisconnected = onDisconnected;
     _client.onConnected = onConnected;
     _client.pongCallback = pong;
+    final connMessage = MqttConnectMessage()
+        .withWillQos(MqttQos.atMostOnce);
+    _client.connectionMessage = connMessage;
     try {
       MqttClientConnectionStatus? status = await _client.connect();
       if (status != null) {
-        _client.updates?.listen(_onPublished);
+        _client.updates?.listen(_onListPublished);
       } else {
         print('Couldn\'t connect to mqtt server');
       }
@@ -63,7 +67,7 @@ class CustomMqttClient {
     }
   }
 
-  void _onPublished(List<MqttReceivedMessage<MqttMessage>> msgs) {
+  void _onListPublished(List<MqttReceivedMessage<MqttMessage>> msgs) {
     for (var element in msgs) {
       final recMess = element.payload  as MqttPublishMessage;
       String messageAsString =
@@ -77,7 +81,7 @@ class CustomMqttClient {
     _messageBuilder.addString(message.value);
     String topic = message.topic;
     _client.publishMessage(
-        topic, MqttQos.atLeastOnce, _messageBuilder.payload!);
+        topic, MqttQos.atLeastOnce, _messageBuilder.payload!,retain: true);
     _messageBuilder.clear();
   }
 
@@ -89,7 +93,7 @@ class CustomMqttClient {
   /// The subscribed callback
   void subscribe(String topic) {
     print('subscribe to: $topic');
-    _client.subscribe(topic, MqttQos.exactlyOnce);
+    _client.subscribe(topic, MqttQos.atLeastOnce);
   }
 
   void unSubscribe(String topic) {

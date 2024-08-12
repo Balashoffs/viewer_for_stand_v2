@@ -35,6 +35,7 @@ class ControlCardCubit extends Cubit<ControlCardState> {
       if (roomStateData.currentRoom != null) {
        await Future.delayed(const Duration(milliseconds: 100));
         Widget widget = await _cardControlService
+
             .createNewCardControlWidget(roomStateData.currentRoom!);
         emit(ControlCardState.showControlCard(widget));
       }

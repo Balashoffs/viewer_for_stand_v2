@@ -87,22 +87,22 @@ class ClimateValuesWidget extends StatelessWidget {
                         ? ValueCustomWidget(
                             value: checkOnEmpty(climateMeter.pressure),
                           )
-                        : SizedBox(),
+                        : const SizedBox(),
                     climateMeter.co2.compareTo(-1.0) != 0
                         ? ValueCustomWidget(
                             value: checkOnEmpty(climateMeter.co2),
                           )
-                        : SizedBox(),
+                        : const SizedBox(),
                     climateMeter.tvoc.compareTo(-1.0) != 0
                         ? ValueCustomWidget(
                             value: checkOnEmpty(climateMeter.tvoc),
                           )
-                        : SizedBox(),
+                        : const SizedBox(),
                     climateMeter.voltage.compareTo(-1.0) != 0
                         ? ValueCustomWidget(
                       value: checkOnEmpty(climateMeter.voltage),
                     )
-                        : SizedBox(),
+                        : const SizedBox(),
                   ],
                 )
               ],

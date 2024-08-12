@@ -144,7 +144,12 @@ class ViewerWithBmsWidget extends StatelessWidget {
               builder: (context, state) {
                 return state.when(
                   initial: () => const SizedBox(),
-                  loading:()=> const Flexible(flex: 5, child: Center(child: CircularProgressIndicator(),),),
+                  loading: () => const Flexible(
+                    flex: 5,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
                   showControlCard: (widget) => Flexible(flex: 5, child: widget),
                 );
               },
@@ -185,7 +190,7 @@ class LoginPage extends StatelessWidget {
               '(например: 192.168.0.1:1111)',
               style: cardLabelTextStyle,
             ),
-            SizedBox(
+            const SizedBox(
               height: 8.0,
             ),
             Row(
@@ -210,10 +215,14 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                    onPressed: () {
-                      context.read<SaveHostValueCubit>().saveHost();
-                    },
-                    icon: Icon(Icons.arrow_circle_right_outlined, size: 48,))
+                  onPressed: () {
+                    context.read<SaveHostValueCubit>().saveHost();
+                  },
+                  icon: const Icon(
+                    Icons.arrow_circle_right_outlined,
+                    size: 48,
+                  ),
+                )
               ],
             ),
           ],
