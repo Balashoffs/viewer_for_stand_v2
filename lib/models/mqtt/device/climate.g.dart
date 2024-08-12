@@ -13,6 +13,7 @@ _$ClimateMeterImpl _$$ClimateMeterImplFromJson(Map<String, dynamic> json) =>
       pressure: (json['pressure'] as num?)?.toDouble() ?? -1.0,
       co2: (json['co2'] as num?)?.toDouble() ?? -1.0,
       tvoc: (json['tvoc'] as num?)?.toDouble() ?? -1.0,
+      voltage: (json['voltage'] as num?)?.toDouble() ?? -1.0,
     );
 
 Map<String, dynamic> _$$ClimateMeterImplToJson(_$ClimateMeterImpl instance) =>
@@ -22,4 +23,5 @@ Map<String, dynamic> _$$ClimateMeterImplToJson(_$ClimateMeterImpl instance) =>
       'pressure': instance.pressure,
       'co2': instance.co2,
       'tvoc': instance.tvoc,
+      'voltage': instance.voltage,
     };

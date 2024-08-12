@@ -62,6 +62,15 @@ class ClimateValuesWidget extends StatelessWidget {
                             height: 24,
                           )
                         : SizedBox(),
+                    climateMeter.voltage.compareTo(-1.0) != 0
+                        ? LabelCustomWidget(
+                      iconPath: 'assets/svg/power.svg',
+                      label: 'Батарея, mV',
+                      style: cardLabelTextStyle,
+                      width: 24,
+                      height: 24,
+                    )
+                        : SizedBox(),
                   ],
                 ),
                 Column(
@@ -88,6 +97,11 @@ class ClimateValuesWidget extends StatelessWidget {
                         ? ValueCustomWidget(
                             value: checkOnEmpty(climateMeter.tvoc),
                           )
+                        : SizedBox(),
+                    climateMeter.voltage.compareTo(-1.0) != 0
+                        ? ValueCustomWidget(
+                      value: checkOnEmpty(climateMeter.voltage),
+                    )
                         : SizedBox(),
                   ],
                 )

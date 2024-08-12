@@ -25,6 +25,7 @@ mixin _$ClimateMeter {
   double get pressure => throw _privateConstructorUsedError;
   double get co2 => throw _privateConstructorUsedError;
   double get tvoc => throw _privateConstructorUsedError;
+  double get voltage => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -43,7 +44,8 @@ abstract class $ClimateMeterCopyWith<$Res> {
       double humidity,
       double pressure,
       double co2,
-      double tvoc});
+      double tvoc,
+      double voltage});
 }
 
 /// @nodoc
@@ -64,6 +66,7 @@ class _$ClimateMeterCopyWithImpl<$Res, $Val extends ClimateMeter>
     Object? pressure = null,
     Object? co2 = null,
     Object? tvoc = null,
+    Object? voltage = null,
   }) {
     return _then(_value.copyWith(
       temperature: null == temperature
@@ -86,6 +89,10 @@ class _$ClimateMeterCopyWithImpl<$Res, $Val extends ClimateMeter>
           ? _value.tvoc
           : tvoc // ignore: cast_nullable_to_non_nullable
               as double,
+      voltage: null == voltage
+          ? _value.voltage
+          : voltage // ignore: cast_nullable_to_non_nullable
+              as double,
     ) as $Val);
   }
 }
@@ -103,7 +110,8 @@ abstract class _$$ClimateMeterImplCopyWith<$Res>
       double humidity,
       double pressure,
       double co2,
-      double tvoc});
+      double tvoc,
+      double voltage});
 }
 
 /// @nodoc
@@ -122,6 +130,7 @@ class __$$ClimateMeterImplCopyWithImpl<$Res>
     Object? pressure = null,
     Object? co2 = null,
     Object? tvoc = null,
+    Object? voltage = null,
   }) {
     return _then(_$ClimateMeterImpl(
       temperature: null == temperature
@@ -144,6 +153,10 @@ class __$$ClimateMeterImplCopyWithImpl<$Res>
           ? _value.tvoc
           : tvoc // ignore: cast_nullable_to_non_nullable
               as double,
+      voltage: null == voltage
+          ? _value.voltage
+          : voltage // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
@@ -156,7 +169,8 @@ class _$ClimateMeterImpl implements _ClimateMeter {
       this.humidity = -1.0,
       this.pressure = -1.0,
       this.co2 = -1.0,
-      this.tvoc = -1.0});
+      this.tvoc = -1.0,
+      this.voltage = -1.0});
 
   factory _$ClimateMeterImpl.fromJson(Map<String, dynamic> json) =>
       _$$ClimateMeterImplFromJson(json);
@@ -176,10 +190,13 @@ class _$ClimateMeterImpl implements _ClimateMeter {
   @override
   @JsonKey()
   final double tvoc;
+  @override
+  @JsonKey()
+  final double voltage;
 
   @override
   String toString() {
-    return 'ClimateMeter(temperature: $temperature, humidity: $humidity, pressure: $pressure, co2: $co2, tvoc: $tvoc)';
+    return 'ClimateMeter(temperature: $temperature, humidity: $humidity, pressure: $pressure, co2: $co2, tvoc: $tvoc, voltage: $voltage)';
   }
 
   @override
@@ -194,13 +211,14 @@ class _$ClimateMeterImpl implements _ClimateMeter {
             (identical(other.pressure, pressure) ||
                 other.pressure == pressure) &&
             (identical(other.co2, co2) || other.co2 == co2) &&
-            (identical(other.tvoc, tvoc) || other.tvoc == tvoc));
+            (identical(other.tvoc, tvoc) || other.tvoc == tvoc) &&
+            (identical(other.voltage, voltage) || other.voltage == voltage));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, temperature, humidity, pressure, co2, tvoc);
+  int get hashCode => Object.hash(
+      runtimeType, temperature, humidity, pressure, co2, tvoc, voltage);
 
   @JsonKey(ignore: true)
   @override
@@ -222,7 +240,8 @@ abstract class _ClimateMeter implements ClimateMeter {
       final double humidity,
       final double pressure,
       final double co2,
-      final double tvoc}) = _$ClimateMeterImpl;
+      final double tvoc,
+      final double voltage}) = _$ClimateMeterImpl;
 
   factory _ClimateMeter.fromJson(Map<String, dynamic> json) =
       _$ClimateMeterImpl.fromJson;
@@ -237,6 +256,8 @@ abstract class _ClimateMeter implements ClimateMeter {
   double get co2;
   @override
   double get tvoc;
+  @override
+  double get voltage;
   @override
   @JsonKey(ignore: true)
   _$$ClimateMeterImplCopyWith<_$ClimateMeterImpl> get copyWith =>
