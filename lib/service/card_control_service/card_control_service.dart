@@ -120,7 +120,7 @@ class CardControlBuilder {
                     setValue(roomName, stateValue);
                     _controlFunc(
                       DeviceType.light,
-                      LightControl(isOn: p0).toJson(),
+                      LightControl(state: p0 ? 1 : 0).toJson(),
                     );
                   },
                 ),
@@ -149,7 +149,7 @@ class CardControlBuilder {
                     setValue(roomName, stateValue);
                     _controlFunc(
                       DeviceType.light,
-                      LightControl(isOn: p0).toJson(),
+                      LightControl(state: p0 ? 1 : 0).toJson(),
                     );
                   },
                 ),

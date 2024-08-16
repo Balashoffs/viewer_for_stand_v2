@@ -6,7 +6,7 @@ part 'light.g.dart';
 @freezed
 class LightControl with _$LightControl {
   const factory LightControl({
-    required bool isOn,
+    required int state,
   }) = _LightControl;
 
   factory LightControl.fromJson(Map<String, dynamic> json) => _$LightControlFromJson(json);

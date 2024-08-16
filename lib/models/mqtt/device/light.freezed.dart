@@ -20,7 +20,7 @@ LightControl _$LightControlFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$LightControl {
-  bool get isOn => throw _privateConstructorUsedError;
+  int get state => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +34,7 @@ abstract class $LightControlCopyWith<$Res> {
           LightControl value, $Res Function(LightControl) then) =
       _$LightControlCopyWithImpl<$Res, LightControl>;
   @useResult
-  $Res call({bool isOn});
+  $Res call({int state});
 }
 
 /// @nodoc
@@ -50,13 +50,13 @@ class _$LightControlCopyWithImpl<$Res, $Val extends LightControl>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? isOn = null,
+    Object? state = null,
   }) {
     return _then(_value.copyWith(
-      isOn: null == isOn
-          ? _value.isOn
-          : isOn // ignore: cast_nullable_to_non_nullable
-              as bool,
+      state: null == state
+          ? _value.state
+          : state // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -69,7 +69,7 @@ abstract class _$$LightControlImplCopyWith<$Res>
       __$$LightControlImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isOn});
+  $Res call({int state});
 }
 
 /// @nodoc
@@ -83,13 +83,13 @@ class __$$LightControlImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? isOn = null,
+    Object? state = null,
   }) {
     return _then(_$LightControlImpl(
-      isOn: null == isOn
-          ? _value.isOn
-          : isOn // ignore: cast_nullable_to_non_nullable
-              as bool,
+      state: null == state
+          ? _value.state
+          : state // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -97,17 +97,17 @@ class __$$LightControlImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$LightControlImpl implements _LightControl {
-  const _$LightControlImpl({required this.isOn});
+  const _$LightControlImpl({required this.state});
 
   factory _$LightControlImpl.fromJson(Map<String, dynamic> json) =>
       _$$LightControlImplFromJson(json);
 
   @override
-  final bool isOn;
+  final int state;
 
   @override
   String toString() {
-    return 'LightControl(isOn: $isOn)';
+    return 'LightControl(state: $state)';
   }
 
   @override
@@ -115,12 +115,12 @@ class _$LightControlImpl implements _LightControl {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LightControlImpl &&
-            (identical(other.isOn, isOn) || other.isOn == isOn));
+            (identical(other.state, state) || other.state == state));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, isOn);
+  int get hashCode => Object.hash(runtimeType, state);
 
   @JsonKey(ignore: true)
   @override
@@ -137,13 +137,13 @@ class _$LightControlImpl implements _LightControl {
 }
 
 abstract class _LightControl implements LightControl {
-  const factory _LightControl({required final bool isOn}) = _$LightControlImpl;
+  const factory _LightControl({required final int state}) = _$LightControlImpl;
 
   factory _LightControl.fromJson(Map<String, dynamic> json) =
       _$LightControlImpl.fromJson;
 
   @override
-  bool get isOn;
+  int get state;
   @override
   @JsonKey(ignore: true)
   _$$LightControlImplCopyWith<_$LightControlImpl> get copyWith =>
