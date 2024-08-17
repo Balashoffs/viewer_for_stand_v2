@@ -7,6 +7,5 @@ void main(){
     Directory dirWithWebSvg = Directory('assets/web-svg/room_type_icons');
     List<String> webSvgFiles =
     dirWithWebSvg.listSync().map((e) => e.path).toList();
-    print(webSvgFiles);
   });
 }

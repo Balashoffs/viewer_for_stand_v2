@@ -34,7 +34,6 @@ class RoomRepository extends RoomMarkerRepository {
   }
 
   Future<void> selectingRoom(int roomId) async {
-    print('roomId: $roomId');
     MqttRoom? mqr = roomId == 1 ? defaultRooms : getRoom(roomId);
     if (mqr != null) {
       updateRoomStateData(mqr);
@@ -66,7 +65,6 @@ class RoomMarkerRepository {
     String json = await rootBundle.loadString('assets/jsons/rooms.json');
     var foundRooms = jsonDecode(json).map((map) {
       MqttRoom mqttRoom = MqttRoom.fromJson(map);
-      print(mqttRoom);
       return mqttRoom;
     }).toList();
     for (var element in foundRooms) {

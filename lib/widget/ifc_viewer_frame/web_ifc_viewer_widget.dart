@@ -61,7 +61,6 @@ class _IfcViewerWidgetState extends State<IfcViewerWidget> {
     });
 
     _iframeElement.onAbort.listen((event) {
-      print('abort');
     });
 
     _iframeWidget = HtmlElementView(

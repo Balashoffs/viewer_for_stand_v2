@@ -43,12 +43,9 @@ class CustomMqttClient {
       MqttClientConnectionStatus? status = await _client.connect();
       if (status != null) {
         _client.updates?.listen(_onListPublished);
-      } else {
-        print('Couldn\'t connect to mqtt server');
       }
     } on NoConnectionException catch (e) {
       _callback.call(MqttConnectionState.faulted);
-      print('client exception - $e');
       _client.disconnect();
       return;
     }
@@ -93,12 +90,10 @@ class CustomMqttClient {
 
   /// The subscribed callback
   void subscribe(String topic) {
-    print('subscribe to: $topic');
     _client.subscribe(topic, MqttQos.atLeastOnce);
   }
 
   void unSubscribe(String topic) {
-    print('unSubscribe from: $topic');
     _client.unsubscribe(
       topic,
     );

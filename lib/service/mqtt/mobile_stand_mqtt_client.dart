@@ -66,7 +66,6 @@ class CustomMqttClient {
       } else {}
     } on NoConnectionException catch (e) {
       _callback.call(MqttConnectionState.faulted);
-      print('client exception - $e');
       _client.disconnect();
       return;
     }
@@ -74,7 +73,6 @@ class CustomMqttClient {
     /// Check we are connected
     if (_client.connectionStatus!.state == MqttConnectionState.connected) {
       _callback.call(MqttConnectionState.connected);
-      print('Mosquitto client connected');
     } else {
       _callback.call(MqttConnectionState.faulted);
 
@@ -100,7 +98,6 @@ class CustomMqttClient {
     _messageBuilder.clear();
     _messageBuilder.addString(message.value);
     String topic = message.topic;
-    print(topic);
     _client.publishMessage(
         topic, MqttQos.atLeastOnce, _messageBuilder.payload!);
     _messageBuilder.clear();

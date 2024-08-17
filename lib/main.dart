@@ -24,7 +24,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    print('MyApp build');
     return MaterialApp(
       title: 'Viewer with BMS',
       theme: ThemeData(
@@ -34,7 +33,7 @@ class MyApp extends StatelessWidget {
       // home: const MainPage(title: 'Viewer with BMS'),
       home: BlocProvider(
         create: (context) => SaveHostValueCubit()..checkHostAtCache(),
-        child: StartWidget(),
+        child: const StartWidget(),
       ),
     );
   }

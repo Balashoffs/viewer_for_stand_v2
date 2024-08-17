@@ -93,14 +93,12 @@ class MqttRepository {
   }
 
   void _onIncomingMessage(String topic, String message) {
-    print(topic);
     Map<String, dynamic> map = jsonDecode(message);
     if (topic.startsWith('bimstand')) {
       int index = topic.lastIndexOf('/') + 1;
       topic = topic.substring(index).split('_')[0];
       DeviceType deviceType = DeviceType.findBy(topic);
       final pmm = PollMqttMessage(type: deviceType, map: map);
-      print(pmm.toString());
       pollSink.add(pmm);
     }
   }

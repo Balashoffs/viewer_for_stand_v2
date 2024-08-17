@@ -100,7 +100,6 @@ class _CustomToggleSwitchState extends State<CustomToggleSwitch> {
       onChanged: (bool value) {
         setState(() {
           isLight = value;
-          print('switch: $value');
           widget.onChanged.call(value);
         });
       },
