@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:viewer_for_stand_v2/repository/room/room_state.dart';
 import 'package:viewer_for_stand_v2/repository/room/room_state_data.dart';
 import 'package:viewer_for_stand_v2/repository/room_repository.dart';
 import 'package:viewer_for_stand_v2/service/card_control_service/card_control_service.dart';
@@ -28,17 +27,12 @@ class ControlCardCubit extends Cubit<ControlCardState> {
   }
 
   void _handleRoomEvent(RoomStateData roomStateData) async {
-    if (roomStateData.state == RoomState.init) {
-      emit(const ControlCardState.initial());
-    } else {
-      emit(const ControlCardState.loading());
-      if (roomStateData.currentRoom != null) {
-       await Future.delayed(const Duration(milliseconds: 100));
-        Widget widget = await _cardControlService
-
-            .createNewCardControlWidget(roomStateData.currentRoom!);
-        emit(ControlCardState.showControlCard(widget));
-      }
+    emit(const ControlCardState.loading());
+    if (roomStateData.currentRoom != null) {
+      await Future.delayed(const Duration(milliseconds: 100));
+      Widget widget = await _cardControlService
+          .createNewCardControlWidget(roomStateData.currentRoom!);
+      emit(ControlCardState.showControlCard(widget));
     }
   }
 }

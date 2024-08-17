@@ -5,7 +5,6 @@ import 'package:viewer_for_stand_v2/widget/text_style.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:viewer_for_stand_v2/cubit/update_card_data/update_card_data_cubit.dart';
 
-
 class EnergyMeterDataWidget extends StatelessWidget {
   const EnergyMeterDataWidget({super.key});
 
@@ -62,11 +61,13 @@ class EnergyMeterDataWidget extends StatelessWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    ValueCustomWidget(value: '${energyMeter.power}'),
-                    ValueCustomWidget(value: '${energyMeter.voltage}'),
-                    ValueCustomWidget(value: '${energyMeter.current}'),
-                    ValueCustomWidget(value: '${energyMeter.powerFactor}'),
-                    ValueCustomWidget(value: '${energyMeter.voltageFrequency}'),
+                    ValueCustomWidget(value: checkOnEmpty(energyMeter.power)),
+                    ValueCustomWidget(value: checkOnEmpty(energyMeter.voltage)),
+                    ValueCustomWidget(value: checkOnEmpty(energyMeter.current)),
+                    ValueCustomWidget(
+                        value: checkOnEmpty(energyMeter.powerFactor)),
+                    ValueCustomWidget(
+                        value: checkOnEmpty(energyMeter.voltageFrequency)),
                   ],
                 );
               },
@@ -76,6 +77,11 @@ class EnergyMeterDataWidget extends StatelessWidget {
       ],
     );
   }
+
+  String checkOnEmpty(double value) {
+    if (value.compareTo(-1.0) == 0) {
+      return '??';
+    }
+    return '$value';
+  }
 }
-
-

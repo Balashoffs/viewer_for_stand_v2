@@ -16,9 +16,9 @@ class CustomMqttClient {
     _callback = callback;
   }
 
-  late Function(String message) _onIncomingMessage;
+  late Function(String, String) _onIncomingMessage;
 
-  set messageCallBack(Function(String) callback) {
+  set messageCallBack(Function(String, String) callback) {
     _onIncomingMessage = callback;
   }
 
@@ -87,13 +87,13 @@ class CustomMqttClient {
   }
 
   void _onPublished(List<MqttReceivedMessage<MqttMessage>> msgs) {
-    msgs.forEach((element) {
+    for (var element in msgs) {
       final recMess = element.payload as MqttPublishMessage;
       String messageAsString =
           MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
 
-      _onIncomingMessage(messageAsString);
-    });
+      _onIncomingMessage.call(element.topic, messageAsString);
+    }
   }
 
   Future<void> publish(PublishMqttMessage message) async {

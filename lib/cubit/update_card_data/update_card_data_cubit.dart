@@ -17,7 +17,6 @@ part 'update_card_data_cubit.freezed.dart';
 class UpdateCardDataCubit extends Cubit<UpdateCardDataState> {
   final Stream<PollMqttMessage>? _mqttPollMessageStream;
   final Stream<RoomStateData> _roomStateDataStream;
-  bool _isRoomActive = true;
 
   UpdateCardDataCubit({
     required MqttRepository? mqttRepository,
@@ -30,29 +29,16 @@ class UpdateCardDataCubit extends Cubit<UpdateCardDataState> {
   }
 
   void _handleRoomEvent(RoomStateData roomStateData) {
-    print('void _handleRoomEvent(RoomStateData roomStateData)');
-    print(roomStateData.currentRoom!);
-    RoomType rt = RoomType.findByPos(roomStateData.currentRoom!.type);
-    switch (rt ) {
-      case RoomType.meetingroom:
-      case RoomType.restroom:
-      case RoomType.workroom:
-        emit(const UpdateCardDataState.fillClimateCard(ClimateMeter()));
-        break;
-      case RoomType.power:
-        emit(const UpdateCardDataState.fillPower(EnergyMeter()));
-        break;
-      default:
-        break;
+    if(roomStateData.currentRoom != null && roomStateData.currentRoom?.roomId == 1){
+      emit(const UpdateCardDataState.fillPower(EnergyMeter()));
+    }else{
+      emit(const UpdateCardDataState.fillClimateCard(ClimateMeter()));
     }
   }
 
   void _handleMqttEvent(PollMqttMessage message) {
-    print(message);
     switch (message.type) {
       case DeviceType.climate:
-      case DeviceType.light:
-      case DeviceType.curtains:
         ClimateMeter climateMeter = ClimateMeter.fromJson(message.map);
         emit(UpdateCardDataState.fillClimateCard(climateMeter));
         break;

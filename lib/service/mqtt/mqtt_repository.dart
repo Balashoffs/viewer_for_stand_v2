@@ -61,41 +61,27 @@ class MqttRepository {
   }
 
   void _onUpdateSubscribes(RoomStateData roomStateData) {
-    if (roomStateData.state == RoomState.init) {
-      MqttRoom? lastRoom = roomStateData.lastRoom;
-      if (lastRoom != null) {
-        for (MqttDevice element in lastRoom.devices) {
-          String type = element.type;
-          DeviceType dt = DeviceType.findBy(type);
-          if (dt == DeviceType.climate || dt == DeviceType.power) {
-            String topic = buildTopic(element.topic, roomTopic: lastRoom.topic);
-            _mqttClient.unSubscribe(topic);
-          }
+    MqttRoom? lastRoom = roomStateData.lastRoom;
+    if (lastRoom != null) {
+      for (MqttDevice element in lastRoom.devices) {
+        String type = element.type;
+        DeviceType dt = DeviceType.findBy(type);
+        if (dt == DeviceType.climate || dt == DeviceType.power) {
+          String topic = buildTopic(element.topic, roomTopic: lastRoom.topic);
+          _mqttClient.unSubscribe(topic);
         }
       }
-    } else if (roomStateData.state == RoomState.change) {
-      MqttRoom? lastRoom = roomStateData.lastRoom;
-      if (lastRoom != null) {
-        for (MqttDevice element in lastRoom.devices) {
-          String type = element.type;
-          DeviceType dt = DeviceType.findBy(type);
-          if (dt == DeviceType.climate || dt == DeviceType.power) {
-            String topic = buildTopic(element.topic, roomTopic: lastRoom.topic);
-            _mqttClient.unSubscribe(topic);
-          }
-        }
-      }
+    }
 
-      MqttRoom? currentRoom = roomStateData.currentRoom;
-      if (currentRoom != null) {
-        for (MqttDevice element in currentRoom.devices) {
-          String type = element.type;
-          DeviceType dt = DeviceType.findBy(type);
-          if (dt == DeviceType.climate || dt == DeviceType.power) {
-            String topic =
-                buildTopic(element.topic, roomTopic: currentRoom.topic);
-            _mqttClient.subscribe(topic);
-          }
+    MqttRoom? currentRoom = roomStateData.currentRoom;
+    if (currentRoom != null) {
+      for (MqttDevice element in currentRoom.devices) {
+        String type = element.type;
+        DeviceType dt = DeviceType.findBy(type);
+        if (dt == DeviceType.climate || dt == DeviceType.power) {
+          String topic =
+              buildTopic(element.topic, roomTopic: currentRoom.topic);
+          _mqttClient.subscribe(topic);
         }
       }
     }
@@ -106,14 +92,15 @@ class MqttRepository {
     _mqttClient.publish(message);
   }
 
-  void _onIncomingMessage(String message) {
+  void _onIncomingMessage(String topic, String message) {
+    print(topic);
     Map<String, dynamic> map = jsonDecode(message);
-    if (map.containsKey('name')) {
-      String name = map['name'];
-      int index = name.lastIndexOf('/') + 1;
-      name = name.substring(index).split('_')[0];
-      DeviceType deviceType = DeviceType.findBy(name);
+    if (topic.startsWith('bimstand')) {
+      int index = topic.lastIndexOf('/') + 1;
+      topic = topic.substring(index).split('_')[0];
+      DeviceType deviceType = DeviceType.findBy(topic);
       final pmm = PollMqttMessage(type: deviceType, map: map);
+      print(pmm.toString());
       pollSink.add(pmm);
     }
   }

@@ -2,11 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:viewer_for_stand_v2/models/mqtt/mqtt_device.dart';
 import 'package:viewer_for_stand_v2/models/mqtt/mqtt_room.dart';
 import 'package:viewer_for_stand_v2/models/room/room_marker_with_id.dart';
-import 'package:viewer_for_stand_v2/repository/room/room_state.dart';
 import 'package:viewer_for_stand_v2/repository/room/room_state_data.dart';
 import 'package:viewer_for_stand_v2/widget/ifc_viewer_frame/repository/message_mv.dart';
 import 'package:viewer_for_stand_v2/widget/ifc_viewer_frame/repository/viewer_repository.dart';
@@ -36,46 +34,25 @@ class RoomRepository extends RoomMarkerRepository {
   }
 
   Future<void> selectingRoom(int roomId) async {
+    print('roomId: $roomId');
     MqttRoom? mqr = roomId == 1 ? defaultRooms : getRoom(roomId);
     if (mqr != null) {
-      print('before update: ${_roomStateData}');
       updateRoomStateData(mqr);
-      print('after update: ${_roomStateData}');
       _postRoomController.sink.add(_roomStateData);
     }
   }
 
   void updateRoomStateData(MqttRoom mqttRoom) {
-    if (_roomStateData.state == RoomState.init) {
-      print('_roomStateData.state == RoomState.init');
+    if(mqttRoom.roomId == _roomStateData.currentRoom?.roomId ){
+      _roomStateData = _roomStateData.copyWith(
+        lastRoom: _roomStateData.currentRoom,
+        currentRoom: defaultRooms,
+      );
+    }else{
       _roomStateData = _roomStateData.copyWith(
         lastRoom: _roomStateData.currentRoom,
         currentRoom: mqttRoom,
-        state: RoomState.change,
       );
-    } else if (_roomStateData.state == RoomState.change) {
-      if (_roomStateData.lastRoom?.roomId == mqttRoom.roomId) {
-        print('_roomStateData.lastRoom?.roomId == mqttRoom.roomId');
-        _roomStateData = _roomStateData.copyWith(
-          lastRoom: _roomStateData.currentRoom,
-          currentRoom: mqttRoom,
-          state: RoomState.change,
-        );
-      } else if (_roomStateData.currentRoom?.roomId == mqttRoom.roomId) {
-        print('_roomStateData.currentRoom?.roomId == mqttRoom.roomId');
-        _roomStateData = _roomStateData.copyWith(
-          lastRoom: _roomStateData.currentRoom,
-          currentRoom: defaultRooms,
-          state: RoomState.change,
-        );
-      } else if (_roomStateData.lastRoom?.roomId != mqttRoom.roomId) {
-        print('_roomStateData.lastRoom?.roomId != mqttRoom.roomId');
-        _roomStateData = _roomStateData.copyWith(
-          lastRoom: _roomStateData.currentRoom,
-          state: RoomState.change,
-          currentRoom: mqttRoom,
-        );
-      }
     }
   }
 }

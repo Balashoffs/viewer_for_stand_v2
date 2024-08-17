@@ -18,8 +18,6 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$RoomStateData {
   MqttRoom? get lastRoom => throw _privateConstructorUsedError;
   MqttRoom? get currentRoom => throw _privateConstructorUsedError;
-  MqttRoom? get defaultRoom => throw _privateConstructorUsedError;
-  RoomState get state => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $RoomStateDataCopyWith<RoomStateData> get copyWith =>
@@ -32,15 +30,10 @@ abstract class $RoomStateDataCopyWith<$Res> {
           RoomStateData value, $Res Function(RoomStateData) then) =
       _$RoomStateDataCopyWithImpl<$Res, RoomStateData>;
   @useResult
-  $Res call(
-      {MqttRoom? lastRoom,
-      MqttRoom? currentRoom,
-      MqttRoom? defaultRoom,
-      RoomState state});
+  $Res call({MqttRoom? lastRoom, MqttRoom? currentRoom});
 
   $MqttRoomCopyWith<$Res>? get lastRoom;
   $MqttRoomCopyWith<$Res>? get currentRoom;
-  $MqttRoomCopyWith<$Res>? get defaultRoom;
 }
 
 /// @nodoc
@@ -58,8 +51,6 @@ class _$RoomStateDataCopyWithImpl<$Res, $Val extends RoomStateData>
   $Res call({
     Object? lastRoom = freezed,
     Object? currentRoom = freezed,
-    Object? defaultRoom = freezed,
-    Object? state = null,
   }) {
     return _then(_value.copyWith(
       lastRoom: freezed == lastRoom
@@ -70,14 +61,6 @@ class _$RoomStateDataCopyWithImpl<$Res, $Val extends RoomStateData>
           ? _value.currentRoom
           : currentRoom // ignore: cast_nullable_to_non_nullable
               as MqttRoom?,
-      defaultRoom: freezed == defaultRoom
-          ? _value.defaultRoom
-          : defaultRoom // ignore: cast_nullable_to_non_nullable
-              as MqttRoom?,
-      state: null == state
-          ? _value.state
-          : state // ignore: cast_nullable_to_non_nullable
-              as RoomState,
     ) as $Val);
   }
 
@@ -104,18 +87,6 @@ class _$RoomStateDataCopyWithImpl<$Res, $Val extends RoomStateData>
       return _then(_value.copyWith(currentRoom: value) as $Val);
     });
   }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $MqttRoomCopyWith<$Res>? get defaultRoom {
-    if (_value.defaultRoom == null) {
-      return null;
-    }
-
-    return $MqttRoomCopyWith<$Res>(_value.defaultRoom!, (value) {
-      return _then(_value.copyWith(defaultRoom: value) as $Val);
-    });
-  }
 }
 
 /// @nodoc
@@ -126,18 +97,12 @@ abstract class _$$RoomStateDataImplCopyWith<$Res>
       __$$RoomStateDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {MqttRoom? lastRoom,
-      MqttRoom? currentRoom,
-      MqttRoom? defaultRoom,
-      RoomState state});
+  $Res call({MqttRoom? lastRoom, MqttRoom? currentRoom});
 
   @override
   $MqttRoomCopyWith<$Res>? get lastRoom;
   @override
   $MqttRoomCopyWith<$Res>? get currentRoom;
-  @override
-  $MqttRoomCopyWith<$Res>? get defaultRoom;
 }
 
 /// @nodoc
@@ -153,8 +118,6 @@ class __$$RoomStateDataImplCopyWithImpl<$Res>
   $Res call({
     Object? lastRoom = freezed,
     Object? currentRoom = freezed,
-    Object? defaultRoom = freezed,
-    Object? state = null,
   }) {
     return _then(_$RoomStateDataImpl(
       lastRoom: freezed == lastRoom
@@ -165,14 +128,6 @@ class __$$RoomStateDataImplCopyWithImpl<$Res>
           ? _value.currentRoom
           : currentRoom // ignore: cast_nullable_to_non_nullable
               as MqttRoom?,
-      defaultRoom: freezed == defaultRoom
-          ? _value.defaultRoom
-          : defaultRoom // ignore: cast_nullable_to_non_nullable
-              as MqttRoom?,
-      state: null == state
-          ? _value.state
-          : state // ignore: cast_nullable_to_non_nullable
-              as RoomState,
     ));
   }
 }
@@ -180,25 +135,16 @@ class __$$RoomStateDataImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$RoomStateDataImpl implements _RoomStateData {
-  _$RoomStateDataImpl(
-      {this.lastRoom,
-      this.currentRoom,
-      this.defaultRoom,
-      this.state = RoomState.init});
+  _$RoomStateDataImpl({this.lastRoom, this.currentRoom});
 
   @override
   final MqttRoom? lastRoom;
   @override
   final MqttRoom? currentRoom;
-  @override
-  final MqttRoom? defaultRoom;
-  @override
-  @JsonKey()
-  final RoomState state;
 
   @override
   String toString() {
-    return 'RoomStateData(lastRoom: $lastRoom, currentRoom: $currentRoom, defaultRoom: $defaultRoom, state: $state)';
+    return 'RoomStateData(lastRoom: $lastRoom, currentRoom: $currentRoom)';
   }
 
   @override
@@ -209,15 +155,11 @@ class _$RoomStateDataImpl implements _RoomStateData {
             (identical(other.lastRoom, lastRoom) ||
                 other.lastRoom == lastRoom) &&
             (identical(other.currentRoom, currentRoom) ||
-                other.currentRoom == currentRoom) &&
-            (identical(other.defaultRoom, defaultRoom) ||
-                other.defaultRoom == defaultRoom) &&
-            (identical(other.state, state) || other.state == state));
+                other.currentRoom == currentRoom));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, lastRoom, currentRoom, defaultRoom, state);
+  int get hashCode => Object.hash(runtimeType, lastRoom, currentRoom);
 
   @JsonKey(ignore: true)
   @override
@@ -229,18 +171,12 @@ class _$RoomStateDataImpl implements _RoomStateData {
 abstract class _RoomStateData implements RoomStateData {
   factory _RoomStateData(
       {final MqttRoom? lastRoom,
-      final MqttRoom? currentRoom,
-      final MqttRoom? defaultRoom,
-      final RoomState state}) = _$RoomStateDataImpl;
+      final MqttRoom? currentRoom}) = _$RoomStateDataImpl;
 
   @override
   MqttRoom? get lastRoom;
   @override
   MqttRoom? get currentRoom;
-  @override
-  MqttRoom? get defaultRoom;
-  @override
-  RoomState get state;
   @override
   @JsonKey(ignore: true)
   _$$RoomStateDataImplCopyWith<_$RoomStateDataImpl> get copyWith =>

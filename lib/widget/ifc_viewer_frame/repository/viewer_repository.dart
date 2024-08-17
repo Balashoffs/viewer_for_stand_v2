@@ -44,10 +44,10 @@ class ViewerRepository {
         .firstOrNull;
     if (incomingType != null) {
       if (incomingType case MessageTypeMV.postModelLoadedVM) {
+        await _roomRepository.selectingRoom(1);
         List<RoomMarkerWithId> markers = _roomRepository.getMarkers();
         String json = jsonEncode(markers);
         postMessage({'config': json}, MessageTypeMV.postConfigMV);
-        _roomRepository.selectingRoom(1);
       } else if (incomingType case MessageTypeMV.postSelectMarkVM) {
         _roomRepository.postRoomMarkId(incoming);
       }

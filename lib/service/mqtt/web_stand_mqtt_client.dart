@@ -2,6 +2,7 @@ import 'package:mqtt_client/mqtt_browser_client.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:uuid/uuid.dart';
 import 'package:viewer_for_stand_v2/models/custom_mqtt_message.dart';
+import 'package:viewer_for_stand_v2/service/mqtt/stand_mqtt_client.dart';
 
 class CustomMqttClient {
   final MqttBrowserClient _client;
@@ -20,9 +21,9 @@ class CustomMqttClient {
     _callback = callback;
   }
 
-  late Function(String message) _onIncomingMessage;
+  late Incoming _onIncomingMessage;
 
-  set messageCallBack(Function(String) callback) {
+  set messageCallBack(Incoming callback) {
     _onIncomingMessage = callback;
   }
 
@@ -72,7 +73,7 @@ class CustomMqttClient {
       final recMess = element.payload  as MqttPublishMessage;
       String messageAsString =
       MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
-      _onIncomingMessage(messageAsString);
+      _onIncomingMessage(element.topic, messageAsString);
     }
   }
 

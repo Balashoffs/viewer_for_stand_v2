@@ -11,9 +11,8 @@ class ClimateValuesWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<UpdateCardDataCubit, UpdateCardDataState>(
       builder: (context, state) {
-        print('BlocBuilder<UpdateCardDataCubit, UpdateCardDataState>');
         return state.maybeWhen(
-          orElse: () => SizedBox(),
+          orElse: () => const SizedBox(),
           fillClimateCard: (climateMeter) {
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -43,7 +42,7 @@ class ClimateValuesWidget extends StatelessWidget {
                             width: 24,
                             height: 24,
                           )
-                        : SizedBox(),
+                        : const SizedBox(),
                     climateMeter.co2.compareTo(-1.0) != 0
                         ? LabelCustomWidget(
                             iconPath: 'assets/svg/press.svg',
@@ -52,7 +51,7 @@ class ClimateValuesWidget extends StatelessWidget {
                             width: 24,
                             height: 24,
                           )
-                        : SizedBox(),
+                        : const SizedBox(),
                     climateMeter.tvoc.compareTo(-1.0) != 0
                         ? LabelCustomWidget(
                             iconPath: 'assets/svg/press.svg',
@@ -61,7 +60,7 @@ class ClimateValuesWidget extends StatelessWidget {
                             width: 24,
                             height: 24,
                           )
-                        : SizedBox(),
+                        : const SizedBox(),
                     climateMeter.voltage.compareTo(-1.0) != 0
                         ? LabelCustomWidget(
                       iconPath: 'assets/svg/power.svg',
@@ -70,7 +69,7 @@ class ClimateValuesWidget extends StatelessWidget {
                       width: 24,
                       height: 24,
                     )
-                        : SizedBox(),
+                        : const SizedBox(),
                   ],
                 ),
                 Column(
