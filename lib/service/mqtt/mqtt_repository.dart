@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:mqtt_client/mqtt_client.dart';
+import 'package:uuid/uuid.dart';
 import 'package:viewer_for_stand_v2/models/custom_mqtt_message.dart';
 import 'package:viewer_for_stand_v2/models/device/device_type.dart';
 import 'package:viewer_for_stand_v2/models/mqtt/mqtt_device.dart';
 import 'package:viewer_for_stand_v2/models/mqtt/mqtt_room.dart';
-import 'package:viewer_for_stand_v2/repository/room/room_state.dart';
 import 'package:viewer_for_stand_v2/repository/room/room_state_data.dart';
 import 'package:viewer_for_stand_v2/repository/room_repository.dart';
 import 'package:viewer_for_stand_v2/service/mqtt/stand_mqtt_client.dart';
@@ -32,11 +31,13 @@ class MqttRepository {
 
   final Stream<RoomStateData> _streamRoomStateData;
 
+  static String clientId = const Uuid().v4();
+
   MqttRepository({
     required String host,
     required int port,
     required RoomRepository repository,
-  })  : _mqttClient = CustomMqttClient(host, port),
+  })  : _mqttClient = CustomMqttClient(host, port, clientId ),
         _streamRoomStateData = repository.getPostRoomStream;
 
   Future<void> init() async {
@@ -88,7 +89,6 @@ class MqttRepository {
   }
 
   void _onPublishMessage(PublishMqttMessage message) {
-    log('${message}');
     _mqttClient.publish(message);
   }
 
@@ -98,7 +98,7 @@ class MqttRepository {
       int index = topic.lastIndexOf('/') + 1;
       topic = topic.substring(index).split('_')[0];
       DeviceType deviceType = DeviceType.findBy(topic);
-      final pmm = PollMqttMessage(type: deviceType, map: map);
+      final pmm = PollMqttMessage(type: deviceType, map: map, topic:  topic);
       pollSink.add(pmm);
     }
   }

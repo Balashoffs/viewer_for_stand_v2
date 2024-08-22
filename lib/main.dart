@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:viewer_for_stand_v2/cubit/control_card_cubit/control_card_cubit.dart';
 import 'package:viewer_for_stand_v2/cubit/save_host_value/save_host_value_cubit.dart';
 import 'package:viewer_for_stand_v2/cubit/update_card_data/update_card_data_cubit.dart';
+import 'package:viewer_for_stand_v2/repository/controls_state_repository.dart';
 import 'package:viewer_for_stand_v2/repository/room_repository.dart';
-import 'package:viewer_for_stand_v2/service/card_control_service/card_control_service.dart';
+import 'package:viewer_for_stand_v2/repository/card_control_repository.dart';
 import 'package:viewer_for_stand_v2/service/mqtt/mqtt_repository.dart';
 import 'package:viewer_for_stand_v2/widget/ifc_viewer_frame/ifc_viewer_widget.dart';
 import 'package:viewer_for_stand_v2/widget/ifc_viewer_frame/repository/viewer_repository.dart';
@@ -72,37 +73,50 @@ class _MainPageState extends State<MainPage> {
   late ViewerRepository? _viewerRepository;
   late RoomRepository _roomRepository;
   late MqttRepository? _mqttRepository;
+  late CardControlRepository _cardControlRepository;
+  late ControlStateRepository _controlStateRepository;
 
   @override
   void initState() {
     super.initState();
     String host = 'ws://${widget.host}';
     _roomRepository = RoomRepository();
+
     _viewerRepository = ViewerRepository(_roomRepository);
     _mqttRepository = MqttRepository(
         host: host, port: widget.port, repository: _roomRepository);
     // _mqttRepository = MqttRepository(
     //     host: 'ws://127.0.0.1', port: 8080, repository: _roomRepository);
-    _roomRepository.loadFromAsset().then((value) =>
-        _viewerRepository?.init().then((value) => _mqttRepository?.init()));
+    _cardControlRepository = CardControlRepository(
+        mqttRepository: _mqttRepository, viewerRepository: _viewerRepository);
+    _controlStateRepository = ControlStateRepository(mqttRepository: _mqttRepository);
+
+    _roomRepository
+        .loadFromAsset()
+        .then((value) => _viewerRepository?.init().then((value) {
+              _mqttRepository?.init();
+              _controlStateRepository
+                  .fillControlByState(_roomRepository.getRooms());
+            }));
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: RepositoryProvider.value(
-          value: _viewerRepository,
+        body: MultiRepositoryProvider(
+          providers: [
+            RepositoryProvider.value(value: _viewerRepository),
+            RepositoryProvider.value(value: _controlStateRepository),
+            RepositoryProvider.value(value: _cardControlRepository)
+          ],
           child: MultiBlocProvider(
             providers: [
               BlocProvider<ControlCardCubit>(
                 create: (context) {
                   return ControlCardCubit(
                     roomRepository: _roomRepository,
-                    cardControlService: CardControlService(
-                      mqttRepository: _mqttRepository,
-                      viewerRepository: _viewerRepository,
-                    ),
+                    controlStateRepository: _controlStateRepository,
                   );
                 },
               ),
@@ -115,7 +129,7 @@ class _MainPageState extends State<MainPage> {
                 },
               )
             ],
-            child: ViewerWithBmsWidget(),
+            child: const ViewerWithBmsWidget(),
           ),
         ),
       ),

@@ -1,6 +1,5 @@
 import 'package:mqtt_client/mqtt_browser_client.dart';
 import 'package:mqtt_client/mqtt_client.dart';
-import 'package:uuid/uuid.dart';
 import 'package:viewer_for_stand_v2/models/custom_mqtt_message.dart';
 import 'package:viewer_for_stand_v2/service/mqtt/stand_mqtt_client.dart';
 
@@ -8,10 +7,10 @@ class CustomMqttClient {
   final MqttBrowserClient _client;
   final MqttClientPayloadBuilder _messageBuilder;
 
-  CustomMqttClient(String host, int port)
+  CustomMqttClient(String host, int port, String id)
       : _client = MqttBrowserClient(
           host,
-          const Uuid().v4(),
+          id,
         )..port = port,
         _messageBuilder = MqttClientPayloadBuilder();
 
@@ -37,7 +36,8 @@ class CustomMqttClient {
     _client.onConnected = onConnected;
     _client.pongCallback = pong;
     final connMessage = MqttConnectMessage()
-        .withWillQos(MqttQos.atMostOnce);
+        .withClientIdentifier(_client.clientIdentifier)
+        .withWillQos(MqttQos.atLeastOnce);
     _client.connectionMessage = connMessage;
     try {
       MqttClientConnectionStatus? status = await _client.connect();

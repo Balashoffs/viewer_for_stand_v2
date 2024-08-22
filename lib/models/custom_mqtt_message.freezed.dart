@@ -175,6 +175,7 @@ PollMqttMessage _$PollMqttMessageFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$PollMqttMessage {
+  dynamic get topic => throw _privateConstructorUsedError;
   DeviceType get type => throw _privateConstructorUsedError;
   Map<String, dynamic> get map => throw _privateConstructorUsedError;
 
@@ -190,7 +191,7 @@ abstract class $PollMqttMessageCopyWith<$Res> {
           PollMqttMessage value, $Res Function(PollMqttMessage) then) =
       _$PollMqttMessageCopyWithImpl<$Res, PollMqttMessage>;
   @useResult
-  $Res call({DeviceType type, Map<String, dynamic> map});
+  $Res call({dynamic topic, DeviceType type, Map<String, dynamic> map});
 }
 
 /// @nodoc
@@ -206,10 +207,15 @@ class _$PollMqttMessageCopyWithImpl<$Res, $Val extends PollMqttMessage>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? topic = freezed,
     Object? type = null,
     Object? map = null,
   }) {
     return _then(_value.copyWith(
+      topic: freezed == topic
+          ? _value.topic
+          : topic // ignore: cast_nullable_to_non_nullable
+              as dynamic,
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -230,7 +236,7 @@ abstract class _$$PollMqttMessageImplCopyWith<$Res>
       __$$PollMqttMessageImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({DeviceType type, Map<String, dynamic> map});
+  $Res call({dynamic topic, DeviceType type, Map<String, dynamic> map});
 }
 
 /// @nodoc
@@ -244,10 +250,12 @@ class __$$PollMqttMessageImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? topic = freezed,
     Object? type = null,
     Object? map = null,
   }) {
     return _then(_$PollMqttMessageImpl(
+      topic: freezed == topic ? _value.topic! : topic,
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -264,12 +272,17 @@ class __$$PollMqttMessageImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$PollMqttMessageImpl implements _PollMqttMessage {
   const _$PollMqttMessageImpl(
-      {required this.type, required final Map<String, dynamic> map})
+      {this.topic = '',
+      required this.type,
+      required final Map<String, dynamic> map})
       : _map = map;
 
   factory _$PollMqttMessageImpl.fromJson(Map<String, dynamic> json) =>
       _$$PollMqttMessageImplFromJson(json);
 
+  @override
+  @JsonKey()
+  final dynamic topic;
   @override
   final DeviceType type;
   final Map<String, dynamic> _map;
@@ -282,7 +295,7 @@ class _$PollMqttMessageImpl implements _PollMqttMessage {
 
   @override
   String toString() {
-    return 'PollMqttMessage(type: $type, map: $map)';
+    return 'PollMqttMessage(topic: $topic, type: $type, map: $map)';
   }
 
   @override
@@ -290,14 +303,18 @@ class _$PollMqttMessageImpl implements _PollMqttMessage {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$PollMqttMessageImpl &&
+            const DeepCollectionEquality().equals(other.topic, topic) &&
             (identical(other.type, type) || other.type == type) &&
             const DeepCollectionEquality().equals(other._map, _map));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, type, const DeepCollectionEquality().hash(_map));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(topic),
+      type,
+      const DeepCollectionEquality().hash(_map));
 
   @JsonKey(ignore: true)
   @override
@@ -316,12 +333,15 @@ class _$PollMqttMessageImpl implements _PollMqttMessage {
 
 abstract class _PollMqttMessage implements PollMqttMessage {
   const factory _PollMqttMessage(
-      {required final DeviceType type,
+      {final dynamic topic,
+      required final DeviceType type,
       required final Map<String, dynamic> map}) = _$PollMqttMessageImpl;
 
   factory _PollMqttMessage.fromJson(Map<String, dynamic> json) =
       _$PollMqttMessageImpl.fromJson;
 
+  @override
+  dynamic get topic;
   @override
   DeviceType get type;
   @override

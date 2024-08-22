@@ -23,6 +23,7 @@ Map<String, dynamic> _$$PublishMqttMessageImplToJson(
 _$PollMqttMessageImpl _$$PollMqttMessageImplFromJson(
         Map<String, dynamic> json) =>
     _$PollMqttMessageImpl(
+      topic: json['topic'] ?? '',
       type: $enumDecode(_$DeviceTypeEnumMap, json['type']),
       map: json['map'] as Map<String, dynamic>,
     );
@@ -30,6 +31,7 @@ _$PollMqttMessageImpl _$$PollMqttMessageImplFromJson(
 Map<String, dynamic> _$$PollMqttMessageImplToJson(
         _$PollMqttMessageImpl instance) =>
     <String, dynamic>{
+      'topic': instance.topic,
       'type': _$DeviceTypeEnumMap[instance.type]!,
       'map': instance.map,
     };

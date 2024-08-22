@@ -42,12 +42,12 @@ class RoomRepository extends RoomMarkerRepository {
   }
 
   void updateRoomStateData(MqttRoom mqttRoom) {
-    if(mqttRoom.roomId == _roomStateData.currentRoom?.roomId ){
+    if (mqttRoom.roomId == _roomStateData.currentRoom?.roomId) {
       _roomStateData = _roomStateData.copyWith(
         lastRoom: _roomStateData.currentRoom,
         currentRoom: defaultRooms,
       );
-    }else{
+    } else {
       _roomStateData = _roomStateData.copyWith(
         lastRoom: _roomStateData.currentRoom,
         currentRoom: mqttRoom,
@@ -96,5 +96,16 @@ class RoomMarkerRepository {
 
   List<MqttDevice> getDevices(int roomId) {
     return _devices[roomId] ?? [];
+  }
+
+  List<MqttDevice> getAllControlDevices() {
+    return _devices.values.reduce((value, element) => element
+        .where(
+            (element) => element.type == 'light' || element.type == 'curtains')
+        .toList());
+  }
+
+  List<MqttRoom> getRooms() {
+    return _rooms.values.toList();
   }
 }

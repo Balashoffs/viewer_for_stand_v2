@@ -18,6 +18,7 @@ class PublishMqttMessage with _$PublishMqttMessage{
 @freezed
 class PollMqttMessage with _$PollMqttMessage{
   const factory PollMqttMessage({
+    @Default('') topic,
     required DeviceType type,
     required Map<String, dynamic> map,
   }) = _PollMqttMessage;

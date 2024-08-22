@@ -1,1 +1,0 @@
-enum RoomState { init, change, }

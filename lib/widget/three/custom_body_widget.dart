@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:viewer_for_stand_v2/cubit/update_card_data/update_card_data_cubit.dart';
-import 'package:viewer_for_stand_v2/models/room_switch_state_value.dart';
+import 'package:viewer_for_stand_v2/repository/card_control_repository.dart';
+import 'package:viewer_for_stand_v2/repository/control/control_state.dart';
+import 'package:viewer_for_stand_v2/repository/controls_state_repository.dart';
+import 'package:viewer_for_stand_v2/util/answer_util.dart';
 import 'package:viewer_for_stand_v2/widget/buttons/lighting_buttons.dart';
 import 'package:viewer_for_stand_v2/widget/text_style.dart';
 
 import 'data.dart';
 import 'head_widget.dart';
+
+typedef OnChange = Function(String topic, dynamic newValue);
+typedef OnUpdate = Function(String topic, Map<String, dynamic> json);
 
 class PowerWidget extends StatelessWidget {
   const PowerWidget({super.key, required this.valueNotifier});
@@ -84,61 +89,68 @@ class ClimateWidget extends StatelessWidget {
   }
 }
 
-class OfficeRoomControlWidget extends StatelessWidget {
-  const OfficeRoomControlWidget({
+class CustomRoomControlWidget extends StatelessWidget {
+  const CustomRoomControlWidget({
     super.key,
-    required this.onPress,
-    required this.onSwitch,
-    required this.stateValue,
+    required this.changers,
   });
 
-  final Function(int) onPress;
-  final Function(bool) onSwitch;
-  final RoomSwitchStateValue stateValue;
+  final List<ControlStateChanger> changers;
+
+  /*
+                    onPress: (p0) {
+                    stateValue = stateValue.copyWith(isOnCurtains: p0);
+                    setValue(roomName, stateValue);
+                    _controlFunc(
+                      DeviceType.curtains,
+                      CurtainsControl(direction: p0).toJson(),
+                    );
+                  },
+                  onSwitch: (p0) {
+                    stateValue = stateValue.copyWith(isOnLight: p0);
+                    setValue(roomName, stateValue);
+                    _controlFunc(
+                      DeviceType.light,
+                      LightControl(state: p0 ? 1 : 0).toJson(),
+                    );
+                  },
+   */
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
-        CustomBodyWriteSwitchWidget(
-          isOn: stateValue.isOnLight,
-          name: 'Освещение',
-          iconPath: 'assets/svg/control_icon/lighting.svg',
-          onSwitch: onSwitch,
-        ),
-        CustomBodyWriteButtonWidget(
-          isOn: stateValue.isOnCurtains,
-          name: 'Шторы',
-          iconPath: 'assets/svg/control_icon/curtains.svg',
-          onPress: onPress,
-        ),
-      ],
+      children: changers
+          .map((e) => _buildOnParams(
+                e,
+                context.read<ControlStateRepository>().updateControlState,
+                context.read<CardControlRepository>().onPostControl,
+              ))
+          .toList(),
     );
   }
-}
 
-class MeetingRoomControlWidget extends StatelessWidget {
-  const MeetingRoomControlWidget({
-    super.key,
-    required this.onSwitch,
-    required this.stateValue,
-  });
-
-  final Function(bool) onSwitch;
-  final RoomSwitchStateValue stateValue;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        CustomBodyWriteSwitchWidget(
-          isOn: stateValue.isOnLight,
-          name: 'Освещение',
-          iconPath: 'assets/svg/control_icon/lighting.svg',
-          onSwitch: onSwitch,
-        ),
-      ],
-    );
+  Widget _buildOnParams(
+      ControlStateChanger changer, OnChange onChange, OnUpdate onUpdate) {
+    if (changer.device.type == 'light') {
+      return CustomBodyWriteSwitchWidget(
+        name: 'Освещение',
+        iconPath: 'assets/svg/control_icon/lighting.svg',
+        valueNotifier: changer.state as ValueNotifier<bool>,
+        topic: changer.device.topic,
+        onChange: onChange,
+        onUpdate: onUpdate,
+      );
+    } else if (changer.device.type == 'curtains') {
+      CustomBodyWriteButtonWidget(
+        name: 'Шторы',
+        iconPath: 'assets/svg/control_icon/curtains.svg',
+        valueNotifier: changer.state as ValueNotifier<int>,
+        topic: changer.device.topic,
+        onChange: onChange,
+        onUpdate: onUpdate,
+      );
+    }
+    return const SizedBox();
   }
 }
 
@@ -193,15 +205,19 @@ class CustomBodyWriteSwitchWidget extends StatelessWidget {
   const CustomBodyWriteSwitchWidget({
     super.key,
     required this.name,
+    required this.topic,
     required this.iconPath,
-    required this.onSwitch,
-    required this.isOn,
+    required this.valueNotifier,
+    required this.onChange,
+    required this.onUpdate,
   });
 
   final String name;
   final String iconPath;
-  final Function(bool) onSwitch;
-  final bool isOn;
+  final String topic;
+  final ValueNotifier<bool> valueNotifier;
+  final OnChange onChange;
+  final OnUpdate onUpdate;
 
   @override
   Widget build(BuildContext context) {
@@ -225,9 +241,17 @@ class CustomBodyWriteSwitchWidget extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 12.0),
-            child: CustomToggleSwitch(
-              isOn: isOn,
-              onChanged: onSwitch,
+            child: ValueListenableBuilder(
+              valueListenable: valueNotifier,
+              builder: (BuildContext context, bool value, Widget? child) {
+                return CustomToggleSwitch(
+                  isOn: value,
+                  onChanged: (p0) {
+                    onChange(topic, p0);
+                    onUpdate(topic, buildAnswer('light', p0));
+                  },
+                );
+              },
             ),
           ),
         ],
@@ -240,15 +264,19 @@ class CustomBodyWriteButtonWidget extends StatelessWidget {
   const CustomBodyWriteButtonWidget({
     super.key,
     required this.name,
+    required this.topic,
     required this.iconPath,
-    required this.onPress,
-    required this.isOn,
+    required this.valueNotifier,
+    required this.onChange,
+    required this.onUpdate,
   });
 
   final String name;
   final String iconPath;
-  final Function(int) onPress;
-  final int isOn;
+  final String topic;
+  final ValueNotifier<int> valueNotifier;
+  final Function(String topic, int newValue) onChange;
+  final Function(String topic, Map<String, dynamic> json) onUpdate;
 
   @override
   Widget build(BuildContext context) {
@@ -272,11 +300,17 @@ class CustomBodyWriteButtonWidget extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 12.0),
-            child: CustomToggleSwitch(
-              isOn: isOn == 1,
-              onChanged: (updated) {
-                int value = updated ? 1 : -1;
-                onPress(value);
+            child: ValueListenableBuilder(
+              valueListenable: valueNotifier,
+              builder: (context, value, child) {
+                return CustomToggleSwitch(
+                  isOn: value == 1,
+                  onChanged: (updated) {
+                    int value = updated ? 1 : -1;
+                    onChange(topic, value);
+                    onUpdate(topic, buildAnswer('curtains', value));
+                  },
+                );
               },
             ),
           ),
