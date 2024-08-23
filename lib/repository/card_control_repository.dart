@@ -21,12 +21,13 @@ class CardControlRepository {
 
   void onPostControl(String topic, Map<String, dynamic> action) {
     String message = jsonEncode(action);
+    topic = 'bimstand/$topic';
     PublishMqttMessage actionMessage =
     PublishMqttMessage(topic: topic, value: message);
     _mqttPushMessageSink?.add(actionMessage);
   }
 
-  void onCloseControl(int id) {
+  void onCloseControl(int id) async{
     var body = {'id': id};
     MessageMV messageMV = MessageMV.toMessage(
         typeMV: MessageTypeMV.postDisableMarkMV, body: body);

@@ -16,7 +16,7 @@ class MqttRoom with _$MqttRoom {
     required String topic,
     required String iconPath,
     required int type,
-    @JsonKey(includeFromJson: false, includeToJson: false,)@Default([]) List<MqttDevice> devices,
+    @Default([]) List<MqttDevice> devices,
     RoomMarker? roomMarker,
   }) = _MqttRoom;
 

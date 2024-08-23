@@ -100,7 +100,7 @@ class _IfcViewerWidgetState extends State<IfcViewerWidget> {
           },
           onUpdateVisitedHistory: (controller, url, isReload) {},
           onConsoleMessage: (controller, consoleMessage) {
-            print(consoleMessage);
+            //print(consoleMessage);
           },
         ),
         progress < 1.0 ? LinearProgressIndicator(value: progress) : Container(),

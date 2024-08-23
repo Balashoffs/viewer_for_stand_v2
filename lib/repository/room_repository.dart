@@ -19,13 +19,10 @@ class RoomRepository extends RoomMarkerRepository {
 
   void postRoomMarkId(MessageAsMap incoming) async {
     Map<String, Object> message = Map.from(incoming);
-    MessageTypeMV type = MessageTypeMV.findBy(message['type'] as String);
-    if (type == MessageTypeMV.postSelectMarkVM) {
-      String json = message['body'] as String;
-      int roomId = jsonDecode(json)['roomId'] ?? -1;
-      if (roomId != -1) {
-        await selectingRoom(roomId);
-      }
+    String json = message['body'] as String;
+    int roomId = jsonDecode(json)['roomId'] ?? -1;
+    if (roomId != -1) {
+      await selectingRoom(roomId);
     }
   }
 
@@ -34,6 +31,7 @@ class RoomRepository extends RoomMarkerRepository {
   }
 
   Future<void> selectingRoom(int roomId) async {
+    print('selecting roomID: $roomId');
     MqttRoom? mqr = roomId == 1 ? defaultRooms : getRoom(roomId);
     if (mqr != null) {
       updateRoomStateData(mqr);

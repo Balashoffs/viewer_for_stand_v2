@@ -35,10 +35,10 @@ class CustomMqttClient {
     _client.onDisconnected = onDisconnected;
     _client.onConnected = onConnected;
     _client.pongCallback = pong;
-    final connMessage = MqttConnectMessage()
-        .withClientIdentifier(_client.clientIdentifier)
-        .withWillQos(MqttQos.atLeastOnce);
-    _client.connectionMessage = connMessage;
+    // final connMessage = MqttConnectMessage()
+    //     .withClientIdentifier(_client.clientIdentifier)
+    //     .withWillQos(MqttQos.atLeastOnce);
+    // _client.connectionMessage = connMessage;
     try {
       MqttClientConnectionStatus? status = await _client.connect();
       if (status != null) {

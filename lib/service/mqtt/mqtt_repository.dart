@@ -16,14 +16,14 @@ class MqttRepository {
   final CustomMqttClient _mqttClient;
 
   final StreamController<PublishMqttMessage> _pushStreamController =
-      StreamController();
+      StreamController.broadcast();
 
   Stream<PublishMqttMessage> get pushStream => _pushStreamController.stream;
 
   StreamSink<PublishMqttMessage> get pushSink => _pushStreamController.sink;
 
   final StreamController<PollMqttMessage> _pollStreamController =
-      StreamController();
+      StreamController.broadcast();
 
   Stream<PollMqttMessage> get pollStream => _pollStreamController.stream;
 
@@ -65,25 +65,17 @@ class MqttRepository {
     MqttRoom? lastRoom = roomStateData.lastRoom;
     if (lastRoom != null) {
       for (MqttDevice element in lastRoom.devices) {
-        String type = element.type;
-        DeviceType dt = DeviceType.findBy(type);
-        if (dt == DeviceType.climate || dt == DeviceType.power) {
-          String topic = buildTopic(element.topic, roomTopic: lastRoom.topic);
-          _mqttClient.unSubscribe(topic);
-        }
+        String topic = buildTopic(element.topic, roomTopic: lastRoom.topic);
+        _mqttClient.unSubscribe(topic);
       }
     }
 
     MqttRoom? currentRoom = roomStateData.currentRoom;
     if (currentRoom != null) {
       for (MqttDevice element in currentRoom.devices) {
-        String type = element.type;
-        DeviceType dt = DeviceType.findBy(type);
-        if (dt == DeviceType.climate || dt == DeviceType.power) {
-          String topic =
-              buildTopic(element.topic, roomTopic: currentRoom.topic);
-          _mqttClient.subscribe(topic);
-        }
+        String topic =
+        buildTopic(element.topic, roomTopic: currentRoom.topic);
+        _mqttClient.subscribe(topic);
       }
     }
   }
@@ -96,8 +88,9 @@ class MqttRepository {
     Map<String, dynamic> map = jsonDecode(message);
     if (topic.startsWith('bimstand')) {
       int index = topic.lastIndexOf('/') + 1;
-      topic = topic.substring(index).split('_')[0];
-      DeviceType deviceType = DeviceType.findBy(topic);
+      String typeAsString = topic.substring(index).split('_')[0];
+      DeviceType deviceType = DeviceType.findBy(typeAsString);
+      topic = topic.substring(topic.indexOf('/') + 1);
       final pmm = PollMqttMessage(type: deviceType, map: map, topic:  topic);
       pollSink.add(pmm);
     }

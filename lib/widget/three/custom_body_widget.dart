@@ -12,7 +12,7 @@ import 'data.dart';
 import 'head_widget.dart';
 
 typedef OnChange = Function(String topic, dynamic newValue);
-typedef OnUpdate = Function(String topic, Map<String, dynamic> json);
+typedef OnPost = Function(String topic, Map<String, dynamic> json);
 
 class PowerWidget extends StatelessWidget {
   const PowerWidget({super.key, required this.valueNotifier});
@@ -130,7 +130,8 @@ class CustomRoomControlWidget extends StatelessWidget {
   }
 
   Widget _buildOnParams(
-      ControlStateChanger changer, OnChange onChange, OnUpdate onUpdate) {
+      ControlStateChanger changer, OnChange onChange, OnPost onPost) {
+    print('_buildOnParams: ${changer.device.topic}');
     if (changer.device.type == 'light') {
       return CustomBodyWriteSwitchWidget(
         name: 'Освещение',
@@ -138,16 +139,16 @@ class CustomRoomControlWidget extends StatelessWidget {
         valueNotifier: changer.state as ValueNotifier<bool>,
         topic: changer.device.topic,
         onChange: onChange,
-        onUpdate: onUpdate,
+        onPost: onPost,
       );
     } else if (changer.device.type == 'curtains') {
-      CustomBodyWriteButtonWidget(
+      return CustomBodyWriteButtonWidget(
         name: 'Шторы',
         iconPath: 'assets/svg/control_icon/curtains.svg',
         valueNotifier: changer.state as ValueNotifier<int>,
         topic: changer.device.topic,
         onChange: onChange,
-        onUpdate: onUpdate,
+        onUpdate: onPost,
       );
     }
     return const SizedBox();
@@ -209,7 +210,7 @@ class CustomBodyWriteSwitchWidget extends StatelessWidget {
     required this.iconPath,
     required this.valueNotifier,
     required this.onChange,
-    required this.onUpdate,
+    required this.onPost,
   });
 
   final String name;
@@ -217,7 +218,7 @@ class CustomBodyWriteSwitchWidget extends StatelessWidget {
   final String topic;
   final ValueNotifier<bool> valueNotifier;
   final OnChange onChange;
-  final OnUpdate onUpdate;
+  final OnPost onPost;
 
   @override
   Widget build(BuildContext context) {
@@ -248,7 +249,7 @@ class CustomBodyWriteSwitchWidget extends StatelessWidget {
                   isOn: value,
                   onChanged: (p0) {
                     onChange(topic, p0);
-                    onUpdate(topic, buildAnswer('light', p0));
+                    onPost(topic, buildAnswer('light', p0));
                   },
                 );
               },
@@ -275,8 +276,8 @@ class CustomBodyWriteButtonWidget extends StatelessWidget {
   final String iconPath;
   final String topic;
   final ValueNotifier<int> valueNotifier;
-  final Function(String topic, int newValue) onChange;
-  final Function(String topic, Map<String, dynamic> json) onUpdate;
+  final OnChange onChange;
+  final OnPost onUpdate;
 
   @override
   Widget build(BuildContext context) {
@@ -303,12 +304,15 @@ class CustomBodyWriteButtonWidget extends StatelessWidget {
             child: ValueListenableBuilder(
               valueListenable: valueNotifier,
               builder: (context, value, child) {
+                print('value: $value');
                 return CustomToggleSwitch(
                   isOn: value == 1,
                   onChanged: (updated) {
-                    int value = updated ? 1 : -1;
-                    onChange(topic, value);
-                    onUpdate(topic, buildAnswer('curtains', value));
+                    print('update: $updated');
+                    int valueN = updated ? 1 : -1;
+                    print('valueN: $valueN');
+                    onChange(topic, valueN);
+                    onUpdate(topic, buildAnswer('curtains', valueN));
                   },
                 );
               },

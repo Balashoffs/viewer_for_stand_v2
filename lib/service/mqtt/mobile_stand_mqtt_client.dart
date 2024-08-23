@@ -54,10 +54,10 @@ class CustomMqttClient {
     /// Set a ping received callback if needed, called whenever a ping response(pong) is received
     /// from the broker.
     _client.pongCallback = pong;
-    final connMessage = MqttConnectMessage()
-        .withClientIdentifier(_client.clientIdentifier)
-        .withWillQos(MqttQos.atLeastOnce);
-    _client.connectionMessage = connMessage;
+    // final connMessage = MqttConnectMessage()
+    //     .withClientIdentifier(_client.clientIdentifier)
+    //     .withWillQos(MqttQos.atLeastOnce);
+    // _client.connectionMessage = connMessage;
     /// Connect the client, any errors here are communicated by raising of the appropriate exception. Note
     /// in some circumstances the broker will just disconnect us, see the spec about this, we however will
     /// never send malformed messages.

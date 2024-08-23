@@ -21,24 +21,29 @@ class ControlStateRepository {
   void fillControlByState(List<MqttRoom> rooms) async {
     for (var room in rooms) {
       controlStates.putIfAbsent(room.roomId, () => []);
-      _fillChangers(room.devices, controlStates[room.roomId]);
+      _fillChangers(
+          room.roomId, room.topic, room.devices, controlStates[room.roomId]);
     }
   }
 
-  void _fillChangers(
-      List<MqttDevice> devices, List<ControlStateChanger>? chs) async {
+  void _fillChangers(int roomId, String roomTopic, List<MqttDevice> devices,
+      List<ControlStateChanger>? chs) async {
     if (chs != null) {
       SharedPreferences sp = await _sp;
       for (var device in devices) {
+        String topicN = '$roomTopic/${device.topic}';
         ControlStateChanger? csc;
         if (device.type == 'light') {
-          bool value = sp.getBool(device.topic) ?? false;
-          csc = ControlStateChanger<bool>(value, device: device);
+          bool value = sp.getBool(topicN) ?? false;
+          csc = ControlStateChanger<bool>(roomId, value,
+              device: device.copyWith(topic: topicN));
         } else if (device.type == 'curtains') {
-          int value = sp.getInt(device.topic) ?? 0;
-          csc = ControlStateChanger<int>(value, device: device);
+          int value = sp.getInt(topicN) ?? 0;
+          csc = ControlStateChanger<int>(roomId, value,
+              device: device.copyWith(topic: topicN));
         }
         if (csc != null) {
+          print(csc.toString());
           chs.add(csc);
         }
       }
@@ -46,24 +51,36 @@ class ControlStateRepository {
   }
 
   ControlStateChanger? getControlState(String topic) {
-    return controlStates.values
-        .reduce((value, element) =>
-            element.where((element) => element.device.topic == topic).toList())
-        .firstOrNull;
+    ControlStateChanger? csc;
+    for (var state in controlStates.values) {
+      for (var device in state) {
+        if (topic.contains(device.device.topic)) {
+          csc = device;
+          break;
+        }
+      }
+    }
+    return csc;
   }
 
   void updateControlState(String topic, dynamic value) async {
     ControlStateChanger? cs = getControlState(topic);
     if (cs != null) {
-      String? type = cs.device.type;
-      SharedPreferences sp = await _sp;
-      if (type == 'light') {
-        bool vl = value as bool;
-        sp.setBool(topic, vl);
-      } else if (type == 'curtains') {
-        int vl = value as int;
-        sp.setInt(topic, vl);
-      }
+      updateControlStateWith(cs, value);
+    }
+  }
+
+  void updateControlStateWith(ControlStateChanger cs, dynamic value) async {
+    String? type = cs.device.type;
+    SharedPreferences sp = await _sp;
+    if (type == 'light') {
+      bool vl = value as bool;
+      sp.setBool(cs.device.topic, vl);
+      cs.value = vl;
+    } else if (type == 'curtains') {
+      int vl = value as int;
+      sp.setInt(cs.device.topic, vl);
+      cs.value = vl;
     }
   }
 
@@ -74,7 +91,7 @@ class ControlStateRepository {
   }
 
   void closeControlCard(int id) async {
-    _updateControlState(controlStates[id] ?? []);
+    return _updateControlState(controlStates[id] ?? []);
   }
 
   void _updateControlState(List<ControlStateChanger> chs) async {
@@ -83,9 +100,11 @@ class ControlStateRepository {
       MqttDevice md = element.device;
       if (element.device.type == 'light') {
         bool value = sp.getBool(md.topic) ?? false;
+        element.state.value = value;
         element.value = value;
       } else if (element.device.type == 'curtains') {
         int value = sp.getInt(md.topic) ?? 0;
+        element.state.value = value;
         element.value = value;
       }
     }
@@ -96,17 +115,21 @@ class ControlStateRepository {
       case DeviceType.light:
         ControlStateChanger? control = getControlState(message.topic);
         if (control != null) {
-          bool value = message.map['state'] ?? false;
-          control.value = value;
-          updateControlState(message.topic, value);
+          bool value = (message.map['state'] ?? 0) == 1;
+          if (value != control.value) {
+            control.state.value = value;
+            updateControlStateWith(control, value);
+          }
         }
         break;
       case DeviceType.curtains:
         ControlStateChanger? control = getControlState(message.topic);
         if (control != null) {
-          int value = message.map['state'] ?? -1;
-          control.value = value;
-          updateControlState(message.topic, value);
+          int value = message.map['direction'] ?? -1;
+          if (value != control.value) {
+            control.state.value = value;
+            updateControlStateWith(control, value);
+          }
         }
         break;
       default:

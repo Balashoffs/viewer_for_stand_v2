@@ -26,7 +26,6 @@ mixin _$MqttRoom {
   String get topic => throw _privateConstructorUsedError;
   String get iconPath => throw _privateConstructorUsedError;
   int get type => throw _privateConstructorUsedError;
-  @JsonKey(includeFromJson: false, includeToJson: false)
   List<MqttDevice> get devices => throw _privateConstructorUsedError;
   RoomMarker? get roomMarker => throw _privateConstructorUsedError;
 
@@ -48,7 +47,6 @@ abstract class $MqttRoomCopyWith<$Res> {
       String topic,
       String iconPath,
       int type,
-      @JsonKey(includeFromJson: false, includeToJson: false)
       List<MqttDevice> devices,
       RoomMarker? roomMarker});
 
@@ -141,7 +139,6 @@ abstract class _$$MqttRoomImplCopyWith<$Res>
       String topic,
       String iconPath,
       int type,
-      @JsonKey(includeFromJson: false, includeToJson: false)
       List<MqttDevice> devices,
       RoomMarker? roomMarker});
 
@@ -216,7 +213,6 @@ class _$MqttRoomImpl implements _MqttRoom {
       required this.topic,
       required this.iconPath,
       required this.type,
-      @JsonKey(includeFromJson: false, includeToJson: false)
       final List<MqttDevice> devices = const [],
       this.roomMarker})
       : _devices = devices;
@@ -238,7 +234,7 @@ class _$MqttRoomImpl implements _MqttRoom {
   final int type;
   final List<MqttDevice> _devices;
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey()
   List<MqttDevice> get devices {
     if (_devices is EqualUnmodifiableListView) return _devices;
     // ignore: implicit_dynamic_type
@@ -300,7 +296,6 @@ abstract class _MqttRoom implements MqttRoom {
       required final String topic,
       required final String iconPath,
       required final int type,
-      @JsonKey(includeFromJson: false, includeToJson: false)
       final List<MqttDevice> devices,
       final RoomMarker? roomMarker}) = _$MqttRoomImpl;
 
@@ -320,7 +315,6 @@ abstract class _MqttRoom implements MqttRoom {
   @override
   int get type;
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
   List<MqttDevice> get devices;
   @override
   RoomMarker? get roomMarker;
