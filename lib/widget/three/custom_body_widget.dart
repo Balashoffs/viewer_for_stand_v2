@@ -136,16 +136,16 @@ class CustomRoomControlWidget extends StatelessWidget {
       return CustomBodyWriteSwitchWidget(
         name: 'Освещение',
         iconPath: 'assets/svg/control_icon/lighting.svg',
-        valueNotifier: changer.state as ValueNotifier<bool>,
+        valueNotifier: changer as ControlStateChanger<bool>,
         topic: changer.device.topic,
-        onChange: onChange,
+        onChanged: onChange,
         onPost: onPost,
       );
     } else if (changer.device.type == 'curtains') {
       return CustomBodyWriteButtonWidget(
         name: 'Шторы',
         iconPath: 'assets/svg/control_icon/curtains.svg',
-        valueNotifier: changer.state as ValueNotifier<int>,
+        valueNotifier: changer as ControlStateChanger<int>,
         topic: changer.device.topic,
         onChange: onChange,
         onUpdate: onPost,
@@ -209,15 +209,15 @@ class CustomBodyWriteSwitchWidget extends StatelessWidget {
     required this.topic,
     required this.iconPath,
     required this.valueNotifier,
-    required this.onChange,
+    required this.onChanged,
     required this.onPost,
   });
 
   final String name;
   final String iconPath;
   final String topic;
-  final ValueNotifier<bool> valueNotifier;
-  final OnChange onChange;
+  final ControlStateChanger<bool> valueNotifier;
+  final OnChange onChanged;
   final OnPost onPost;
 
   @override
@@ -242,14 +242,15 @@ class CustomBodyWriteSwitchWidget extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 12.0),
-            child: ValueListenableBuilder(
-              valueListenable: valueNotifier,
-              builder: (BuildContext context, bool value, Widget? child) {
-                return CustomToggleSwitch(
-                  isOn: value,
-                  onChanged: (p0) {
-                    onChange(topic, p0);
-                    onPost(topic, buildAnswer('light', p0));
+            child: ListenableBuilder(
+              listenable: valueNotifier,
+              builder: (BuildContext context, Widget? child) {
+                return Switch(
+                  value: valueNotifier.value,
+                  activeColor: const Color.fromRGBO(103, 77, 178, 1.0),
+                  onChanged: (bool value) {
+                    onChanged(topic, value);
+                    onPost(topic, buildAnswer('light', value));
                   },
                 );
               },
@@ -275,7 +276,7 @@ class CustomBodyWriteButtonWidget extends StatelessWidget {
   final String name;
   final String iconPath;
   final String topic;
-  final ValueNotifier<int> valueNotifier;
+  final ControlStateChanger<int> valueNotifier;
   final OnChange onChange;
   final OnPost onUpdate;
 
@@ -301,16 +302,14 @@ class CustomBodyWriteButtonWidget extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 12.0),
-            child: ValueListenableBuilder(
-              valueListenable: valueNotifier,
-              builder: (context, value, child) {
-                print('value: $value');
-                return CustomToggleSwitch(
-                  isOn: value == 1,
-                  onChanged: (updated) {
-                    print('update: $updated');
-                    int valueN = updated ? 1 : -1;
-                    print('valueN: $valueN');
+            child: ListenableBuilder(
+              listenable: valueNotifier,
+              builder: (context, child) {
+                return Switch(
+                  value: valueNotifier.value == 1,
+                  activeColor: const Color.fromRGBO(103, 77, 178, 1.0),
+                  onChanged: (bool value) {
+                    int valueN = value ? 1 : -1;
                     onChange(topic, valueN);
                     onUpdate(topic, buildAnswer('curtains', valueN));
                   },

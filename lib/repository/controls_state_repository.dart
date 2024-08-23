@@ -76,11 +76,11 @@ class ControlStateRepository {
     if (type == 'light') {
       bool vl = value as bool;
       sp.setBool(cs.device.topic, vl);
-      cs.value = vl;
+      cs.update(vl);
     } else if (type == 'curtains') {
       int vl = value as int;
       sp.setInt(cs.device.topic, vl);
-      cs.value = vl;
+      cs.update(vl);
     }
   }
 
@@ -100,36 +100,35 @@ class ControlStateRepository {
       MqttDevice md = element.device;
       if (element.device.type == 'light') {
         bool value = sp.getBool(md.topic) ?? false;
-        element.state.value = value;
-        element.value = value;
+        element.update(value);
       } else if (element.device.type == 'curtains') {
         int value = sp.getInt(md.topic) ?? 0;
-        element.state.value = value;
-        element.value = value;
+        element.update(value);
       }
     }
   }
 
   void _handleMqttEvent(PollMqttMessage message) {
+    print(message.topic);
+    print(message.map);
+    print(message.type);
     switch (message.type) {
       case DeviceType.light:
         ControlStateChanger? control = getControlState(message.topic);
+        print('_handleMqttEvent: FIND CONTROL: ${control.toString()}');
         if (control != null) {
           bool value = (message.map['state'] ?? 0) == 1;
-          if (value != control.value) {
-            control.state.value = value;
-            updateControlStateWith(control, value);
-          }
+          control.update(value);
+          updateControlStateWith(control, value);
         }
+        print('_handleMqttEvent: UPDATE CONTROL: ${control.toString()}');
         break;
       case DeviceType.curtains:
         ControlStateChanger? control = getControlState(message.topic);
         if (control != null) {
           int value = message.map['direction'] ?? -1;
-          if (value != control.value) {
-            control.state.value = value;
-            updateControlStateWith(control, value);
-          }
+          control.update(value);
+          updateControlStateWith(control, value);
         }
         break;
       default:

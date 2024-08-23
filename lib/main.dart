@@ -96,7 +96,7 @@ class _MainPageState extends State<MainPage> {
         .then((value) => _viewerRepository?.init().then((value) {
               _mqttRepository?.init();
               _controlStateRepository
-                  .fillControlByState(_roomRepository.getRooms());
+                  . fillControlByState(_roomRepository.getRooms());
             }));
   }
 

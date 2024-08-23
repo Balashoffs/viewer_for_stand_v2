@@ -75,6 +75,7 @@ class MqttRepository {
       for (MqttDevice element in currentRoom.devices) {
         String topic =
         buildTopic(element.topic, roomTopic: currentRoom.topic);
+        print('subscribe topic: $topic');
         _mqttClient.subscribe(topic);
       }
     }
@@ -90,8 +91,13 @@ class MqttRepository {
       int index = topic.lastIndexOf('/') + 1;
       String typeAsString = topic.substring(index).split('_')[0];
       DeviceType deviceType = DeviceType.findBy(typeAsString);
-      topic = topic.substring(topic.indexOf('/') + 1);
-      final pmm = PollMqttMessage(type: deviceType, map: map, topic:  topic);
+      String chunkTopic = topic.substring(topic.indexOf('/') + 1);
+      final pmm = PollMqttMessage(type: deviceType, map: map, topic:  chunkTopic);
+      if (deviceType == DeviceType.curtains || deviceType == DeviceType.light) {
+        print('incoming topic: $topic');
+        print('incoming topic: $chunkTopic');
+        print(pmm);
+      }
       pollSink.add(pmm);
     }
   }
