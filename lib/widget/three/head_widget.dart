@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:viewer_for_stand_v2/repository/card_control_repository.dart';
+import 'package:viewer_for_stand_v2/repository/controls_state_repository.dart';
 import 'package:viewer_for_stand_v2/widget/text_style.dart';
 
 class HeadWidget extends StatelessWidget {
@@ -28,13 +31,11 @@ class HeadWithButton extends StatelessWidget {
     required this.text,
     required this.iconPath,
     required this.id,
-    required this.onCLose,
   });
 
   final String text;
   final String iconPath;
   final int id;
-  final Function(int id) onCLose;
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +57,12 @@ class HeadWithButton extends StatelessWidget {
               ],
             ),
             GestureDetector(
-              onTap: () => onCLose(id),
+              onTap: () {
+                context.read<ControlStateRepository>().closeControlCard(id);
+                context.read<CardControlRepository>().onCloseControl(id);
+              },
               child: const Icon(
-                  Icons.close,
+                Icons.close,
                 size: 24.0,
                 color: Color.fromRGBO(148, 148, 148, 1.0),
               ),

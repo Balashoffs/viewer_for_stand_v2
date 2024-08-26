@@ -89,11 +89,15 @@ class _CustomToggleSwitchState extends State<CustomToggleSwitch> {
   @override
   void initState() {
     super.initState();
+    print('initState::widget.isOn: ${widget.isOn}');
+    print('initState::widget.isOn: ${isLight}');
     isLight = widget.isOn;
   }
 
   @override
   Widget build(BuildContext context) {
+    print('build::widget.isOn: ${widget.isOn}');
+    print('build::widget.isOn: ${isLight}');
     return Switch(
       value: isLight,
       activeColor: const Color.fromRGBO(103, 77, 178, 1.0),

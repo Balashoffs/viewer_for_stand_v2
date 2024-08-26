@@ -19,13 +19,10 @@ class RoomRepository extends RoomMarkerRepository {
 
   void postRoomMarkId(MessageAsMap incoming) async {
     Map<String, Object> message = Map.from(incoming);
-    MessageTypeMV type = MessageTypeMV.findBy(message['type'] as String);
-    if (type == MessageTypeMV.postSelectMarkVM) {
-      String json = message['body'] as String;
-      int roomId = jsonDecode(json)['roomId'] ?? -1;
-      if (roomId != -1) {
-        await selectingRoom(roomId);
-      }
+    String json = message['body'] as String;
+    int roomId = jsonDecode(json)['roomId'] ?? -1;
+    if (roomId != -1) {
+      await selectingRoom(roomId);
     }
   }
 
@@ -34,6 +31,7 @@ class RoomRepository extends RoomMarkerRepository {
   }
 
   Future<void> selectingRoom(int roomId) async {
+    print('selecting roomID: $roomId');
     MqttRoom? mqr = roomId == 1 ? defaultRooms : getRoom(roomId);
     if (mqr != null) {
       updateRoomStateData(mqr);
@@ -42,12 +40,12 @@ class RoomRepository extends RoomMarkerRepository {
   }
 
   void updateRoomStateData(MqttRoom mqttRoom) {
-    if(mqttRoom.roomId == _roomStateData.currentRoom?.roomId ){
+    if (mqttRoom.roomId == _roomStateData.currentRoom?.roomId) {
       _roomStateData = _roomStateData.copyWith(
         lastRoom: _roomStateData.currentRoom,
         currentRoom: defaultRooms,
       );
-    }else{
+    } else {
       _roomStateData = _roomStateData.copyWith(
         lastRoom: _roomStateData.currentRoom,
         currentRoom: mqttRoom,
@@ -96,5 +94,16 @@ class RoomMarkerRepository {
 
   List<MqttDevice> getDevices(int roomId) {
     return _devices[roomId] ?? [];
+  }
+
+  List<MqttDevice> getAllControlDevices() {
+    return _devices.values.reduce((value, element) => element
+        .where(
+            (element) => element.type == 'light' || element.type == 'curtains')
+        .toList());
+  }
+
+  List<MqttRoom> getRooms() {
+    return _rooms.values.toList();
   }
 }

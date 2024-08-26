@@ -16,9 +16,9 @@ class ViewerRepository {
       : _roomRepository = roomRepository;
 
   final StreamController<MessageAsMap> _postViewerController =
-      StreamController();
+      StreamController.broadcast();
   final StreamController<MessageAsMap> _getViewerController =
-      StreamController();
+      StreamController.broadcast();
 
   Stream<MessageAsMap> get postViewerStream => _postViewerController.stream;
 
@@ -38,6 +38,7 @@ class ViewerRepository {
   }
 
   void messageHandler(event) async {
+    print(event);
     MessageAsMap incoming = event;
     MessageTypeMV? incomingType = MessageTypeMV.values
         .where((element) => element.api == incoming['type'])

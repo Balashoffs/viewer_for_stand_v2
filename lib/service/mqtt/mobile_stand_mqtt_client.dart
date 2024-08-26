@@ -6,8 +6,8 @@ class CustomMqttClient {
   final MqttServerClient _client;
   final MqttClientPayloadBuilder _messageBuilder;
 
-  CustomMqttClient(String host, int port)
-      : _client = MqttServerClient.withPort(host, '', port),
+  CustomMqttClient(String host, int port, String id)
+      : _client = MqttServerClient.withPort(host, id, port),
         _messageBuilder = MqttClientPayloadBuilder();
 
   late Function(MqttConnectionState connectionState) _callback;
@@ -30,7 +30,6 @@ class CustomMqttClient {
     /// setter, read the API docs for further details here, the vast majority of brokers will support the client default
     /// list so in most cases you can ignore this.  Mosquito needs the single default setting.
     _client.websocketProtocols = MqttClientConstants.protocolsSingleDefault;
-
     /// Set logging on if needed, defaults to off
     _client.logging(on: false);
 
@@ -55,7 +54,10 @@ class CustomMqttClient {
     /// Set a ping received callback if needed, called whenever a ping response(pong) is received
     /// from the broker.
     _client.pongCallback = pong;
-
+    // final connMessage = MqttConnectMessage()
+    //     .withClientIdentifier(_client.clientIdentifier)
+    //     .withWillQos(MqttQos.atLeastOnce);
+    // _client.connectionMessage = connMessage;
     /// Connect the client, any errors here are communicated by raising of the appropriate exception. Note
     /// in some circumstances the broker will just disconnect us, see the spec about this, we however will
     /// never send malformed messages.
@@ -104,8 +106,12 @@ class CustomMqttClient {
   }
 
   Future<void> close() async {
-    _callback.call(MqttConnectionState.disconnecting);
-    _client.disconnect();
+    try {
+      _callback.call(MqttConnectionState.disconnecting);
+      _client.disconnect();
+    } catch (e) {
+      print('erro while try to close client');
+    }
   }
 
   /// The subscribed callback
@@ -120,12 +126,14 @@ class CustomMqttClient {
   }
 
   /// The unsolicited disconnect callback
-  void onDisconnected() {
+  void onDisconnected() async{
     _callback.call(MqttConnectionState.disconnected);
     print('OnDisconnected client callback - Client disconnection');
     if (_client.connectionStatus!.disconnectionOrigin ==
         MqttDisconnectionOrigin.solicited) {
       print('OnDisconnected callback is solicited, this is correct');
+      close();
+      connect();
     }
   }
 

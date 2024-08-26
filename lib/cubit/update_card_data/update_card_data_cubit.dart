@@ -4,8 +4,6 @@ import 'package:viewer_for_stand_v2/models/custom_mqtt_message.dart';
 import 'package:viewer_for_stand_v2/models/device/device_type.dart';
 import 'package:viewer_for_stand_v2/models/mqtt/device/climate.dart';
 import 'package:viewer_for_stand_v2/models/mqtt/device/power.dart';
-import 'package:viewer_for_stand_v2/models/room/room_type.dart';
-import 'package:viewer_for_stand_v2/repository/room/room_state.dart';
 import 'package:viewer_for_stand_v2/repository/room/room_state_data.dart';
 import 'package:viewer_for_stand_v2/repository/room_repository.dart';
 import 'package:viewer_for_stand_v2/service/mqtt/mqtt_repository.dart';
