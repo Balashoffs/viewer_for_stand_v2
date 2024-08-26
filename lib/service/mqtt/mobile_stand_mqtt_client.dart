@@ -106,8 +106,12 @@ class CustomMqttClient {
   }
 
   Future<void> close() async {
-    _callback.call(MqttConnectionState.disconnecting);
-    _client.disconnect();
+    try {
+      _callback.call(MqttConnectionState.disconnecting);
+      _client.disconnect();
+    } catch (e) {
+      print('erro while try to close client');
+    }
   }
 
   /// The subscribed callback
@@ -122,12 +126,14 @@ class CustomMqttClient {
   }
 
   /// The unsolicited disconnect callback
-  void onDisconnected() {
+  void onDisconnected() async{
     _callback.call(MqttConnectionState.disconnected);
     print('OnDisconnected client callback - Client disconnection');
     if (_client.connectionStatus!.disconnectionOrigin ==
         MqttDisconnectionOrigin.solicited) {
       print('OnDisconnected callback is solicited, this is correct');
+      close();
+      connect();
     }
   }
 
